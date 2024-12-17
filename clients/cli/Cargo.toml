@@ -1,0 +1,13 @@
+[package]
+name = "blackjack-cli"
+description = "Command line interface for playing on a blackjack server"
+
+edition.workspace = true
+authors.workspace = true
+version.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+blackjack.workspace = true

@@ -1,0 +1,25 @@
+[workspace]
+members = ["clients/cli", "server"]
+
+[workspace.package]
+edition = "2021"
+authors = ["Lance Hart <me@lancehart>"]
+version = "0.1.0"
+repository = "https://github.com/shipsimfan/lct"
+license = "GPL-3.0-or-later"
+publish = false
+
+[workspace.dependencies]
+blackjack.path = "."
+
+argparse.git = "https://github.com/shipsimfan/lib-argparse"
+
+[package]
+name = "blackjack"
+description = "Library for blackjack clients to interact with server"
+
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
