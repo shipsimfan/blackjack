@@ -9,6 +9,6 @@ impl EPoll {
         let handle = try_linux!(epoll_create(max_clients as c_int + 1))
             .map_err(NewServerError::EPollCreationFailed)?;
 
-        Ok(Rc::new(RefCell::new(EPoll { handle })))
+        Ok(Rc::new(RefCell::new(EPoll { handle, count: 0 })))
     }
 }

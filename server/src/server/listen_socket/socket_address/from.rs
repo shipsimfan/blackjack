@@ -10,15 +10,15 @@ impl From<SocketAddr> for SocketAddress {
         match addr {
             SocketAddr::V4(addr) => SocketAddress::V4(sockaddr_in {
                 family: AF_INET as _,
-                port: addr.port(),
+                port: addr.port().to_be(),
                 addr: in_addr {
-                    addr: addr.ip().to_bits(),
+                    addr: addr.ip().to_bits().to_be(),
                 },
                 ..Default::default()
             }),
             SocketAddr::V6(addr) => SocketAddress::V6(sockaddr_in6 {
                 family: AF_INET6 as _,
-                port: addr.port(),
+                port: addr.port().to_be(),
                 flow_info: addr.flowinfo(),
                 addr: in6_addr {
                     addr: addr.ip().octets(),

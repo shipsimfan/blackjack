@@ -8,6 +8,8 @@ use std::{ffi::c_int, ptr::null};
 impl EPoll {
     /// Unregister `handle` from this epoll instance
     pub(super) fn unregister(&mut self, handle: c_int) -> linux::Result<()> {
-        try_linux!(epoll_ctl(self.handle, EPOLL_CTL_DEL, handle, null())).map(|_| ())
+        try_linux!(epoll_ctl(self.handle, EPOLL_CTL_DEL, handle, null()))?;
+        self.count -= 1;
+        Ok(())
     }
 }

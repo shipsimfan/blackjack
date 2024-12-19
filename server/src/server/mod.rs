@@ -7,6 +7,7 @@ mod epoll;
 mod listen_socket;
 
 mod new;
+mod run;
 
 /// The server infrastructure
 pub struct Server {
