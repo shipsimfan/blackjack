@@ -27,6 +27,7 @@ name = "blackjack-server"
 version = "0.1.0"
 dependencies = [
  "argparse",
+ "blackjack",
  "linux",
 ]
 

@@ -4,6 +4,7 @@ use read_state::ReadState;
 mod read_state;
 
 mod new;
+mod read;
 
 /// A socket representing a client
 pub(super) struct ClientSocket {
@@ -26,7 +27,8 @@ pub(super) struct ClientSocket {
     last_body_size: usize,
 }
 
-const MAGIC: [u8; 4] = *b"BKJK";
-const TAG_OFFSET: usize = MAGIC.len();
+const MAGIC: [u8; 3] = *b"BJK";
+const DIRECTION_OFFSET: usize = MAGIC.len();
+const TAG_OFFSET: usize = DIRECTION_OFFSET + 1;
 const LEN_OFFSET: usize = TAG_OFFSET + 2;
 const HEADER_SIZE: usize = LEN_OFFSET + 2;

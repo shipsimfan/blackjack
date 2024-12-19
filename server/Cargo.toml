@@ -10,6 +10,8 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
+blackjack.workspace = true
+
 argparse.workspace = true
 
 linux.git = "https://github.com/shipsimfan/lib-linux"
