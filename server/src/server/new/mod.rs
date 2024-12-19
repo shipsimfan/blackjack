@@ -12,9 +12,15 @@ impl Server {
 
         let listen_socket = ListenSocket::listen(addr, epoll.clone())?;
 
+        let mut clients = Vec::with_capacity(max_clients);
+        for _ in 0..max_clients {
+            clients.push(None);
+        }
+
         Ok(Server {
             epoll,
             listen_socket,
+            clients: clients.into_boxed_slice(),
         })
     }
 }

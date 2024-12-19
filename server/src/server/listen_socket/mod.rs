@@ -1,4 +1,4 @@
-use super::RegisteredHandle;
+use super::Handle;
 use socket_address::SocketAddress;
 
 mod accept;
@@ -8,7 +8,7 @@ mod socket_address;
 /// A socket for listening for client connections
 pub(super) struct ListenSocket {
     /// The handle to the socket
-    handle: RegisteredHandle,
+    handle: Handle,
 }
 
 impl ListenSocket {
