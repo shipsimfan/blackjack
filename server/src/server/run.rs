@@ -1,16 +1,16 @@
 use super::{client_socket::ClientSocket, Server};
-use crate::server::ClientWriter;
+use crate::{server::ClientWriter, Lobby};
 
 impl Server {
     /// Run the server
-    pub fn run(mut self) -> ! {
+    pub fn run(mut self, mut lobby: Lobby) -> ! {
         let mut events = Vec::new();
         loop {
             self.epoll.borrow_mut().wait(None, &mut events).unwrap();
 
             for event in &events {
                 if event.id() == u64::MAX {
-                    self.accept_client();
+                    self.accept_client(&mut lobby);
                     continue;
                 }
 
@@ -24,10 +24,12 @@ impl Server {
                     todo!("Inform lobby of message");
                 }
             }
+
+            self.disconnect_clients();
         }
     }
 
-    fn accept_client(&mut self) {
+    fn accept_client(&mut self, lobby: &mut Lobby) {
         let handle = match self.listen_socket.accept() {
             Ok(handle) => handle,
             Err(error) => return eprintln!("[ERROR] Error while accepting client: {}", error),
@@ -55,9 +57,9 @@ impl Server {
             client_id as _,
             self.clients_to_disconnect.clone(),
         ) {
-            Ok((client_socket, client)) => {
+            Ok((client_socket, writer)) => {
                 self.clients[client_id] = Some(client_socket);
-                todo!("Inform lobby of connected player");
+                lobby.on_connect(writer);
             }
             Err(error) => eprintln!("[ERROR] Error while registering client: {}", error),
         }

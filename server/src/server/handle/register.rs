@@ -1,6 +1,6 @@
 use super::Handle;
 use crate::server::EPoll;
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, mem::ManuallyDrop, rc::Rc};
 
 impl Handle {
     pub fn register(
@@ -14,7 +14,12 @@ impl Handle {
             Handle::Registered(_) => panic!("Cannot register an already registered handle!"),
         };
 
-        *self = Handle::Registered(EPoll::register_handle(epoll, handle, id, events)?);
+        let mut new = ManuallyDrop::new(Handle::Registered(EPoll::register_handle(
+            epoll, handle, id, events,
+        )?));
+
+        std::mem::swap(self, &mut *new);
+
         Ok(())
     }
 }
