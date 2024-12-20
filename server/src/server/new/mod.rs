@@ -1,5 +1,5 @@
 use super::{EPoll, ListenSocket, Server};
-use std::net::SocketAddr;
+use std::{cell::RefCell, net::SocketAddr, rc::Rc};
 
 mod error;
 
@@ -21,6 +21,7 @@ impl Server {
             epoll,
             listen_socket,
             clients: clients.into_boxed_slice(),
+            clients_to_disconnect: Rc::new(RefCell::new(Vec::with_capacity(max_clients))),
         })
     }
 }

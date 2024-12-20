@@ -13,6 +13,8 @@ mod listen_socket;
 mod new;
 mod run;
 
+pub use client_socket::ClientWriter;
+
 /// The server infrastructure
 pub struct Server {
     /// The manager for polling mulitple sockets
@@ -23,4 +25,7 @@ pub struct Server {
 
     /// The currently connected clients
     clients: Box<[Option<ClientSocket>]>,
+
+    /// The list of clients to disconnect after handling this message
+    clients_to_disconnect: Rc<RefCell<Vec<usize>>>,
 }

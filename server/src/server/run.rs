@@ -1,4 +1,5 @@
 use super::{client_socket::ClientSocket, Server};
+use crate::server::ClientWriter;
 
 impl Server {
     /// Run the server
@@ -12,6 +13,16 @@ impl Server {
                     self.accept_client();
                     continue;
                 }
+
+                let client_id = event.id() as usize;
+                let client = match &mut self.clients[client_id] {
+                    Some(client) => client,
+                    None => continue,
+                };
+
+                if let Some(message) = client.read() {
+                    todo!("Inform lobby of message");
+                }
             }
         }
     }
@@ -19,7 +30,7 @@ impl Server {
     fn accept_client(&mut self) {
         let handle = match self.listen_socket.accept() {
             Ok(handle) => handle,
-            Err(error) => return eprintln!("Error while accepting client: {}", error),
+            Err(error) => return eprintln!("[ERROR] Error while accepting client: {}", error),
         };
 
         let mut target_slot = None;
@@ -30,17 +41,36 @@ impl Server {
             }
         }
 
-        let id = match target_slot {
+        let client_id = match target_slot {
             Some(id) => id,
             None => {
-                println!("Client connected but server full");
-                return;
+                let client = ClientWriter::new_unregistered(handle);
+                return todo!("Inform lobby of server full");
             }
         };
 
-        match ClientSocket::new(handle, self.epoll.clone(), id as _) {
-            Ok(client_socket) => self.clients[id] = Some(client_socket),
-            Err(error) => println!("Error while making a client: {}", error),
+        match ClientSocket::new(
+            handle,
+            self.epoll.clone(),
+            client_id as _,
+            self.clients_to_disconnect.clone(),
+        ) {
+            Ok((client_socket, client)) => {
+                self.clients[client_id] = Some(client_socket);
+                todo!("Inform lobby of connected player");
+            }
+            Err(error) => eprintln!("[ERROR] Error while registering client: {}", error),
+        }
+    }
+
+    fn disconnect_clients(&mut self) {
+        while let Some(client_id) = self.clients_to_disconnect.borrow_mut().pop() {
+            if self.clients[client_id].is_none() {
+                continue;
+            }
+
+            self.clients[client_id] = None;
+            todo!("Inform lobby of disconnect");
         }
     }
 }

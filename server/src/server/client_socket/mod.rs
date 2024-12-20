@@ -1,15 +1,22 @@
 use super::Handle;
+use blackjack::messages::header::HEADER_SIZE;
 use read_state::ReadState;
+use std::{cell::RefCell, rc::Rc};
 
+mod error;
 mod read_state;
+mod writer;
 
 mod new;
 mod read;
 
+pub use error::ReadMessageError;
+pub use writer::ClientWriter;
+
 /// A socket representing a client
 pub(super) struct ClientSocket {
     /// The handle to the client socket
-    handle: Handle,
+    handle: Rc<RefCell<Option<Handle>>>,
 
     /// The current item being read
     read_state: ReadState,
@@ -23,12 +30,12 @@ pub(super) struct ClientSocket {
     /// The tag in the last read header
     last_tag: u16,
 
-    /// The size in the last read header
-    last_body_size: usize,
-}
+    /// The currently read size of the header or body
+    read_length: usize,
 
-const MAGIC: [u8; 3] = *b"BJK";
-const DIRECTION_OFFSET: usize = MAGIC.len();
-const TAG_OFFSET: usize = DIRECTION_OFFSET + 1;
-const LEN_OFFSET: usize = TAG_OFFSET + 2;
-const HEADER_SIZE: usize = LEN_OFFSET + 2;
+    /// The id of this client
+    id: usize,
+
+    /// The list of clients to disconnect
+    clients_to_disconnect: Rc<RefCell<Vec<usize>>>,
+}

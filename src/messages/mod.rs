@@ -8,6 +8,8 @@ mod r#macro;
 mod parse;
 mod version;
 
+pub mod header;
+
 pub use client::*;
 pub use parse::ParseMessageError;
 pub use version::Version;
