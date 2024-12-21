@@ -6,7 +6,14 @@ impl Server {
     pub fn run(mut self, mut lobby: Lobby) -> ! {
         let mut events = Vec::new();
         loop {
-            self.epoll.borrow_mut().wait(None, &mut events).unwrap();
+            self.epoll
+                .borrow_mut()
+                .wait(lobby.get_timeout(), &mut events)
+                .unwrap();
+
+            if events.len() == 0 {
+                lobby.on_timeout();
+            }
 
             for event in &events {
                 if event.id() == u64::MAX {
@@ -21,11 +28,11 @@ impl Server {
                 };
 
                 if let Some(message) = client.read() {
-                    todo!("Inform lobby of message");
+                    lobby.on_message(client_id, message);
                 }
             }
 
-            self.disconnect_clients();
+            self.disconnect_clients(&mut lobby);
         }
     }
 
@@ -47,7 +54,8 @@ impl Server {
             Some(id) => id,
             None => {
                 let client = ClientWriter::new_unregistered(handle);
-                return todo!("Inform lobby of server full");
+                lobby.on_server_full(client);
+                return;
             }
         };
 
@@ -65,14 +73,14 @@ impl Server {
         }
     }
 
-    fn disconnect_clients(&mut self) {
+    fn disconnect_clients(&mut self, lobby: &mut Lobby) {
         while let Some(client_id) = self.clients_to_disconnect.borrow_mut().pop() {
             if self.clients[client_id].is_none() {
                 continue;
             }
 
             self.clients[client_id] = None;
-            todo!("Inform lobby of disconnect");
+            lobby.on_disconnect(client_id);
         }
     }
 }

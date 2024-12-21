@@ -1,7 +1,9 @@
 use super::Handle;
 use socket_address::SocketAddress;
+use std::net::SocketAddr;
 
 mod accept;
+mod get;
 mod listen;
 mod socket_address;
 
@@ -9,6 +11,9 @@ mod socket_address;
 pub(super) struct ListenSocket {
     /// The handle to the socket
     handle: Handle,
+
+    /// The address this socket is bound to
+    local_address: SocketAddr,
 }
 
 impl ListenSocket {

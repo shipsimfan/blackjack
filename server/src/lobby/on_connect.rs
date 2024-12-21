@@ -5,6 +5,6 @@ impl Lobby {
     /// Called when a client connects
     pub fn on_connect(&mut self, writer: ClientWriter) {
         self.connecting_clients
-            .push(ConnectingClient::new(writer, self.connection_timeout));
+            .push_back(ConnectingClient::new(writer, self.connection_timeout));
     }
 }

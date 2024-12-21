@@ -3,6 +3,7 @@ use linux::netinet::r#in::{sockaddr_in, sockaddr_in6};
 mod as_ptr;
 mod domain;
 mod from;
+mod into;
 mod len;
 
 /// An address for a socket

@@ -17,6 +17,12 @@ pub enum NewServerError {
     /// Failed to begin listening on the socket
     ListenSocketFailed(linux::Error),
 
+    /// Failed to set the socket to non-blocking
+    SetNonBlockingFailed(linux::Error),
+
+    /// Failed to get the local address of the listen socket
+    GetLocalAddressFailed(linux::Error),
+
     /// Failed to register the listen socket with the e-poll instance
     RegisterListenSocketFailed(linux::Error),
 }

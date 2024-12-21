@@ -1,6 +1,8 @@
 use crate::server::handle::Handle;
 use std::{cell::RefCell, rc::Rc};
 
+mod disconnect;
+mod get;
 mod new;
 
 /// A connection to a client that can send messages

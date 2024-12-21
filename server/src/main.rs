@@ -1,3 +1,5 @@
+#![feature(ip_from)]
+
 use argparse::Command;
 use lobby::Lobby;
 use options::Options;
@@ -23,10 +25,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let server = Server::new(options.addr(), options.max_players())?;
     let lobby = Lobby::new(options);
 
-    println!(
-        "[INFO] Listening on {} . . .",
-        todo!("Get actually bound address from server")
-    );
+    println!("[INFO] Listening on {} . . .", server.local_address());
 
     server.run(lobby)
 }

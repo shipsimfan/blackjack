@@ -19,11 +19,11 @@ impl From<SocketAddr> for SocketAddress {
             SocketAddr::V6(addr) => SocketAddress::V6(sockaddr_in6 {
                 family: AF_INET6 as _,
                 port: addr.port().to_be(),
-                flow_info: addr.flowinfo(),
+                flow_info: addr.flowinfo().to_be(),
                 addr: in6_addr {
                     addr: addr.ip().octets(),
                 },
-                scope_id: addr.scope_id(),
+                scope_id: addr.scope_id().to_be(),
             }),
         }
     }

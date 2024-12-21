@@ -1,6 +1,8 @@
 use crate::server::ClientWriter;
 use std::time::SystemTime;
 
+mod disconnect;
+mod get;
 mod new;
 
 /// A client which hasn't sent a hello yet
