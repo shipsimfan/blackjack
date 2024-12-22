@@ -51,13 +51,18 @@ pub fn validate(header: &[u8], client: bool) -> Result<(u16, u16), ParseMessageE
 }
 
 /// Generates the header for the given parameters
-pub fn generate(output: &mut Vec<u8>, client: bool, tag: u16, body_length: u16) {
-    output.extend_from_slice(&MAGIC);
-    output.push(if client {
+pub fn generate(output: &mut [u8], client: bool, tag: u16) {
+    assert!(output.len() >= HEADER_SIZE);
+    assert!(output.len() <= u16::MAX as usize + HEADER_SIZE);
+
+    let body_length = (output.len() - HEADER_SIZE) as u16;
+
+    output[..MAGIC.len()].copy_from_slice(&MAGIC);
+    output[DIRECTION_OFFSET] = if client {
         TO_SERVER_DIRECTION
     } else {
         TO_CLIENT_DIRECTION
-    });
-    output.extend_from_slice(&tag.to_be_bytes());
-    output.extend_from_slice(&body_length.to_be_bytes());
+    };
+    output[TAG_OFFSET..LEN_OFFSET].copy_from_slice(&tag.to_be_bytes());
+    output[LEN_OFFSET..HEADER_SIZE].copy_from_slice(&body_length.to_be_bytes());
 }

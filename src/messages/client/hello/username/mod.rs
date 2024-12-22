@@ -1,5 +1,6 @@
 mod deref;
 mod display;
+mod generate;
 mod new;
 mod parse;
 

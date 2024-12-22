@@ -1,6 +1,7 @@
 macro_rules! messages {
     (
         $(#[$meta: meta])*
+        [client = $client: literal]
         $vis: vis enum $ident: ident {$(
             $(#[$inner_meta: meta])*
             $name: ident($struct: ident) = $tag: literal,
@@ -28,6 +29,25 @@ macro_rules! messages {
                 }
 
                 Ok(ret)
+            }
+
+            /// Gets the tag that identifies this message
+            pub fn tag(&self) -> u16 {
+                match self {$(
+                    $ident::$name(_) => $tag,
+                )*}
+            }
+
+            /// Generate the message into `output`, including header
+            pub fn generate(&self, output: &mut Vec<u8>) {
+                output.truncate(0);
+                output.extend_from_slice(&[0; $crate::messages::header::HEADER_SIZE]);
+
+                match self {$(
+                    $ident::$name(message) => $crate::messages::Generate::generate(message, output),
+                )*}
+
+                $crate::messages::header::generate(output, $client, self.tag());
             }
         }
     };

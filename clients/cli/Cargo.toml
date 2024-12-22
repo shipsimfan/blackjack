@@ -11,3 +11,5 @@ publish.workspace = true
 
 [dependencies]
 blackjack.workspace = true
+
+win32.git = "https://github.com/shipsimfan/lib-win32"

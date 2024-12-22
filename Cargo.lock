@@ -20,6 +20,7 @@ name = "blackjack-cli"
 version = "0.1.0"
 dependencies = [
  "blackjack",
+ "win32",
 ]
 
 [[package]]
@@ -116,4 +117,4 @@ dependencies = [
 [[package]]
 name = "win32"
 version = "0.1.0"
-source = "git+https://github.com/shipsimfan/lib-win32#52ff91ddef86b5e70fec2b7c960d71a79f60b098"
+source = "git+https://github.com/shipsimfan/lib-win32#c430822090730bc6eceeea15c6946bb52a8bd928"

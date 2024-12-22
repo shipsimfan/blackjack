@@ -1,9 +1,11 @@
 //! The definition of all messages used in the protocol
 
+use generate::Generate;
 use parse::{Parse, Parser};
 use r#macro::messages;
 
 mod client;
+mod generate;
 mod r#macro;
 mod parse;
 mod version;

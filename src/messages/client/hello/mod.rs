@@ -2,6 +2,7 @@ use crate::messages::Version;
 
 mod username;
 
+mod generate;
 mod parse;
 
 pub use username::Username;
