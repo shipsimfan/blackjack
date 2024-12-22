@@ -3,6 +3,7 @@ mod generate;
 mod parse;
 
 /// The version of a client or server program
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Version {
     /// The reported major version
     pub major: u32,

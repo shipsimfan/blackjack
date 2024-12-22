@@ -8,10 +8,12 @@ mod client;
 mod generate;
 mod r#macro;
 mod parse;
+mod server;
 mod version;
 
 pub mod header;
 
 pub use client::*;
 pub use parse::ParseMessageError;
+pub use server::*;
 pub use version::Version;

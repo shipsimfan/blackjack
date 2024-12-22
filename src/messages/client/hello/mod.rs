@@ -8,6 +8,7 @@ mod parse;
 pub use username::Username;
 
 /// The message sent by the client in response to server hello
+#[derive(Debug, Clone)]
 pub struct HelloClientMessage {
     /// The username of the client
     pub username: Username,
