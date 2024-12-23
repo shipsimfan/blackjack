@@ -1,4 +1,5 @@
 use argparse::Command;
+use blackjack::messages::DEFAULT_PORT;
 use std::{
     net::IpAddr,
     num::{NonZeroU16, NonZeroU8},
@@ -8,7 +9,7 @@ mod get;
 
 /// The options for the game and server
 #[derive(Command)]
-#[command(help, version, description = "Server for hosting Blackjack games")]
+#[command(help, version)]
 pub struct Options {
     /// The address to listen for clients on
     #[flag(
@@ -48,9 +49,6 @@ pub struct Options {
     )]
     pub password: Option<String>,
 }
-
-/// The default port to listen for clients on
-const DEFAULT_PORT: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(9261) };
 
 /// The default maximum number of players that can connect
 const DEFAULT_MAX_PLAYERS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(8) };
