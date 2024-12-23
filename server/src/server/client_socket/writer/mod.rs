@@ -4,6 +4,7 @@ use std::{cell::RefCell, rc::Rc};
 mod disconnect;
 mod get;
 mod new;
+mod send;
 
 /// A connection to a client that can send messages
 pub struct ClientWriter {
@@ -15,4 +16,7 @@ pub struct ClientWriter {
 
     /// The list of clients to disconnect
     clients_to_disconnect: Option<Rc<RefCell<Vec<usize>>>>,
+
+    /// The buffer to place packets into
+    write_buffer: Vec<u8>,
 }

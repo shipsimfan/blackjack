@@ -1,6 +1,7 @@
 use crate::messages::Version;
 
 mod generate;
+mod new;
 mod parse;
 
 /// The message sent by the server to begin communication with a client

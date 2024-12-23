@@ -12,6 +12,7 @@ impl ClientWriter {
             handle,
             id,
             clients_to_disconnect: Some(clients_to_disconnect),
+            write_buffer: Vec::with_capacity(u16::MAX as usize),
         }
     }
 
@@ -21,6 +22,7 @@ impl ClientWriter {
             handle: Rc::new(RefCell::new(Some(handle))),
             id: 0,
             clients_to_disconnect: None,
+            write_buffer: Vec::with_capacity(u16::MAX as usize),
         }
     }
 }

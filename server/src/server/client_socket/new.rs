@@ -1,6 +1,10 @@
 use super::{ClientSocket, ClientWriter, ReadState, HEADER_SIZE};
 use crate::server::{epoll::EPoll, Handle};
-use linux::sys::epoll::EPOLLIN;
+use linux::{
+    fcntl::{fcntl, F_GETFL, F_SETFL, O_NONBLOCK},
+    sys::epoll::EPOLLIN,
+    try_linux,
+};
 use std::{cell::RefCell, rc::Rc};
 
 impl ClientSocket {
@@ -11,6 +15,10 @@ impl ClientSocket {
         id: u64,
         clients_to_disconnect: Rc<RefCell<Vec<usize>>>,
     ) -> linux::Result<(Self, ClientWriter)> {
+        let mut flags = try_linux!(fcntl(*handle, F_GETFL, 0))?;
+        flags |= O_NONBLOCK;
+        try_linux!(fcntl(*handle, F_SETFL, flags))?;
+
         handle.register(epoll, id, EPOLLIN)?;
         let handle = Rc::new(RefCell::new(Some(handle)));
 

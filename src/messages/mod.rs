@@ -17,3 +17,5 @@ pub use client::*;
 pub use parse::ParseMessageError;
 pub use server::*;
 pub use version::Version;
+
+const CURRENT_PROTOCOL_VERSION: u32 = 1;

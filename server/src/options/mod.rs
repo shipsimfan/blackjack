@@ -31,8 +31,22 @@ pub struct Options {
     max_players: NonZeroU8,
 
     /// The number of seconds to allow a player to connect before timing out
-    #[flag(value = "TIMEOUT", default = DEFAULT_CONNECTION_TIMEOUT, description = "The number of seconds to allow a player to connect before timing out. Defaults to 60 seconds")]
+    #[flag(value = "TIMEOUT", default = DEFAULT_CONNECTION_TIMEOUT, description = "The number of seconds to allow a player to connect before timing out. Defaults to 300 seconds")]
     connection_timeout: NonZeroU16,
+
+    /// The name of the server to report to clients
+    #[flag(
+        value = "NAME",
+        description = "The name of the server to report to clients"
+    )]
+    server_name: Option<String>,
+
+    /// A password to require clients to enter to connect
+    #[flag(
+        value = "PASSWORD",
+        description = "Password required by clients to connect"
+    )]
+    password: Option<String>,
 }
 
 /// The default port to listen for clients on
@@ -41,4 +55,5 @@ const DEFAULT_PORT: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(9261) };
 /// The default maximum number of players that can connect
 const DEFAULT_MAX_PLAYERS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(8) };
 
-const DEFAULT_CONNECTION_TIMEOUT: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(60) };
+/// The default timeout to reject clients if they haven't returned a hello message
+const DEFAULT_CONNECTION_TIMEOUT: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(300) };

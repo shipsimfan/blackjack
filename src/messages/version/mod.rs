@@ -1,5 +1,6 @@
 mod display;
 mod generate;
+mod package;
 mod parse;
 
 /// The version of a client or server program

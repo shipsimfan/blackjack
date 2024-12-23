@@ -1,3 +1,4 @@
+use blackjack::messages::Version;
 use connecting_client::ConnectingClient;
 use std::{collections::VecDeque, time::Duration};
 
@@ -18,4 +19,13 @@ pub struct Lobby {
 
     /// The length of time to wait before disconnecting a client
     connection_timeout: Duration,
+
+    /// The name of this server to report to clients
+    server_name: String,
+
+    /// The password to require clients to enter to connect
+    password: Option<String>,
+
+    /// The version of this server
+    server_version: Version,
 }

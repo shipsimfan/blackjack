@@ -13,11 +13,11 @@ dependencies = [
 
 [[package]]
 name = "blackjack"
-version = "0.0.0"
+version = "0.1.0"
 
 [[package]]
 name = "blackjack-cli"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "blackjack",
  "win32",
