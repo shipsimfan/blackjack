@@ -1,6 +1,6 @@
 use crate::messages::{Generate, HelloClientMessage};
 
-impl Generate for HelloClientMessage {
+impl<'a> Generate for HelloClientMessage<'a> {
     fn generate(&self, output: &mut Vec<u8>) {
         self.username.generate(output);
         self.password.generate(output);

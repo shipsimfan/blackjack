@@ -1,4 +1,5 @@
 use crate::messages::Version;
+use std::borrow::Cow;
 
 mod generate;
 mod new;
@@ -6,7 +7,7 @@ mod parse;
 
 /// The message sent by the server to begin communication with a client
 #[derive(Debug, Clone)]
-pub struct HelloServerMessage {
+pub struct HelloServerMessage<'a> {
     /// The protocol version used by the server
     protocol_version: u32,
 
@@ -14,10 +15,10 @@ pub struct HelloServerMessage {
     password_required: bool,
 
     /// The name of this server
-    server_name: String,
+    server_name: Cow<'a, str>,
 
     /// The name of the server application
-    server_application_name: String,
+    server_application_name: Cow<'a, str>,
 
     /// The version of the server application
     server_version: Version,

@@ -20,17 +20,4 @@ impl Options {
     pub fn connection_timeout(&self) -> Duration {
         Duration::from_secs(self.connection_timeout.get() as _)
     }
-
-    /// Get the server name to report to clients
-    pub fn server_name(&self) -> &str {
-        self.server_name
-            .as_ref()
-            .map(String::as_str)
-            .unwrap_or("A blackjack server")
-    }
-
-    /// Get the password clients must enter to connect
-    pub fn password(&self) -> Option<&str> {
-        self.password.as_ref().map(String::as_str)
-    }
 }

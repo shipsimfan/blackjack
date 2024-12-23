@@ -5,15 +5,12 @@ use blackjack::messages::HelloServerMessage;
 impl Lobby {
     /// Called when a client connects
     pub fn on_connect(&mut self, mut writer: ClientWriter) {
-        println!(
-            "[INFO] Client connecting on slot {} ({})",
-            writer.id(),
-            self.server_version
-        );
+        println!("[INFO] Client connecting on slot {}", writer.id());
+
         writer.send(&HelloServerMessage::new(
             self.password.is_some(),
-            self.server_name.clone(),
-            format!("LBlackjack"),
+            &self.server_name,
+            "LBlackjack",
             self.server_version,
         ));
 

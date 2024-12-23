@@ -1,6 +1,6 @@
 use crate::messages::{Generate, HelloServerMessage};
 
-impl Generate for HelloServerMessage {
+impl<'a> Generate for HelloServerMessage<'a> {
     fn generate(&self, output: &mut Vec<u8>) {
         self.protocol_version.generate(output);
         self.password_required.generate(output);

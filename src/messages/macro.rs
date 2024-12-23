@@ -2,18 +2,18 @@ macro_rules! messages {
     (
         $(#[$meta: meta])*
         [client = $client: literal]
-        $vis: vis enum $ident: ident {$(
+        $vis: vis enum $ident: ident<$lifetime: lifetime> {$(
             $(#[$inner_meta: meta])*
-            $name: ident($struct: ident) = $tag: literal,
+            $name: ident($struct: ident$(<$variant_lifetime: lifetime>)*) = $tag: literal,
         )*}
 ) => {
         $(#[$meta])*
-        $vis enum $ident {$(
+        $vis enum $ident<$lifetime> {$(
             $(#[$inner_meta])*
-            $name($struct),
+            $name($struct$(<$variant_lifetime>)*),
         )*}
 
-        impl $ident {
+        impl<$lifetime> $ident<$lifetime> {
             /// Parse `content` into the message identified by `tag`
             pub fn parse(tag: u16, content: &[u8]) -> Result<Self, $crate::messages::ParseMessageError> {
                 let mut parser = $crate::messages::Parser::new(content);

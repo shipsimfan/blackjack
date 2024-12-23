@@ -1,6 +1,6 @@
 use crate::messages::{HelloServerMessage, Parse, ParseMessageError, Parser};
 
-impl Parse for HelloServerMessage {
+impl<'a> Parse for HelloServerMessage<'a> {
     fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
         Ok(HelloServerMessage {
             protocol_version: parser.parse()?,

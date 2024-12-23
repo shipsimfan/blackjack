@@ -39,14 +39,14 @@ pub struct Options {
         value = "NAME",
         description = "The name of the server to report to clients"
     )]
-    server_name: Option<String>,
+    pub server_name: Option<String>,
 
     /// A password to require clients to enter to connect
     #[flag(
         value = "PASSWORD",
         description = "Password required by clients to connect"
     )]
-    password: Option<String>,
+    pub password: Option<String>,
 }
 
 /// The default port to listen for clients on

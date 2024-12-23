@@ -1,8 +1,11 @@
 use crate::messages::Username;
+use std::borrow::Cow;
 
-impl Username {
+impl<'a> Username<'a> {
     /// Creates a new [`Username`], validating the contents of `username`
-    pub fn new(username: String) -> Option<Self> {
+    pub fn new<S: Into<Cow<'a, str>>>(username: S) -> Option<Self> {
+        let username = username.into();
+
         if username.len() > u8::MAX as usize {
             return None;
         }

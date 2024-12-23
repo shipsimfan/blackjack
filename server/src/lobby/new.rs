@@ -9,8 +9,10 @@ impl Lobby {
         Lobby {
             connecting_clients: VecDeque::with_capacity(options.max_players()),
             connection_timeout: options.connection_timeout(),
-            server_name: options.server_name().to_owned(),
-            password: options.password().map(str::to_owned),
+            server_name: options
+                .server_name
+                .unwrap_or("A blackjack server".to_owned()),
+            password: options.password,
             server_version: pkg_version!(),
         }
     }

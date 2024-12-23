@@ -1,7 +1,7 @@
 use crate::messages::Username;
 use std::ops::Deref;
 
-impl Deref for Username {
+impl<'a> Deref for Username<'a> {
     type Target = str;
 
     fn deref(&self) -> &Self::Target {
@@ -9,7 +9,7 @@ impl Deref for Username {
     }
 }
 
-impl AsRef<str> for Username {
+impl<'a> AsRef<str> for Username<'a> {
     fn as_ref(&self) -> &str {
         &self.inner
     }

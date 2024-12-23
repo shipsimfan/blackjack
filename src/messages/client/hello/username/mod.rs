@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 mod deref;
 mod display;
 mod generate;
@@ -6,7 +8,7 @@ mod parse;
 
 /// A valid username
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Username {
+pub struct Username<'a> {
     /// The string representation of the username
-    inner: String,
+    inner: Cow<'a, str>,
 }

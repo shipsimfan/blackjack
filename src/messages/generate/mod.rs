@@ -1,4 +1,5 @@
 mod bool;
+mod cow;
 mod number;
 mod string;
 

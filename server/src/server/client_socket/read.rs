@@ -40,7 +40,10 @@ impl ClientSocket {
     }
 
     /// Continue reading the header
-    fn read_header(&mut self, handle: c_int) -> Result<Option<ClientMessage>, ReadMessageError> {
+    fn read_header(
+        &mut self,
+        handle: c_int,
+    ) -> Result<Option<ClientMessage<'static>>, ReadMessageError> {
         let mut first = true;
         while self.read_length < self.header_buffer.len() {
             let bytes = read_socket(handle, &mut self.header_buffer[self.read_length..])?;
@@ -74,7 +77,7 @@ impl ClientSocket {
         &mut self,
         disconnect_first: bool,
         handle: c_int,
-    ) -> Result<Option<ClientMessage>, ReadMessageError> {
+    ) -> Result<Option<ClientMessage<'static>>, ReadMessageError> {
         let mut first = true;
         while self.read_length < self.body_buffer.len() {
             let bytes = read_socket(handle, &mut self.body_buffer[self.read_length..])?;

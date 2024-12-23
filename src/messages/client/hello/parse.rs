@@ -1,6 +1,6 @@
 use crate::messages::{HelloClientMessage, Parse, ParseMessageError, Parser};
 
-impl Parse for HelloClientMessage {
+impl<'a> Parse for HelloClientMessage<'a> {
     fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
         Ok(HelloClientMessage {
             username: parser.parse()?,
