@@ -2,6 +2,8 @@ use argparse::Command;
 use blackjack::messages::DEFAULT_PORT;
 use std::num::NonZeroU16;
 
+mod get;
+
 #[derive(Command)]
 #[command(version, help)]
 pub struct Options {

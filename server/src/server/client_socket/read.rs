@@ -1,5 +1,5 @@
 use super::{ClientSocket, ReadMessageError, ReadState};
-use blackjack::messages::{header, ClientMessage, DisconnectClientMessage};
+use blackjack::messages::{header, ClientMessage};
 use linux::try_linux;
 use std::ffi::c_int;
 
@@ -15,7 +15,7 @@ fn read_socket(handle: c_int, buffer: &mut [u8]) -> linux::Result<usize> {
 
 impl ClientSocket {
     /// Continues reading the next message from this socket
-    pub fn read(&mut self) -> Option<ClientMessage> {
+    pub fn read(&mut self) -> Option<Option<ClientMessage>> {
         let handle_ref = self.handle.borrow();
         let handle = match &*handle_ref {
             Some(handle) => **handle,
@@ -43,13 +43,13 @@ impl ClientSocket {
     fn read_header(
         &mut self,
         handle: c_int,
-    ) -> Result<Option<ClientMessage<'static>>, ReadMessageError> {
+    ) -> Result<Option<Option<ClientMessage<'static>>>, ReadMessageError> {
         let mut first = true;
         while self.read_length < self.header_buffer.len() {
             let bytes = read_socket(handle, &mut self.header_buffer[self.read_length..])?;
             if bytes == 0 {
                 if first {
-                    return Ok(Some(ClientMessage::Disconnect(DisconnectClientMessage)));
+                    return Ok(Some(None));
                 }
 
                 break;
@@ -77,13 +77,13 @@ impl ClientSocket {
         &mut self,
         disconnect_first: bool,
         handle: c_int,
-    ) -> Result<Option<ClientMessage<'static>>, ReadMessageError> {
+    ) -> Result<Option<Option<ClientMessage<'static>>>, ReadMessageError> {
         let mut first = true;
         while self.read_length < self.body_buffer.len() {
             let bytes = read_socket(handle, &mut self.body_buffer[self.read_length..])?;
             if bytes == 0 {
                 if first && disconnect_first {
-                    return Ok(Some(ClientMessage::Disconnect(DisconnectClientMessage)));
+                    return Ok(Some(None));
                 }
 
                 break;
@@ -101,6 +101,7 @@ impl ClientSocket {
         self.read_state = ReadState::Header;
 
         ClientMessage::parse(self.last_tag, &self.body_buffer)
+            .map(Some)
             .map(Some)
             .map_err(Into::into)
     }

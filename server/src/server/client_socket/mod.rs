@@ -3,6 +3,7 @@ use blackjack::messages::header::HEADER_SIZE;
 use read_state::ReadState;
 use std::{cell::RefCell, rc::Rc};
 
+mod disconnect;
 mod error;
 mod read_state;
 mod writer;

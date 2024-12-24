@@ -2,7 +2,7 @@ use super::{ClientSocket, ClientWriter, ReadState, HEADER_SIZE};
 use crate::server::{epoll::EPoll, Handle};
 use linux::{
     fcntl::{fcntl, F_GETFL, F_SETFL, O_NONBLOCK},
-    sys::epoll::EPOLLIN,
+    sys::epoll::{EPOLLHUP, EPOLLIN},
     try_linux,
 };
 use std::{cell::RefCell, rc::Rc};
@@ -19,7 +19,7 @@ impl ClientSocket {
         flags |= O_NONBLOCK;
         try_linux!(fcntl(*handle, F_SETFL, flags))?;
 
-        handle.register(epoll, id, EPOLLIN)?;
+        handle.register(epoll, id, EPOLLIN | EPOLLHUP)?;
         let handle = Rc::new(RefCell::new(Some(handle)));
 
         Ok((

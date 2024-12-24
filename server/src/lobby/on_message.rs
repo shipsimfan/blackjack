@@ -1,6 +1,5 @@
-use blackjack::messages::ClientMessage;
-
 use super::Lobby;
+use blackjack::messages::ClientMessage;
 
 impl Lobby {
     /// Called when a message is received by the server

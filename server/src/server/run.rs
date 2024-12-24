@@ -27,8 +27,10 @@ impl Server {
                     None => continue,
                 };
 
-                if let Some(message) = client.read() {
-                    lobby.on_message(client_id, message);
+                match client.read() {
+                    Some(Some(message)) => lobby.on_message(client_id, message),
+                    Some(None) => client.disconnect(),
+                    None => {}
                 }
             }
 
