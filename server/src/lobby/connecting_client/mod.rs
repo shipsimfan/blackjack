@@ -4,6 +4,7 @@ use std::time::SystemTime;
 mod disconnect;
 mod get;
 mod new;
+mod send;
 
 /// A client which hasn't sent a hello yet
 pub struct ConnectingClient {

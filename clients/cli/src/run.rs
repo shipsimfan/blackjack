@@ -1,5 +1,6 @@
 use crate::{virtual_terminal::TerminalEvent, Connection, GameState, Options, VirtualTerminal};
 use argparse::Command;
+use blackjack::messages::ServerMessage;
 use win32::{WaitForMultipleObjectsEx, DWORD, FALSE, INFINITE, WAIT_FAILED, WAIT_OBJECT_0};
 
 const WAIT_OBJECT_1: DWORD = WAIT_OBJECT_0 + 1;
@@ -38,6 +39,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
         match event {
             WAIT_OBJECT_0 => match connection.read()? {
+                Some(Some(ServerMessage::Error(error))) => return Err(Box::new(error)),
                 Some(Some(message)) => {
                     game_state.handle_message(message, &mut virtual_terminal);
                 }

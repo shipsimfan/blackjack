@@ -9,6 +9,9 @@ mod parse;
 pub enum ErrorServerMessage {
     /// The server is full
     ServerFull = 0,
+
+    /// The client took too long to respond to the server hello
+    ConnectionTimeout = 1,
 }
 
 impl std::error::Error for ErrorServerMessage {}

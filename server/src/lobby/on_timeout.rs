@@ -1,4 +1,5 @@
 use super::Lobby;
+use blackjack::messages::ErrorServerMessage;
 use std::time::SystemTime;
 
 impl Lobby {
@@ -13,7 +14,10 @@ impl Lobby {
                 break;
             }
 
+            self.connecting_clients[i].send(&ErrorServerMessage::connection_timeout());
             self.connecting_clients[i].disconnect();
+
+            println!("[INFO] Rejecting client due to connection timeout")
         }
 
         for _ in 0..last_disconnected {
