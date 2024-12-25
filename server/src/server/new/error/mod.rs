@@ -11,6 +11,9 @@ pub enum NewServerError {
     /// Failed to create the socket to listen on
     ListenSocketCreationFailed(linux::Error),
 
+    /// Failed to set allowing address re-use on the listen socket
+    SetReuseAddressFailed(linux::Error),
+
     /// Failed to bind the listen socket to the requested address
     BindSocketFailed(linux::Error, SocketAddr),
 

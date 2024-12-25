@@ -1,4 +1,4 @@
-use crate::{Connection, GameState, Options, VirtualTerminal};
+use crate::{virtual_terminal::TerminalEvent, Connection, GameState, Options, VirtualTerminal};
 use argparse::Command;
 use win32::{WaitForMultipleObjectsEx, DWORD, FALSE, INFINITE, WAIT_FAILED, WAIT_OBJECT_0};
 
@@ -19,7 +19,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         options.port()
     ));
 
-    let connection = Connection::connect(options.address(), options.port())?;
+    let mut connection = Connection::connect(options.address(), options.port())?;
 
     let mut game_state = GameState::new(options);
 
@@ -37,11 +37,25 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         };
 
         match event {
-            WAIT_OBJECT_0 => virtual_terminal.write("Connection event!\n"),
-            WAIT_OBJECT_1 => {
-                virtual_terminal.read()?;
-                virtual_terminal.write("Console event!\n");
-            }
+            WAIT_OBJECT_0 => match connection.read()? {
+                Some(Some(message)) => {
+                    game_state.handle_message(message, &mut virtual_terminal);
+                }
+                Some(None) => {
+                    virtual_terminal.write("Disconnect by server!\n");
+                    return Ok(());
+                }
+                None => {}
+            },
+            WAIT_OBJECT_1 => match virtual_terminal.read()? {
+                TerminalEvent::Ignored => {}
+                TerminalEvent::Exit => return Ok(()),
+                event => {
+                    if game_state.handle_terminal(event, &mut virtual_terminal) {
+                        return Ok(());
+                    }
+                }
+            },
             WAIT_FAILED => return Err(Box::new(win32::Error::get_last_error())),
             _ => {}
         }

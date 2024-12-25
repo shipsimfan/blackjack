@@ -5,11 +5,14 @@ use linux::{
     netinet::r#in::{sockaddr_in, sockaddr_in6},
     sys::{
         epoll::EPOLLIN,
-        socket::{bind, getsockname, listen, socket, AF_INET, AF_INET6, SOCK_STREAM, SOMAXCONN},
+        socket::{
+            bind, getsockname, listen, setsockopt, socket, AF_INET, AF_INET6, SOCK_STREAM,
+            SOL_SOCKET, SOMAXCONN, SO_REUSEADDR,
+        },
     },
     try_linux,
 };
-use std::{cell::RefCell, net::SocketAddr, rc::Rc};
+use std::{cell::RefCell, ffi::c_int, net::SocketAddr, rc::Rc};
 
 impl ListenSocket {
     /// Open a socket for listening on `addr`
@@ -22,6 +25,16 @@ impl ListenSocket {
             try_linux!(socket(linux_addr.domain(), SOCK_STREAM, 0))
                 .map_err(NewServerError::ListenSocketCreationFailed)?,
         );
+
+        let setting = 1;
+        try_linux!(setsockopt(
+            *handle,
+            SOL_SOCKET,
+            SO_REUSEADDR,
+            &setting as *const _ as _,
+            std::mem::size_of::<c_int>() as _
+        ))
+        .map_err(NewServerError::SetReuseAddressFailed)?;
 
         // Bind the socket to the address
         try_linux!(bind(*handle, linux_addr.as_ptr(), linux_addr.len()))

@@ -2,7 +2,7 @@ use connection::{Connection, ConnectionError};
 use game_state::GameState;
 use options::Options;
 use run::run;
-use virtual_terminal::{VirtualTerminal, VirtualTerminalCreationError};
+use virtual_terminal::{TerminalEvent, VirtualTerminal, VirtualTerminalCreationError};
 
 mod connection;
 mod game_state;

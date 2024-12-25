@@ -1,10 +1,13 @@
 use win32::HANDLE;
 
+mod event;
+
 mod get;
 mod new;
 mod read;
 mod write;
 
+pub use event::TerminalEvent;
 pub use new::VirtualTerminalCreationError;
 
 /// A representation of a virtual terminal

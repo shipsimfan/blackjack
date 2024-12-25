@@ -5,6 +5,7 @@ mod begin_read;
 mod connect;
 mod drop;
 mod get;
+mod read;
 mod read_state;
 
 pub use connect::ConnectionError;

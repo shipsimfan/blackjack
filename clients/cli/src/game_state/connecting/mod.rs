@@ -1,9 +1,11 @@
-use crate::{Options, VirtualTerminal};
+use crate::Options;
 
+mod handle_message;
+mod handle_terminal;
 mod new;
 
 /// Currently connecting to the server
-pub(super) struct Connecting {
+pub struct Connecting {
     /// The options used to create the program
     options: Options,
 }

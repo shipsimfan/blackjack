@@ -20,7 +20,7 @@ impl<'a> Parser<'a> {
         }
 
         let ret = &self.content[self.offset..self.offset + count];
-        self.offset += 1;
+        self.offset += count;
         Some(ret)
     }
 

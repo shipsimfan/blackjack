@@ -1,5 +1,6 @@
 mod display;
 mod generate;
+mod new;
 mod parse;
 
 /// An error reported by the server to a client

@@ -9,6 +9,13 @@ impl std::fmt::Display for NewServerError {
             NewServerError::ListenSocketCreationFailed(error) => {
                 write!(f, "unable to create the listen socket - {}", error)
             }
+            NewServerError::SetReuseAddressFailed(error) => {
+                write!(
+                    f,
+                    "unable to set re-use address on the listen socket - {}",
+                    error
+                )
+            }
             NewServerError::BindSocketFailed(error, addr) => {
                 write!(f, "unabled to bind listen socket to {} - {}", addr, error)
             }
