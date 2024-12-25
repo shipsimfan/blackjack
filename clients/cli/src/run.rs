@@ -41,7 +41,9 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             WAIT_OBJECT_0 => match connection.read()? {
                 Some(Some(ServerMessage::Error(error))) => return Err(Box::new(error)),
                 Some(Some(message)) => {
-                    game_state.handle_message(message, &mut virtual_terminal);
+                    if game_state.handle_message(message, &mut virtual_terminal) {
+                        return Ok(());
+                    }
                 }
                 Some(None) => {
                     virtual_terminal.write("Disconnect by server!\n");

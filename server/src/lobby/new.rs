@@ -11,7 +11,7 @@ impl Lobby {
             connection_timeout: options.connection_timeout(),
             server_name: options
                 .server_name
-                .unwrap_or("A blackjack server".to_owned()),
+                .unwrap_or("a blackjack server".to_owned()),
             password: options.password,
             server_version: pkg_version!(),
         }

@@ -3,12 +3,28 @@ use crate::virtual_terminal::VirtualTerminal;
 use blackjack::messages::ServerMessage;
 
 impl Connecting {
-    /// Handle a connection message event
+    /// Handle a connection message event, returning [`None`] if the program should exit, or a
+    /// boolean indicating if a password is required by the server.
     pub fn handle_message(
         &mut self,
         message: ServerMessage,
         virtual_terminal: &mut VirtualTerminal,
-    ) {
-        virtual_terminal.write(format_args!("Received message {}\n", message.tag()));
+    ) -> Option<bool> {
+        match message {
+            ServerMessage::Hello(hello) => {
+                virtual_terminal.write(format_args!(
+                    "Connected to {} ({} v{})\n",
+                    hello.server_name(),
+                    hello.server_application_name(),
+                    hello.server_version()
+                ));
+
+                Some(hello.password_required())
+            }
+            _ => {
+                virtual_terminal.write("Error: unexpected message");
+                None
+            }
+        }
     }
 }

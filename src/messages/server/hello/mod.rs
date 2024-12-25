@@ -2,6 +2,7 @@ use crate::messages::Version;
 use std::borrow::Cow;
 
 mod generate;
+mod get;
 mod new;
 mod parse;
 
