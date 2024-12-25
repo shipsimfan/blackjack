@@ -1,11 +1,11 @@
+use app_state::AppState;
 use connection::{Connection, ConnectionError};
-use game_state::GameState;
 use options::Options;
 use run::run;
 use virtual_terminal::{TerminalEvent, VirtualTerminal, VirtualTerminalCreationError};
 
+mod app_state;
 mod connection;
-mod game_state;
 mod options;
 mod run;
 mod virtual_terminal;

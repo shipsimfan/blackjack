@@ -1,4 +1,4 @@
-use crate::{virtual_terminal::TerminalEvent, Connection, GameState, Options, VirtualTerminal};
+use crate::{virtual_terminal::TerminalEvent, AppState, Connection, Options, VirtualTerminal};
 use argparse::Command;
 use blackjack::messages::ServerMessage;
 use win32::{WaitForMultipleObjectsEx, DWORD, FALSE, INFINITE, WAIT_FAILED, WAIT_OBJECT_0};
@@ -22,7 +22,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut connection = Connection::connect(options.address(), options.port())?;
 
-    let mut game_state = GameState::new(options);
+    let mut game_state = AppState::new(options);
 
     let wait_handles = [connection.event(), virtual_terminal.input()];
 
@@ -41,8 +41,9 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             WAIT_OBJECT_0 => match connection.read()? {
                 Some(Some(ServerMessage::Error(error))) => return Err(Box::new(error)),
                 Some(Some(message)) => {
-                    if game_state.handle_message(message, &mut virtual_terminal) {
-                        return Ok(());
+                    match game_state.handle_message(message, &mut virtual_terminal) {
+                        Some(new_game_state) => game_state = new_game_state,
+                        None => return Ok(()),
                     }
                 }
                 Some(None) => {
