@@ -1,4 +1,4 @@
-use crate::{TerminalEvent, VirtualTerminal};
+use crate::{SpecialKey, TerminalEvent, VirtualTerminal};
 use win32::{
     try_get_last_error, ReadConsoleInput, FALSE, INPUT_RECORD, KEY_EVENT, KEY_EVENT_RECORD,
     WINDOW_BUFFER_SIZE_EVENT, WINDOW_BUFFER_SIZE_RECORD,
@@ -40,6 +40,12 @@ impl VirtualTerminal {
                 return TerminalEvent::Ignored;
             }
         };
+
+        if c == '\x00' {
+            return SpecialKey::from_key_code(event.virtual_key_code)
+                .map(TerminalEvent::SpecialKey)
+                .unwrap_or(TerminalEvent::Ignored);
+        }
 
         if c == '\x03' {
             return TerminalEvent::Exit;

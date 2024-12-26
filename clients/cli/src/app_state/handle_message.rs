@@ -12,9 +12,10 @@ impl AppState {
         Some(match self {
             AppState::Connecting(mut connecting) => {
                 match connecting.handle_message(message, virtual_terminal) {
-                    Some(true) => {
-                        AppState::PasswordEntry(PasswordEntryState::new(connecting.unwrap()))
-                    }
+                    Some(true) => AppState::PasswordEntry(PasswordEntryState::new(
+                        connecting.unwrap(),
+                        virtual_terminal,
+                    )),
                     Some(false) => todo!("Switch to waiting game state"),
                     None => AppState::Connecting(connecting),
                 }

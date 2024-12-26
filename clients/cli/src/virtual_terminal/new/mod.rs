@@ -30,11 +30,13 @@ impl VirtualTerminal {
         let width = terminal_info.size.x as usize;
         let height = terminal_info.size.y as usize;
 
-        Ok(VirtualTerminal {
+        let mut terminal = VirtualTerminal {
             output,
             input,
             width,
             height,
-        })
+        };
+        terminal.hide_cursor();
+        Ok(terminal)
     }
 }

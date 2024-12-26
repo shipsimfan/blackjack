@@ -1,4 +1,4 @@
-use crate::Options;
+use crate::{virtual_terminal::TextInput, Options};
 
 mod handle_message;
 mod handle_terminal;
@@ -8,4 +8,7 @@ mod new;
 pub struct PasswordEntryState {
     /// The options passed to the program
     options: Options,
+
+    /// The input for password
+    password_input: TextInput,
 }

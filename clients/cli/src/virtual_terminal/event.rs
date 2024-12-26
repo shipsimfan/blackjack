@@ -1,3 +1,5 @@
+use crate::SpecialKey;
+
 /// The result of the virtual terminal processing an event
 pub enum TerminalEvent {
     /// The event does not require any further processing
@@ -11,4 +13,7 @@ pub enum TerminalEvent {
 
     /// A character was entered
     Character(char),
+
+    /// A special key was pressed
+    SpecialKey(SpecialKey),
 }
