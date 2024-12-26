@@ -1,8 +1,10 @@
 use connecting::Connecting;
 use password_entry::PasswordEntryState;
+use wait_for_game_state::WaitForGameState;
 
 mod connecting;
 mod password_entry;
+mod wait_for_game_state;
 
 mod handle_message;
 mod handle_terminal;
@@ -15,4 +17,7 @@ pub enum AppState {
 
     /// A password was required by the server and must be entered
     PasswordEntry(PasswordEntryState),
+
+    /// Waiting for the server to respond with a game state
+    WaitForGameState(WaitForGameState),
 }

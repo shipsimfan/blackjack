@@ -12,9 +12,9 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         None => return Ok(()),
     };
 
-    let mut virtual_terminal = VirtualTerminal::new()?;
+    let mut terminal = VirtualTerminal::new()?;
 
-    virtual_terminal.write(format_args!(
+    terminal.write(format_args!(
         "Connecting to {}:{} . . . \n",
         options.address(),
         options.port()
@@ -22,9 +22,9 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut connection = Connection::connect(options.address(), options.port())?;
 
-    let mut game_state = AppState::new(options);
+    let mut game_state = AppState::new(options)?;
 
-    let wait_handles = [connection.event(), virtual_terminal.input()];
+    let wait_handles = [connection.read_event(), terminal.input()];
 
     loop {
         let event = unsafe {
@@ -41,22 +41,22 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             WAIT_OBJECT_0 => match connection.read()? {
                 Some(Some(ServerMessage::Error(error))) => return Err(Box::new(error)),
                 Some(Some(message)) => {
-                    match game_state.handle_message(message, &mut virtual_terminal) {
+                    match game_state.handle_message(message, &mut terminal, &mut connection) {
                         Some(new_game_state) => game_state = new_game_state,
                         None => return Ok(()),
                     }
                 }
                 Some(None) => {
-                    virtual_terminal.write("Disconnect by server!\n");
+                    terminal.write("Disconnect by server!\n");
                     return Ok(());
                 }
                 None => {}
             },
-            WAIT_OBJECT_1 => match virtual_terminal.read()? {
+            WAIT_OBJECT_1 => match terminal.read()? {
                 TerminalEvent::Ignored => {}
                 TerminalEvent::Exit => return Ok(()),
                 event => {
-                    if game_state.handle_terminal(event, &mut virtual_terminal) {
+                    if game_state.handle_terminal(event, &mut terminal, &mut connection) {
                         return Ok(());
                     }
                 }

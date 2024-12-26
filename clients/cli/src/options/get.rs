@@ -1,4 +1,4 @@
-use crate::Options;
+use crate::{InvalidUsernameError, Options};
 use blackjack::messages::Username;
 
 impl Options {
@@ -13,7 +13,7 @@ impl Options {
     }
 
     /// Gets the username to present to other players
-    pub fn username(&self) -> Result<Username<'static>, ()> {
-        Username::new(self.username.clone()).ok_or(todo!())
+    pub fn username(self) -> Result<Username<'static>, InvalidUsernameError> {
+        Username::new(self.username.clone()).ok_or_else(|| InvalidUsernameError::new(self.username))
     }
 }

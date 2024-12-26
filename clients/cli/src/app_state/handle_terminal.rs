@@ -1,17 +1,27 @@
-use crate::{AppState, TerminalEvent, VirtualTerminal};
+use super::WaitForGameState;
+use crate::{AppState, Connection, TerminalEvent, VirtualTerminal};
 
 impl AppState {
     /// Handle a terminal event, returning if the program should exit
     pub fn handle_terminal(
         &mut self,
         event: TerminalEvent,
-        virtual_terminal: &mut VirtualTerminal,
+        terminal: &mut VirtualTerminal,
+        connection: &mut Connection,
     ) -> bool {
         match self {
-            AppState::Connecting(connecting) => connecting.handle_terminal(event, virtual_terminal),
             AppState::PasswordEntry(password_entry) => {
-                password_entry.handle_terminal(event, virtual_terminal)
+                if password_entry.handle_terminal(event, terminal) {
+                    *self = AppState::WaitForGameState(WaitForGameState::new(
+                        connection,
+                        password_entry.username(),
+                        Some(password_entry.password()),
+                    ));
+                }
+
+                false
             }
+            AppState::WaitForGameState(_) | AppState::Connecting(_) => false,
         }
     }
 }

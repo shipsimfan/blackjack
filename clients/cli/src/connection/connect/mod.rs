@@ -37,12 +37,11 @@ impl Connection {
             ));
         }
 
-        let event = try_get_last_error!(CreateEvent(null_mut(), FALSE, FALSE, null())).map_err(
-            |error| {
+        let read_event = try_get_last_error!(CreateEvent(null_mut(), FALSE, FALSE, null()))
+            .map_err(|error| {
                 unsafe { closesocket(handle) };
                 ConnectionError::new(address, port, error)
-            },
-        )?;
+            })?;
 
         try_wsa_get_last_error!(connect(
             handle,
@@ -52,29 +51,30 @@ impl Connection {
         .map_err(|error| {
             unsafe {
                 closesocket(handle);
-                CloseHandle(event);
+                CloseHandle(read_event);
             }
             ConnectionError::new(address, port, error)
         })?;
 
-        let overlapped = Box::new(OVERLAPPED {
+        let read_overlapped = Box::new(OVERLAPPED {
             internal: 0,
             internal_high: 0,
             union: win32::OVERLAPPED_UNION {
                 pointer: null_mut(),
             },
-            event,
+            event: read_event,
         });
 
         let mut connection = Connection {
             handle,
-            event,
-            overlapped,
+            read_event,
+            read_overlapped,
             read_state: ReadState::Header,
             header_buffer: vec![0; HEADER_SIZE].into_boxed_slice(),
             body_buffer: Vec::with_capacity(u16::MAX as usize),
             last_tag: 0,
             read_length: 0,
+            write_buffer: Vec::with_capacity(u16::MAX as usize),
         };
         connection
             .begin_read()

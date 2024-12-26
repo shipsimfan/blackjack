@@ -3,6 +3,9 @@ use blackjack::messages::DEFAULT_PORT;
 use std::num::NonZeroU16;
 
 mod get;
+mod invalid_username;
+
+pub use invalid_username::InvalidUsernameError;
 
 #[derive(Command)]
 #[command(version, help)]

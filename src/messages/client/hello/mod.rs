@@ -4,7 +4,9 @@ use std::borrow::Cow;
 mod username;
 
 mod generate;
+mod new;
 mod parse;
+mod to_static;
 
 pub use username::Username;
 

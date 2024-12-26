@@ -8,11 +8,11 @@ impl Connecting {
     pub fn handle_message(
         &mut self,
         message: ServerMessage,
-        virtual_terminal: &mut VirtualTerminal,
+        terminal: &mut VirtualTerminal,
     ) -> Option<bool> {
         match message {
             ServerMessage::Hello(hello) => {
-                virtual_terminal.write(format_args!(
+                terminal.write(format_args!(
                     "Connected to {} ({} v{})\n",
                     hello.server_name(),
                     hello.server_application_name(),
@@ -22,7 +22,7 @@ impl Connecting {
                 Some(hello.password_required())
             }
             _ => {
-                virtual_terminal.write("Error: unexpected message");
+                terminal.write("Error: unexpected message");
                 None
             }
         }

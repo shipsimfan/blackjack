@@ -1,4 +1,6 @@
+use blackjack::messages::ClientMessage;
 use read_state::ReadState;
+use std::collections::VecDeque;
 use win32::{winsock2::SOCKET, HANDLE, OVERLAPPED};
 
 mod begin_read;
@@ -7,6 +9,7 @@ mod drop;
 mod get;
 mod read;
 mod read_state;
+mod send;
 
 pub use connect::ConnectionError;
 
@@ -16,10 +19,10 @@ pub struct Connection {
     handle: SOCKET,
 
     /// The handle to the event that signals on successful read
-    event: HANDLE,
+    read_event: HANDLE,
 
     /// The overlapped struct monitoring the current read operation
-    overlapped: Box<OVERLAPPED>,
+    read_overlapped: Box<OVERLAPPED>,
 
     /// The current item being read
     read_state: ReadState,
@@ -35,4 +38,7 @@ pub struct Connection {
 
     /// The currently read size of the header or body
     read_length: usize,
+
+    /// The buffer for putting packets to be written
+    write_buffer: Vec<u8>,
 }

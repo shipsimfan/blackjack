@@ -23,7 +23,7 @@ impl Connection {
                 ptr.cast(),
                 length as _,
                 null_mut(),
-                self.overlapped.as_mut(),
+                self.read_overlapped.as_mut(),
             )
         };
         if result == FALSE {

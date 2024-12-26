@@ -8,7 +8,11 @@ impl PasswordEntryState {
         event: TerminalEvent,
         terminal: &mut VirtualTerminal,
     ) -> bool {
-        self.password_input.handle_event(&event, terminal);
+        if self.password_input.handle_event(&event, terminal).is_some() {
+            terminal.write('\n');
+            return true;
+        }
+
         false
     }
 }

@@ -5,6 +5,7 @@ mod generate;
 mod get;
 mod new;
 mod parse;
+mod to_static;
 
 /// The message sent by the server to begin communication with a client
 #[derive(Debug, Clone)]

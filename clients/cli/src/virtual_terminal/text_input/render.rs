@@ -1,7 +1,7 @@
 use crate::{TextInput, VirtualTerminal};
 
 impl TextInput {
-    /// Renders this text input to `virtual_terminal`
+    /// Renders this text input to `terminal`
     pub(super) fn render(&mut self, terminal: &mut VirtualTerminal) {
         terminal.hide_cursor();
 
@@ -69,15 +69,15 @@ impl TextInput {
         terminal.show_cursor();
     }
 
-    /// Writes `text` to `virtual_terminal`, hiding it if nescessary
-    fn write_text(&self, text: &[u8], virtual_terminal: &mut VirtualTerminal) {
+    /// Writes `text` to `terminal`, hiding it if nescessary
+    fn write_text(&self, text: &[u8], terminal: &mut VirtualTerminal) {
         match self.hide_character {
             Some(c) => {
                 for _ in 0..text.len() {
-                    virtual_terminal.write(c as char);
+                    terminal.write(c as char);
                 }
             }
-            None => virtual_terminal.write(unsafe { std::str::from_utf8_unchecked(text) }),
+            None => terminal.write(unsafe { std::str::from_utf8_unchecked(text) }),
         }
     }
 }

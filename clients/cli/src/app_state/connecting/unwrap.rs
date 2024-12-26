@@ -1,8 +1,9 @@
 use super::Connecting;
-use crate::Options;
+use blackjack::messages::Username;
 
 impl Connecting {
-    pub fn unwrap(self) -> Options {
-        self.options
+    /// Unwraps the username from this state
+    pub fn unwrap(self) -> Username<'static> {
+        self.username
     }
 }

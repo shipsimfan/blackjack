@@ -1,12 +1,11 @@
-use crate::Options;
+use blackjack::messages::Username;
 
 mod handle_message;
-mod handle_terminal;
 mod new;
 mod unwrap;
 
 /// Currently connecting to the server
 pub struct Connecting {
-    /// The options used to create the program
-    options: Options,
+    /// The username to present as
+    username: Username<'static>,
 }

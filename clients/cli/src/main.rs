@@ -1,6 +1,6 @@
 use app_state::AppState;
 use connection::{Connection, ConnectionError};
-use options::Options;
+use options::{InvalidUsernameError, Options};
 use run::run;
 use virtual_terminal::{
     SpecialKey, TerminalEvent, TextInput, VirtualTerminal, VirtualTerminalCreationError,

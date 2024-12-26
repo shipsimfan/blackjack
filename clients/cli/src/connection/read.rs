@@ -1,7 +1,9 @@
 use super::ReadState;
 use crate::Connection;
 use blackjack::messages::{header, ServerMessage};
-use win32::{try_get_last_error, GetOverlappedResult, FALSE};
+use win32::{
+    try_get_last_error, GetOverlappedResult, ERROR_OPERATION_ABORTED, FALSE, HRESULT_FROM_WIN32,
+};
 
 impl Connection {
     /// Read a message from this connection
@@ -9,12 +11,19 @@ impl Connection {
         &mut self,
     ) -> Result<Option<Option<ServerMessage<'static>>>, Box<dyn std::error::Error>> {
         let mut bytes_read = 0;
-        try_get_last_error!(GetOverlappedResult(
+        if let Err(error) = try_get_last_error!(GetOverlappedResult(
             self.handle as _,
-            self.overlapped.as_mut(),
+            self.read_overlapped.as_mut(),
             &mut bytes_read,
             FALSE
-        ))?;
+        )) {
+            if error.0 == HRESULT_FROM_WIN32!(ERROR_OPERATION_ABORTED) {
+                self.begin_read()?;
+                return Ok(None);
+            }
+
+            return Err(Box::new(error));
+        }
 
         if bytes_read == 0 {
             return Ok(Some(None));

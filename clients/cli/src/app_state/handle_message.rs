@@ -1,5 +1,5 @@
-use super::password_entry::PasswordEntryState;
-use crate::{virtual_terminal::VirtualTerminal, AppState};
+use super::{PasswordEntryState, WaitForGameState};
+use crate::{AppState, Connection, VirtualTerminal};
 use blackjack::messages::ServerMessage;
 
 impl AppState {
@@ -7,26 +7,37 @@ impl AppState {
     pub fn handle_message(
         self,
         message: ServerMessage,
-        virtual_terminal: &mut VirtualTerminal,
+        terminal: &mut VirtualTerminal,
+        connection: &mut Connection,
     ) -> Option<AppState> {
         Some(match self {
             AppState::Connecting(mut connecting) => {
-                match connecting.handle_message(message, virtual_terminal) {
+                match connecting.handle_message(message, terminal) {
                     Some(true) => AppState::PasswordEntry(PasswordEntryState::new(
                         connecting.unwrap(),
-                        virtual_terminal,
+                        terminal,
                     )),
-                    Some(false) => todo!("Switch to waiting game state"),
+                    Some(false) => AppState::WaitForGameState(WaitForGameState::new(
+                        connection,
+                        connecting.unwrap(),
+                        None,
+                    )),
                     None => AppState::Connecting(connecting),
                 }
             }
 
             AppState::PasswordEntry(mut password_entry) => {
-                if password_entry.handle_message(message, virtual_terminal) {
+                if password_entry.handle_message(message, terminal) {
                     return None;
                 }
 
                 AppState::PasswordEntry(password_entry)
+            }
+            AppState::WaitForGameState(mut wait_for_game_state) => {
+                match wait_for_game_state.handle_message(message, terminal) {
+                    Some(model) => todo!("Switch to main game state with new model"),
+                    None => return None,
+                }
             }
         })
     }

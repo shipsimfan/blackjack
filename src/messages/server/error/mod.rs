@@ -2,6 +2,7 @@ mod display;
 mod generate;
 mod new;
 mod parse;
+mod to_static;
 
 /// An error reported by the server to a client
 #[repr(u32)]
