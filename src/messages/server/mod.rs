@@ -1,9 +1,13 @@
 use crate::messages::messages;
 
+mod client_connected;
+mod client_disconnected;
 mod error;
 mod game_state;
 mod hello;
 
+pub use client_connected::ClientConnectedServerMessage;
+pub use client_disconnected::ClientDisconnectedServerMessage;
 pub use error::ErrorServerMessage;
 pub use game_state::GameStateServerMessage;
 pub use hello::HelloServerMessage;
@@ -21,5 +25,11 @@ messages!(
 
         /// The current state of the game
         GameState(GameStateServerMessage<'a>) = 2,
+
+        /// A client connected to the server
+        ClientConnected(ClientConnectedServerMessage<'a>) = 3,
+
+        /// A client disconnected from the server
+        ClientDisconnected(ClientDisconnectedServerMessage) = 4,
     }
 );

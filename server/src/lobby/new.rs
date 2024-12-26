@@ -21,6 +21,7 @@ impl Lobby {
                 .unwrap_or("a blackjack server".to_owned()),
             password: options.password,
             server_version: pkg_version!(),
+            write_all_buffer: Vec::with_capacity(u16::MAX as usize),
         }
     }
 }

@@ -12,6 +12,7 @@ mod on_disconnect;
 mod on_message;
 mod on_server_full;
 mod on_timeout;
+mod send_all;
 
 /// A lobby of blackjack
 pub struct Lobby {
@@ -35,4 +36,7 @@ pub struct Lobby {
 
     /// The version of this server
     server_version: Version,
+
+    /// The buffer for storing messages to be written to all clients
+    write_all_buffer: Vec<u8>,
 }

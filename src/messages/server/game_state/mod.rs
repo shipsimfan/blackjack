@@ -3,6 +3,7 @@ use crate::model::BlackjackTable;
 mod generate;
 mod parse;
 mod to_static;
+mod unwrap;
 
 /// The current state of a blackjack game
 #[derive(Debug, Clone)]

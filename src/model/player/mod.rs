@@ -1,6 +1,7 @@
 use crate::messages::Username;
 
 mod generate;
+mod get;
 mod new;
 mod parse;
 

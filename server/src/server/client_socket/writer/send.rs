@@ -6,7 +6,7 @@ use linux::{
     unistd::write,
 };
 
-fn do_write(buffer: &mut [u8], handle: &Handle) -> linux::Result<()> {
+fn do_write(buffer: &[u8], handle: &Handle) -> linux::Result<()> {
     // Disable non-blocking
     let mut flags = try_linux!(fcntl(**handle, F_GETFL, 0))?;
     flags &= !O_NONBLOCK;
@@ -39,7 +39,25 @@ impl ClientWriter {
 
         message.generate(&mut self.write_buffer);
 
-        if let Err(error) = do_write(&mut self.write_buffer, handle) {
+        if let Err(error) = do_write(&self.write_buffer, handle) {
+            drop(handle_ref);
+            eprintln!(
+                "[ERROR] Error while writing a message to a client: {}",
+                error
+            );
+            self.disconnect();
+        }
+    }
+
+    /// Send raw `bytes` to the client
+    pub unsafe fn send_raw(&mut self, bytes: &[u8]) {
+        let handle_ref = self.handle.borrow_mut();
+        let handle = match &*handle_ref {
+            Some(handle) => handle,
+            None => return,
+        };
+
+        if let Err(error) = do_write(&bytes, handle) {
             drop(handle_ref);
             eprintln!(
                 "[ERROR] Error while writing a message to a client: {}",

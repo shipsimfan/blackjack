@@ -2,6 +2,7 @@ use crate::model::Player;
 
 mod add_player;
 mod generate;
+mod get;
 mod new;
 mod parse;
 mod remove_player;

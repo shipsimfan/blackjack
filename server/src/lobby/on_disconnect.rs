@@ -1,3 +1,5 @@
+use blackjack::messages::ClientDisconnectedServerMessage;
+
 use super::Lobby;
 
 impl Lobby {
@@ -11,9 +13,15 @@ impl Lobby {
             }
         }
 
-        if let Some(client) = &mut self.clients[client_id] {
+        if self.clients[client_id].is_some() {
+            println!(
+                "[INFO] {} (client {}) disconnected",
+                self.table.player(client_id).username(),
+                client_id
+            );
+
             self.table.remove_player(client_id);
-            todo!("Send disconnect message to all clients");
+            self.send_all(&ClientDisconnectedServerMessage::new(client_id));
         }
 
         self.clients[client_id] = None;
