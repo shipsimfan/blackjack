@@ -5,6 +5,7 @@ impl std::fmt::Display for ErrorServerMessage {
         f.write_str(match self {
             ErrorServerMessage::ServerFull => "server is full",
             ErrorServerMessage::ConnectionTimeout => "timed out during connection",
+            ErrorServerMessage::InvalidPassword => "invalid password",
         })
     }
 }

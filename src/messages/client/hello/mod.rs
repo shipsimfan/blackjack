@@ -17,7 +17,7 @@ pub struct HelloClientMessage<'a> {
     pub username: Username<'a>,
 
     /// The password the client gave to try and join the session
-    pub password: Cow<'a, str>,
+    pub password: Option<Cow<'a, str>>,
 
     /// The name of the client software
     pub client_name: Cow<'a, str>,

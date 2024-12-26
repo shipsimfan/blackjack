@@ -5,6 +5,7 @@ impl Parse for ErrorServerMessage {
         Ok(match u32::parse(parser)? {
             0 => ErrorServerMessage::ServerFull,
             1 => ErrorServerMessage::ConnectionTimeout,
+            2 => ErrorServerMessage::InvalidPassword,
             _ => return Err(ParseMessageError),
         })
     }

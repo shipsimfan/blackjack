@@ -7,3 +7,4 @@
 #![warn(rustdoc::broken_intra_doc_links)]
 
 pub mod messages;
+pub mod model;

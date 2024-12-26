@@ -1,12 +1,19 @@
 use super::Lobby;
 use crate::Options;
-use blackjack::pkg_version;
+use blackjack::{model::BlackjackTable, pkg_version};
 use std::collections::VecDeque;
 
 impl Lobby {
     /// Creates a new [`Lobby`] from `options`
     pub fn new(options: Options) -> Self {
+        let mut clients = Vec::with_capacity(options.max_players());
+        for _ in 0..options.max_players() {
+            clients.push(None);
+        }
+
         Lobby {
+            table: BlackjackTable::new(options.max_players()),
+            clients: clients.into_boxed_slice(),
             connecting_clients: VecDeque::with_capacity(options.max_players()),
             connection_timeout: options.connection_timeout(),
             server_name: options

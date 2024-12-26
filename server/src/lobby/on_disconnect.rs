@@ -11,6 +11,11 @@ impl Lobby {
             }
         }
 
-        todo!("Handle disconnecting a properly connected client");
+        if let Some(client) = &mut self.clients[client_id] {
+            self.table.remove_player(client_id);
+            todo!("Send disconnect message to all clients");
+        }
+
+        self.clients[client_id] = None;
     }
 }

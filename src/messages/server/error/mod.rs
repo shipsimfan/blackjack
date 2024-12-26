@@ -13,6 +13,9 @@ pub enum ErrorServerMessage {
 
     /// The client took too long to respond to the server hello
     ConnectionTimeout = 1,
+
+    /// The client sent an invalid password when connecting
+    InvalidPassword = 2,
 }
 
 impl std::error::Error for ErrorServerMessage {}

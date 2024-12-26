@@ -1,7 +1,5 @@
 //! The definition of all messages used in the protocol
 
-use generate::Generate;
-use parse::{Parse, Parser};
 use r#macro::messages;
 use std::num::NonZeroU16;
 
@@ -13,6 +11,9 @@ mod server;
 mod version;
 
 pub mod header;
+
+pub(crate) use generate::Generate;
+pub(crate) use parse::{Parse, Parser};
 
 pub use client::*;
 pub use parse::ParseMessageError;

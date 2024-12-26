@@ -10,4 +10,9 @@ impl ErrorServerMessage {
     pub fn connection_timeout<'a>() -> ServerMessage<'a> {
         ServerMessage::Error(ErrorServerMessage::ConnectionTimeout)
     }
+
+    /// Creates a new [`ErrorServerMessage::InvalidPassword`]
+    pub fn invalid_password<'a>() -> ServerMessage<'a> {
+        ServerMessage::Error(ErrorServerMessage::InvalidPassword)
+    }
 }

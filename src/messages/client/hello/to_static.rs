@@ -7,8 +7,9 @@ impl<'a> HelloClientMessage<'a> {
         HelloClientMessage {
             username: self.username.to_static(),
             password: match self.password {
-                Cow::Borrowed(str) => Cow::Owned(str.to_owned()),
-                Cow::Owned(str) => Cow::Owned(str),
+                Some(Cow::Borrowed(str)) => Some(Cow::Owned(str.to_owned())),
+                Some(Cow::Owned(str)) => Some(Cow::Owned(str)),
+                None => None,
             },
             client_name: match self.client_name {
                 Cow::Borrowed(str) => Cow::Owned(str.to_owned()),

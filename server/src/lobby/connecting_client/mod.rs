@@ -5,6 +5,7 @@ mod disconnect;
 mod get;
 mod new;
 mod send;
+mod unwrap;
 
 /// A client which hasn't sent a hello yet
 pub struct ConnectingClient {

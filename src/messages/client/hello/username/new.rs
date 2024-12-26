@@ -6,7 +6,7 @@ impl<'a> Username<'a> {
     pub fn new<S: Into<Cow<'a, str>>>(username: S) -> Option<Self> {
         let username = username.into();
 
-        if username.len() > u8::MAX as usize {
+        if username.len() > u8::MAX as usize || username.len() == 0 {
             return None;
         }
 

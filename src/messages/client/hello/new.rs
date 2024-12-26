@@ -12,7 +12,7 @@ impl<'a> HelloClientMessage<'a> {
     ) -> ClientMessage<'a> {
         ClientMessage::Hello(HelloClientMessage {
             username,
-            password: password.unwrap_or(Cow::Borrowed("")),
+            password,
             client_name: client_name.into(),
             client_version,
             ai,

@@ -1,4 +1,5 @@
-use blackjack::messages::Version;
+use crate::server::ClientWriter;
+use blackjack::{messages::Version, model::BlackjackTable};
 use connecting_client::ConnectingClient;
 use std::{collections::VecDeque, time::Duration};
 
@@ -14,6 +15,12 @@ mod on_timeout;
 
 /// A lobby of blackjack
 pub struct Lobby {
+    /// The current state of the game
+    table: BlackjackTable,
+
+    /// The clients connected to the game
+    clients: Box<[Option<ClientWriter>]>,
+
     /// The clients currently connecting
     connecting_clients: VecDeque<ConnectingClient>,
 
