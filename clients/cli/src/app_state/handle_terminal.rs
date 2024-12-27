@@ -21,6 +21,7 @@ impl AppState {
 
                 false
             }
+            AppState::MainGame(main_game) => main_game.handle_terminal(event, terminal, connection),
             AppState::WaitForGameState(_) | AppState::Connecting(_) => false,
         }
     }

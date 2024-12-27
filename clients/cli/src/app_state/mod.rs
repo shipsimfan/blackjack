@@ -1,3 +1,4 @@
+use crate::MainGame;
 use connecting::Connecting;
 use password_entry::PasswordEntryState;
 use wait_for_game_state::WaitForGameState;
@@ -20,4 +21,7 @@ pub enum AppState {
 
     /// Waiting for the server to respond with a game state
     WaitForGameState(WaitForGameState),
+
+    /// Connected and playing
+    MainGame(MainGame),
 }

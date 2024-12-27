@@ -1,6 +1,4 @@
-use blackjack::messages::ClientMessage;
 use read_state::ReadState;
-use std::collections::VecDeque;
 use win32::{winsock2::SOCKET, HANDLE, OVERLAPPED};
 
 mod begin_read;

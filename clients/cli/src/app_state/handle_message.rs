@@ -1,5 +1,5 @@
 use super::{PasswordEntryState, WaitForGameState};
-use crate::{AppState, Connection, VirtualTerminal};
+use crate::{AppState, Connection, MainGame, VirtualTerminal};
 use blackjack::messages::ServerMessage;
 
 impl AppState {
@@ -35,9 +35,16 @@ impl AppState {
             }
             AppState::WaitForGameState(mut wait_for_game_state) => {
                 match wait_for_game_state.handle_message(message, terminal) {
-                    Some(model) => todo!("Switch to main game state with new model"),
+                    Some(model) => AppState::MainGame(MainGame::new(model, terminal)),
                     None => return None,
                 }
+            }
+            AppState::MainGame(mut main_game) => {
+                if main_game.handle_message(message, terminal, connection) {
+                    return None;
+                }
+
+                AppState::MainGame(main_game)
             }
         })
     }
