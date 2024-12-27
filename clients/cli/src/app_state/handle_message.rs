@@ -35,7 +35,9 @@ impl AppState {
             }
             AppState::WaitForGameState(mut wait_for_game_state) => {
                 match wait_for_game_state.handle_message(message, terminal) {
-                    Some(model) => AppState::MainGame(MainGame::new(model, terminal)),
+                    Some((client_id, model)) => {
+                        AppState::MainGame(MainGame::new(client_id, model, terminal))
+                    }
                     None => return None,
                 }
             }
