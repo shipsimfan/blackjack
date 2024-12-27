@@ -2,7 +2,6 @@ use super::Lobby;
 use blackjack::{
     messages::{
         ClientConnectedServerMessage, ClientMessage, ErrorServerMessage, GameStateServerMessage,
-        ServerMessage,
     },
     model::Player,
 };
@@ -56,15 +55,11 @@ impl Lobby {
             player.ai()
         );
 
-        self.send_all(&ServerMessage::ClientConnected(
-            ClientConnectedServerMessage::Borrowed(&player),
-        ));
+        self.send_all(&ClientConnectedServerMessage::new(&player));
 
         self.table.add_player(player, client_id);
 
-        client.send(&ServerMessage::GameState(GameStateServerMessage::Borrowed(
-            &self.table,
-        )));
+        client.send(&GameStateServerMessage::new(client_id as _, &self.table));
         self.clients[client_id] = Some(client.unwrap());
     }
 }

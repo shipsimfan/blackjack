@@ -7,6 +7,8 @@ impl Parse for BlackjackTable {
     fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
         Ok(BlackjackTable {
             players: parser.parse()?,
+            max_bet: parser.parse()?,
+            min_bet: parser.parse()?,
         })
     }
 }

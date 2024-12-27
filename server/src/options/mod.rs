@@ -48,6 +48,22 @@ pub struct Options {
         description = "Password required by clients to connect"
     )]
     pub password: Option<String>,
+
+    /// The maximum amount one player can bet on one hand in one round
+    #[flag(
+        value = "BET",
+        default = DEFAULT_MAX_BET,
+        description = "The maximum amount a player can bet on one hand in one round. Defaults to $1000."
+    )]
+    pub max_bet: NonZeroU16,
+
+    /// The minimum amount a player must bet on one hand in one round
+    #[flag(
+        value = "BET",
+        default = DEFAULT_MIN_BET,
+        description = "The minimum amount a player must bet on one hand in one round. Defaults to $10."
+    )]
+    pub min_bet: NonZeroU16,
 }
 
 /// The default maximum number of players that can connect
@@ -55,3 +71,9 @@ const DEFAULT_MAX_PLAYERS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(8) };
 
 /// The default timeout to reject clients if they haven't returned a hello message
 const DEFAULT_CONNECTION_TIMEOUT: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(300) };
+
+/// The default maximum amount a player can bet for hand in a single round
+const DEFAULT_MAX_BET: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(1000) };
+
+/// The default minimum amount a player must bet for a hand in a single round
+const DEFAULT_MIN_BET: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(10) };

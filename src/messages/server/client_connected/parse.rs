@@ -2,6 +2,8 @@ use crate::messages::{ClientConnectedServerMessage, Parse, ParseMessageError, Pa
 
 impl<'a> Parse for ClientConnectedServerMessage<'a> {
     fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
-        parser.parse().map(ClientConnectedServerMessage::Owned)
+        Ok(ClientConnectedServerMessage {
+            player: parser.parse()?,
+        })
     }
 }

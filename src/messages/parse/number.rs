@@ -12,6 +12,12 @@ macro_rules! number_parse {
                 Ok(Self::from_be_bytes(buffer))
             }
         }
+
+        impl Parse for std::num::NonZero<$ty> {
+            fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
+                std::num::NonZero::new(Parse::parse(parser)?).ok_or(ParseMessageError)
+            }
+        }
     )*};
 }
 

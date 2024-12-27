@@ -12,7 +12,7 @@ impl Lobby {
         }
 
         Lobby {
-            table: BlackjackTable::new(options.max_players()),
+            table: BlackjackTable::new(options.max_players(), options.max_bet, options.min_bet),
             clients: clients.into_boxed_slice(),
             connecting_clients: VecDeque::with_capacity(options.max_players()),
             connection_timeout: options.connection_timeout(),

@@ -7,6 +7,7 @@ mod client;
 mod generate;
 mod r#macro;
 mod parse;
+mod ref_cow;
 mod server;
 mod version;
 
@@ -17,6 +18,7 @@ pub(crate) use parse::{Parse, Parser};
 
 pub use client::*;
 pub use parse::ParseMessageError;
+pub use ref_cow::RefCow;
 pub use server::*;
 pub use version::Version;
 
