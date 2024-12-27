@@ -13,7 +13,8 @@ impl Lobby {
             }
         }
 
-        if self.clients[client_id].is_some() {
+        let client = self.clients[client_id].take();
+        if client.is_some() {
             println!(
                 "[INFO] {} (client {}) disconnected",
                 self.table.player(client_id).username(),
@@ -23,7 +24,5 @@ impl Lobby {
             self.table.remove_player(client_id);
             self.send_all(&ClientDisconnectedServerMessage::new(client_id));
         }
-
-        self.clients[client_id] = None;
     }
 }

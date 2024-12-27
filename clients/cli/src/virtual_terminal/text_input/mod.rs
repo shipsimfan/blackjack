@@ -2,8 +2,8 @@ mod cursor_xy;
 mod get;
 mod handle_event;
 mod new;
-mod recalculate_bounds;
 mod render;
+mod resize;
 
 /// A utility for getting a users text input from a virtual terminal
 pub struct TextInput {

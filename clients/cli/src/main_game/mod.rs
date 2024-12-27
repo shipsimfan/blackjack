@@ -1,4 +1,7 @@
 use blackjack::model::BlackjackTable;
+use view::View;
+
+mod view;
 
 mod handle_message;
 mod handle_terminal;
@@ -10,5 +13,8 @@ pub struct MainGame {
     client_id: u8,
 
     /// The model of the current state of the game
-    model: BlackjackTable,
+    table: BlackjackTable,
+
+    /// The rendered view of the game
+    view: View,
 }

@@ -47,7 +47,7 @@ impl TextInput {
                 return None;
             }
             TerminalEvent::Resize => {
-                self.recalculate_bounds(terminal);
+                self.resize(terminal);
                 self.render(terminal);
                 return None;
             }

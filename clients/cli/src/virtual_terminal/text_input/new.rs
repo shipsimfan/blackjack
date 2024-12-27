@@ -8,7 +8,7 @@ impl TextInput {
         margin: usize,
         hide_character: Option<char>,
         at_bottom: bool,
-        terminal: &mut VirtualTerminal,
+        terminal: Option<&mut VirtualTerminal>,
     ) -> Self {
         let mut input = TextInput {
             value: Vec::with_capacity(max_length),
@@ -25,8 +25,9 @@ impl TextInput {
             at_bottom,
         };
 
-        input.recalculate_bounds(terminal);
-        input.render(terminal);
+        if let Some(terminal) = terminal {
+            input.resize(terminal);
+        }
 
         input
     }
