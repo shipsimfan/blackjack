@@ -5,6 +5,7 @@ mod special_key;
 mod text_input;
 
 mod cursor_display;
+mod drop;
 mod get;
 mod move_cursor;
 mod new;

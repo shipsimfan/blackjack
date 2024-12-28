@@ -1,26 +1,25 @@
 use crate::VirtualTerminal;
-use std::ptr::null_mut;
-use win32::{try_get_last_error, WriteFile};
+use std::{io::Write, ptr::null_mut};
+use win32::{try_get_last_error, WriteConsole};
 
 impl VirtualTerminal {
     /// Write a value to the virtual terminal
     pub fn write<T: std::fmt::Display>(&mut self, value: T) {
         let string: Vec<_> = value.to_string().encode_utf16().collect();
-        let mut bytes_written = 0;
+        let mut chars_written = 0;
 
-        while bytes_written < string.len() {
-            let mut bytes = 0;
-            todo!("Change this to WriteConsoleW");
-            try_get_last_error!(WriteFile(
+        while chars_written < string.len() {
+            let mut chars = 0;
+            try_get_last_error!(WriteConsole(
                 self.output,
-                string.as_ptr().byte_add(bytes_written).cast(),
-                (string.len() * 2 - bytes_written) as _,
-                &mut bytes,
+                string[chars_written..].as_ptr().cast(),
+                (string.len() - chars_written) as _,
+                &mut chars,
                 null_mut()
             ))
             .unwrap();
 
-            bytes_written += bytes as usize;
+            chars_written += chars as usize;
         }
     }
 }
