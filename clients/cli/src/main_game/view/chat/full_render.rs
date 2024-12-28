@@ -7,11 +7,16 @@ impl ChatView {
         self.input.render(false, terminal);
 
         // Clear the message area
-        for y in 0..self.height {
+        for y in 0..self.height - 1 {
             terminal.move_cursor_to(self.input.margin(), y);
-            for _ in 0..self.width {
-                terminal.write(' ');
-            }
+            terminal.write_blank(self.width);
+        }
+
+        // Draw chat box sepearator
+        terminal.move_cursor_to(self.input.margin() - 2, self.height - 1);
+        terminal.write('├');
+        for _ in 0..self.width + 1 {
+            terminal.write('─');
         }
     }
 }

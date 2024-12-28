@@ -8,6 +8,13 @@ impl MainGame {
         terminal: &mut VirtualTerminal,
         connection: &mut Connection,
     ) -> bool {
+        match &event {
+            TerminalEvent::Resize => {
+                self.view.resize(&self.table, terminal);
+            }
+            _ => {}
+        }
+
         false
     }
 }

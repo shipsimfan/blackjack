@@ -10,7 +10,7 @@ impl MainGame {
         server_name: String,
         terminal: &mut VirtualTerminal,
     ) -> Self {
-        let view = View::new(&table, server_name, terminal);
+        let view = View::new(&table, server_name, client_id as _, terminal);
 
         MainGame {
             client_id,

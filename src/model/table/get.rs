@@ -1,9 +1,19 @@
 use crate::model::{BlackjackTable, Player};
 
 impl BlackjackTable {
+    /// Gets the players seated at the table
+    pub fn players(&self) -> &[Option<Player>] {
+        &self.players
+    }
+
     /// Gets the player with `id`
     pub fn player(&self, id: usize) -> &Player {
         self.players[id].as_ref().unwrap()
+    }
+
+    /// Gets the maximum number of allowed players at this table
+    pub fn max_players(&self) -> usize {
+        self.players.len()
     }
 
     /// Gets the maximum bet a player can place at this table

@@ -55,9 +55,9 @@ impl Lobby {
             player.ai()
         );
 
-        self.send_all(&ClientConnectedServerMessage::new(&player));
-
-        self.table.add_player(player, client_id);
+        let message = ClientConnectedServerMessage::new(&player, client_id as _);
+        self.send_all(&message);
+        self.table.handle_message(message);
 
         client.send(&GameStateServerMessage::new(client_id as _, &self.table));
         self.clients[client_id] = Some(client.unwrap());

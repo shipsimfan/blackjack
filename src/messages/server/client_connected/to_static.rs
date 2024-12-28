@@ -5,6 +5,7 @@ impl<'a> ClientConnectedServerMessage<'a> {
     pub fn to_static(self) -> ClientConnectedServerMessage<'static> {
         ClientConnectedServerMessage {
             player: self.player.to_static(),
+            id: self.id,
         }
     }
 }

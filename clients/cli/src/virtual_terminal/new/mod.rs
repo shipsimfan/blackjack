@@ -3,6 +3,7 @@ use win32::{
     try_get_last_error, GetConsoleScreenBufferInfo, GetStdHandle, SetConsoleMode,
     CONSOLE_SCREEN_BUFFER_INFO, ENABLE_EXTENDED_FLAGS, ENABLE_PROCESSED_OUTPUT,
     ENABLE_VIRTUAL_TERMINAL_PROCESSING, ENABLE_WINDOW_INPUT, STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
+    WCHAR,
 };
 
 mod error;
@@ -35,6 +36,7 @@ impl VirtualTerminal {
             input,
             width,
             height,
+            blank_line: vec![b' ' as WCHAR; width],
         };
         terminal.hide_cursor();
         Ok(terminal)

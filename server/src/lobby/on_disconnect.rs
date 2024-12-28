@@ -21,8 +21,9 @@ impl Lobby {
                 client_id
             );
 
-            self.table.remove_player(client_id);
-            self.send_all(&ClientDisconnectedServerMessage::new(client_id));
+            let message = ClientDisconnectedServerMessage::new(client_id);
+            self.send_all(&message);
+            self.table.handle_message(message);
         }
     }
 }

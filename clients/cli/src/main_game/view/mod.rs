@@ -1,20 +1,32 @@
 use chat::ChatView;
+use players::PlayersView;
 
 mod chat;
+mod players;
 
 mod full_render;
 mod new;
+mod render;
 mod resize;
 
 pub struct View {
     /// The view of the chat messages
     chat: ChatView,
 
+    /// The view of the players
+    players: PlayersView,
+
     /// The width of the game half
     game_width: usize,
 
     /// The name of the server
     server_name: String,
+
+    /// The height the server name takes up
+    server_name_height: usize,
+
+    /// The y-level where the dealer's hand sits
+    dealer_hand_y: usize,
 
     /// The minimum allowed bet
     min_bet: u16,
@@ -24,7 +36,7 @@ pub struct View {
 }
 
 /// The size of the margin before a hand line
-const HAND_LINE_MARGIN: usize = 2; // [ ][ ]
+const HAND_LINE_MARGIN: usize = 3; // [ ][ ][ ]
 
 /// The space required to display the count of a given hand
 const HAND_LINE_COUNT_LENGTH: usize = 4; // [HS ][0-9][0-9 ][ ]

@@ -11,4 +11,7 @@ mod unwrap;
 pub struct ClientConnectedServerMessage<'a> {
     /// The player that has connected
     pub player: RefCow<'a, Player>,
+
+    /// The id of the connecting player
+    pub id: u8,
 }

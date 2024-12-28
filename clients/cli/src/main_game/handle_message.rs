@@ -9,8 +9,18 @@ impl MainGame {
         terminal: &mut VirtualTerminal,
         connection: &mut Connection,
     ) -> bool {
-        match message {
-            _ => true,
+        match &message {
+            ServerMessage::Error(_) | ServerMessage::GameState(_) | ServerMessage::Hello(_) => {
+                return true
+            }
+
+            _ => {}
         }
+
+        if self.table.handle_message(message) {
+            self.view.render(&self.table, terminal);
+        }
+
+        false
     }
 }

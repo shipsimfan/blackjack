@@ -5,9 +5,10 @@ use crate::{
 
 impl<'a> ClientConnectedServerMessage<'a> {
     /// Creates a new [`ClientConnectedServerMessage`]
-    pub fn new<P: Into<RefCow<'a, Player>>>(player: P) -> ServerMessage<'a> {
+    pub fn new<P: Into<RefCow<'a, Player>>>(player: P, id: u8) -> ServerMessage<'a> {
         ServerMessage::ClientConnected(ClientConnectedServerMessage {
             player: player.into(),
+            id,
         })
     }
 }

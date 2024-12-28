@@ -4,6 +4,7 @@ mod event;
 mod special_key;
 mod text_input;
 
+mod alternate_buffer;
 mod cursor_display;
 mod drop;
 mod get;
@@ -30,4 +31,7 @@ pub struct VirtualTerminal {
 
     /// The height of the terminal
     height: usize,
+
+    /// A set of spaces for a single line
+    blank_line: Vec<u16>,
 }

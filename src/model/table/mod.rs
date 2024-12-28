@@ -4,6 +4,7 @@ use std::num::NonZeroU16;
 mod add_player;
 mod generate;
 mod get;
+mod handle_message;
 mod new;
 mod parse;
 mod remove_player;

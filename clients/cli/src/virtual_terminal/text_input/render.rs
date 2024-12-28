@@ -44,9 +44,7 @@ impl TextInput {
 
         // Write blank
         while text_y < self.height {
-            for _ in 0..self.width - text_x {
-                terminal.write(' ');
-            }
+            terminal.write_blank(self.width - text_x);
 
             text_y += 1;
             text_x = 0;

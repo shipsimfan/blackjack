@@ -1,6 +1,6 @@
 use crate::{SpecialKey, TerminalEvent, VirtualTerminal};
 use win32::{
-    try_get_last_error, ReadConsoleInput, FALSE, INPUT_RECORD, KEY_EVENT, KEY_EVENT_RECORD,
+    try_get_last_error, ReadConsoleInput, FALSE, INPUT_RECORD, KEY_EVENT, KEY_EVENT_RECORD, WCHAR,
     WINDOW_BUFFER_SIZE_EVENT, WINDOW_BUFFER_SIZE_RECORD,
 };
 
@@ -57,6 +57,11 @@ impl VirtualTerminal {
     fn handle_resize_event(&mut self, event: WINDOW_BUFFER_SIZE_RECORD) -> TerminalEvent {
         self.width = event.size.x as _;
         self.height = event.size.y as _;
+
+        if self.blank_line.len() < self.width {
+            self.blank_line
+                .extend(std::iter::repeat(b' ' as WCHAR).take(self.width - self.blank_line.len()));
+        }
 
         TerminalEvent::Resize
     }
