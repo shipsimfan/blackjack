@@ -6,6 +6,7 @@ mod get;
 mod new;
 mod parse;
 mod to_static;
+mod unwrap;
 
 /// The message sent by the server to begin communication with a client
 #[derive(Debug, Clone)]

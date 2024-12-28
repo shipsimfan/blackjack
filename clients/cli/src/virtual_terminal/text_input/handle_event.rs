@@ -15,7 +15,7 @@ impl TextInput {
                 }
 
                 self.value.remove(self.cursor);
-                self.render(terminal);
+                self.render(true, terminal);
                 return None;
             }
             TerminalEvent::SpecialKey(SpecialKey::LeftArrow) => {
@@ -24,7 +24,7 @@ impl TextInput {
                 }
 
                 self.cursor -= 1;
-                self.render(terminal);
+                self.render(true, terminal);
                 return None;
             }
             TerminalEvent::SpecialKey(SpecialKey::RightArrow) => {
@@ -33,22 +33,21 @@ impl TextInput {
                 }
 
                 self.cursor += 1;
-                self.render(terminal);
+                self.render(true, terminal);
                 return None;
             }
             TerminalEvent::SpecialKey(SpecialKey::Home) => {
                 self.cursor = 0;
-                self.render(terminal);
+                self.render(true, terminal);
                 return None;
             }
             TerminalEvent::SpecialKey(SpecialKey::End) => {
                 self.cursor = self.value.len();
-                self.render(terminal);
+                self.render(true, terminal);
                 return None;
             }
             TerminalEvent::Resize => {
-                self.resize(terminal);
-                self.render(terminal);
+                self.resize(true, terminal);
                 return None;
             }
             _ => return None,
@@ -66,7 +65,7 @@ impl TextInput {
             self.cursor -= 1;
             self.value.remove(self.cursor);
 
-            self.render(terminal);
+            self.render(true, terminal);
 
             return None;
         }
@@ -81,7 +80,7 @@ impl TextInput {
 
         self.value.insert(self.cursor, c as u8);
         self.cursor += 1;
-        self.render(terminal);
+        self.render(true, terminal);
 
         None
     }

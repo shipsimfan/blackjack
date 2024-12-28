@@ -2,7 +2,7 @@ use crate::{TextInput, VirtualTerminal};
 
 impl TextInput {
     /// Renders this text input to `terminal`
-    pub fn render(&mut self, terminal: &mut VirtualTerminal) {
+    pub fn render(&mut self, display_cursor: bool, terminal: &mut VirtualTerminal) {
         terminal.hide_cursor();
 
         // Move cursor to start
@@ -66,7 +66,9 @@ impl TextInput {
 
         self.last_cursor = self.cursor;
 
-        terminal.show_cursor();
+        if display_cursor {
+            terminal.show_cursor();
+        }
     }
 
     /// Writes `text` to `terminal`, hiding it if nescessary

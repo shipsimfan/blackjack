@@ -9,7 +9,7 @@ impl Connecting {
         &mut self,
         message: ServerMessage,
         terminal: &mut VirtualTerminal,
-    ) -> Option<bool> {
+    ) -> Option<(bool, String)> {
         match message {
             ServerMessage::Hello(hello) => {
                 terminal.write(format_args!(
@@ -19,7 +19,7 @@ impl Connecting {
                     hello.server_version()
                 ));
 
-                Some(hello.password_required())
+                Some((hello.password_required(), hello.unwrap_server_name()))
             }
             _ => {
                 terminal.write("Error: unexpected message");

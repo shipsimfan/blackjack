@@ -12,10 +12,13 @@ impl AppState {
         match self {
             AppState::PasswordEntry(password_entry) => {
                 if password_entry.handle_terminal(event, terminal) {
+                    let mut server_name = String::new();
+                    std::mem::swap(&mut server_name, &mut password_entry.server_name);
                     *self = AppState::WaitForGameState(WaitForGameState::new(
                         connection,
                         password_entry.username(),
                         Some(password_entry.password()),
+                        server_name,
                     ));
                 }
 

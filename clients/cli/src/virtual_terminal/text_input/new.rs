@@ -8,6 +8,7 @@ impl TextInput {
         margin: usize,
         hide_character: Option<char>,
         at_bottom: bool,
+        display_cursor: bool,
         terminal: Option<&mut VirtualTerminal>,
     ) -> Self {
         let mut input = TextInput {
@@ -26,7 +27,7 @@ impl TextInput {
         };
 
         if let Some(terminal) = terminal {
-            input.resize(terminal);
+            input.resize(display_cursor, terminal);
         }
 
         input

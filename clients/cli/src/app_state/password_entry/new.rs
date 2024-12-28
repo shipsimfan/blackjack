@@ -3,7 +3,11 @@ use crate::{virtual_terminal::TextInput, VirtualTerminal};
 use blackjack::messages::Username;
 
 impl PasswordEntryState {
-    pub fn new(username: Username<'static>, terminal: &mut VirtualTerminal) -> Self {
+    pub fn new(
+        username: Username<'static>,
+        server_name: String,
+        terminal: &mut VirtualTerminal,
+    ) -> Self {
         PasswordEntryState {
             username,
             password_input: TextInput::new(
@@ -12,8 +16,10 @@ impl PasswordEntryState {
                 0,
                 Some('*'),
                 false,
-                terminal,
+                true,
+                Some(terminal),
             ),
+            server_name,
         }
     }
 }

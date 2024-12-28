@@ -8,7 +8,12 @@ use std::borrow::Cow;
 
 impl WaitForGameState {
     /// Creates a new [`WaitForGameState`]
-    pub fn new(connection: &mut Connection, username: Username, password: Option<&str>) -> Self {
+    pub fn new(
+        connection: &mut Connection,
+        username: Username,
+        password: Option<&str>,
+        server_name: String,
+    ) -> Self {
         connection.send(HelloClientMessage::new(
             username,
             password.map(Cow::Borrowed),
@@ -17,6 +22,6 @@ impl WaitForGameState {
             false,
         ));
 
-        WaitForGameState {}
+        WaitForGameState { server_name }
     }
 }

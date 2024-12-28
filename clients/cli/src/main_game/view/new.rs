@@ -9,6 +9,8 @@ impl View {
         server_name: String,
         terminal: &mut VirtualTerminal,
     ) -> Self {
+        terminal.hide_cursor();
+
         let game_width = MIN_HAND_LINE_LENGTH + table.max_bet().ilog10() as usize + 1;
         let chat = ChatView::new(game_width + VERTICAL_BAR_WIDTH);
 

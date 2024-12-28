@@ -13,4 +13,7 @@ pub struct PasswordEntryState {
 
     /// The input for password
     password_input: TextInput,
+
+    /// The name of the server
+    pub server_name: String,
 }

@@ -13,15 +13,14 @@ impl AppState {
         Some(match self {
             AppState::Connecting(mut connecting) => {
                 match connecting.handle_message(message, terminal) {
-                    Some(true) => AppState::PasswordEntry(PasswordEntryState::new(
+                    Some((true, server_name)) => AppState::PasswordEntry(PasswordEntryState::new(
                         connecting.unwrap(),
+                        server_name,
                         terminal,
                     )),
-                    Some(false) => AppState::WaitForGameState(WaitForGameState::new(
-                        connection,
-                        connecting.unwrap(),
-                        None,
-                    )),
+                    Some((false, server_name)) => AppState::WaitForGameState(
+                        WaitForGameState::new(connection, connecting.unwrap(), None, server_name),
+                    ),
                     None => AppState::Connecting(connecting),
                 }
             }
@@ -35,9 +34,12 @@ impl AppState {
             }
             AppState::WaitForGameState(mut wait_for_game_state) => {
                 match wait_for_game_state.handle_message(message, terminal) {
-                    Some((client_id, model)) => {
-                        AppState::MainGame(MainGame::new(client_id, model, terminal))
-                    }
+                    Some((client_id, model)) => AppState::MainGame(MainGame::new(
+                        client_id,
+                        model,
+                        wait_for_game_state.server_name,
+                        terminal,
+                    )),
                     None => return None,
                 }
             }
