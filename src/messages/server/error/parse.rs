@@ -6,6 +6,7 @@ impl Parse for ErrorServerMessage {
             0 => ErrorServerMessage::ServerFull,
             1 => ErrorServerMessage::ConnectionTimeout,
             2 => ErrorServerMessage::InvalidPassword,
+            3 => ErrorServerMessage::UsernameTaken,
             _ => return Err(ParseMessageError),
         })
     }

@@ -39,6 +39,15 @@ impl Lobby {
                     }
                 }
 
+                for player in self.table.sitting_players() {
+                    if *player.username() == hello.username {
+                        eprintln!("[WARN] Client tried connecting with a taken username");
+                        client.send(&ErrorServerMessage::username_taken());
+                        client.disconnect();
+                        return;
+                    }
+                }
+
                 Player::new(hello.username.to_static(), hello.ai)
             }
             _ => {

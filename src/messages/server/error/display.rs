@@ -6,6 +6,7 @@ impl std::fmt::Display for ErrorServerMessage {
             ErrorServerMessage::ServerFull => "server is full",
             ErrorServerMessage::ConnectionTimeout => "timed out during connection",
             ErrorServerMessage::InvalidPassword => "invalid password",
+            ErrorServerMessage::UsernameTaken => "username taken",
         })
     }
 }

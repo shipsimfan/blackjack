@@ -15,4 +15,9 @@ impl ErrorServerMessage {
     pub fn invalid_password<'a>() -> ServerMessage<'a> {
         ServerMessage::Error(ErrorServerMessage::InvalidPassword)
     }
+
+    /// Creates a new [`ErrorServerMessage::UsernameTaken`]
+    pub fn username_taken<'a>() -> ServerMessage<'a> {
+        ServerMessage::Error(ErrorServerMessage::UsernameTaken)
+    }
 }

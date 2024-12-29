@@ -16,6 +16,9 @@ pub enum ErrorServerMessage {
 
     /// The client sent an invalid password when connecting
     InvalidPassword = 2,
+
+    /// Another client on the server already has the same username
+    UsernameTaken = 3,
 }
 
 impl std::error::Error for ErrorServerMessage {}

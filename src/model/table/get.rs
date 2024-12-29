@@ -1,9 +1,14 @@
 use crate::model::{BlackjackTable, Player};
 
 impl BlackjackTable {
-    /// Gets the players seated at the table
+    /// Gets all player slots
     pub fn players(&self) -> &[Option<Player>] {
         &self.players
+    }
+
+    /// Gets only the players seated at the table
+    pub fn sitting_players(&self) -> impl Iterator<Item = &Player> {
+        self.players.iter().filter_map(Option::as_ref)
     }
 
     /// Gets the player with `id`
