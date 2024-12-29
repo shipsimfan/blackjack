@@ -11,9 +11,10 @@ impl BlackjackTable {
                 self.remove_player(disconnected.id as _)
             }
 
-            ServerMessage::Error(_) | ServerMessage::GameState(_) | ServerMessage::Hello(_) => {
-                return false
-            }
+            ServerMessage::Error(_)
+            | ServerMessage::GameState(_)
+            | ServerMessage::Hello(_)
+            | ServerMessage::Chat(_) => return false,
         }
 
         true

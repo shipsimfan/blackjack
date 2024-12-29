@@ -24,6 +24,16 @@ impl MainGame {
                     terminal,
                 );
             }
+            ServerMessage::Chat(chat) => {
+                self.view.add_message(
+                    format!(
+                        "[{}] {}",
+                        self.table.player(chat.client as _).username(),
+                        chat.message
+                    ),
+                    terminal,
+                );
+            }
             ServerMessage::Error(_) | ServerMessage::GameState(_) | ServerMessage::Hello(_) => {
                 return true
             }

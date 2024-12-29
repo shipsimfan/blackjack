@@ -1,19 +1,39 @@
 use super::Lobby;
 use blackjack::{
     messages::{
-        ClientConnectedServerMessage, ClientMessage, ErrorServerMessage, GameStateServerMessage,
+        ChatServerMessage, ClientConnectedServerMessage, ClientMessage, ErrorServerMessage,
+        GameStateServerMessage,
     },
     model::Player,
 };
 
 impl Lobby {
     /// Called when a message is received by the server
-    pub fn on_message(&mut self, client: usize, message: ClientMessage) {
-        if self.clients[client].is_none() {
-            return self.on_connecting_client_message(client, message);
+    pub fn on_message(&mut self, client_id: usize, message: ClientMessage) {
+        if self.clients[client_id].is_none() {
+            return self.on_connecting_client_message(client_id, message);
         }
 
-        todo!("Handle message from regular client");
+        match message {
+            ClientMessage::Chat(chat) => {
+                eprintln!(
+                    "[CHAT] [{}] {}",
+                    self.table.player(client_id).username(),
+                    chat.message
+                );
+                let chat = ChatServerMessage::new(client_id as _, chat.message);
+                self.send_all(&chat);
+            }
+
+            _ => {
+                eprintln!(
+                    "[ERROR] Unexpected message from client {} - {}",
+                    client_id,
+                    message.tag()
+                );
+                self.clients[client_id].as_mut().unwrap().disconnect();
+            }
+        }
     }
 
     /// Handle a message from a currently connecting client

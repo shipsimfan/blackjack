@@ -15,7 +15,12 @@ impl ChatView {
 
             let start = i * self.width;
             let end = message.len().min(start + self.width);
-            self.rendered.push_back(message[start..end].to_owned());
+            let mut string = message[start..end].to_owned();
+            if string.len() < self.width {
+                string.extend(std::iter::repeat_n(' ', self.width - string.len()));
+            }
+
+            self.rendered.push_back(string);
         }
 
         // Update history

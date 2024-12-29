@@ -1,7 +1,9 @@
 use crate::messages::messages;
 
+mod chat;
 mod hello;
 
+pub use chat::ChatClientMessage;
 pub use hello::{HelloClientMessage, Username};
 
 messages!(
@@ -11,5 +13,8 @@ messages!(
     pub enum ClientMessage<'a> {
         /// The initial hello message giving the server information about the client
         Hello(HelloClientMessage<'a>) = 1,
+
+        /// A chat message sent from the client
+        Chat(ChatClientMessage<'a>) = 2,
     }
 );

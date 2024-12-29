@@ -1,11 +1,13 @@
 use crate::messages::messages;
 
+mod chat;
 mod client_connected;
 mod client_disconnected;
 mod error;
 mod game_state;
 mod hello;
 
+pub use chat::ChatServerMessage;
 pub use client_connected::ClientConnectedServerMessage;
 pub use client_disconnected::ClientDisconnectedServerMessage;
 pub use error::ErrorServerMessage;
@@ -31,5 +33,8 @@ messages!(
 
         /// A client disconnected from the server
         ClientDisconnected(ClientDisconnectedServerMessage) = 4,
+
+        /// A chat message from a client, echoed by the server
+        Chat(ChatServerMessage<'a>) = 5,
     }
 );
