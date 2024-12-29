@@ -8,5 +8,10 @@ impl View {
         terminal.hide_cursor();
 
         self.players.render(table.players(), terminal);
+
+        if self.controls.chat_active() {
+            self.chat.move_cursor(terminal);
+            terminal.show_cursor();
+        }
     }
 }

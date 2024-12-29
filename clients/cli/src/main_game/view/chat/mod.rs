@@ -2,10 +2,16 @@ use crate::TextInput;
 use std::collections::VecDeque;
 
 mod add_message;
+mod chat_event;
 mod full_render;
+mod handle_terminal;
+mod move_cursor;
 mod new;
 mod render;
 mod resize;
+mod set_active;
+
+pub use chat_event::ChatEvent;
 
 /// Displays the chat in the terminal
 pub struct ChatView {

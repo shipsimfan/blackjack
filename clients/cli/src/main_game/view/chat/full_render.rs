@@ -3,8 +3,8 @@ use crate::VirtualTerminal;
 
 impl ChatView {
     /// Re-render the full chat area, even if nothing has changed
-    pub fn full_render(&mut self, terminal: &mut VirtualTerminal) {
-        self.input.render(false, terminal);
+    pub fn full_render(&mut self, active: bool, terminal: &mut VirtualTerminal) {
+        self.input.render(active, terminal);
 
         // Clear the message area
         for y in 0..self.height {

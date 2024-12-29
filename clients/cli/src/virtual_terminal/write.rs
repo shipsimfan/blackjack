@@ -1,6 +1,6 @@
 use crate::VirtualTerminal;
 use std::ptr::null_mut;
-use win32::{try_get_last_error, WriteConsole, WCHAR};
+use win32::{try_get_last_error, WriteConsole};
 
 impl VirtualTerminal {
     /// Write a value to the virtual terminal

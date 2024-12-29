@@ -48,7 +48,7 @@ impl View {
             terminal.write(" │ ");
         }
 
-        self.chat.full_render(terminal);
+        self.chat.full_render(self.controls.chat_active(), terminal);
         self.players.truncate();
 
         self.render(table, terminal);

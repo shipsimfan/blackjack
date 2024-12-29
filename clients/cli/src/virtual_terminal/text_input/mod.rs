@@ -1,3 +1,4 @@
+mod clear;
 mod cursor_xy;
 mod get;
 mod handle_event;

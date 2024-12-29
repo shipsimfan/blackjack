@@ -37,8 +37,6 @@ impl MainGame {
             ServerMessage::Error(_) | ServerMessage::GameState(_) | ServerMessage::Hello(_) => {
                 return true
             }
-
-            _ => {}
         }
 
         if self.table.handle_message(message) {

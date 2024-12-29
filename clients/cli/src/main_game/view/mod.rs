@@ -1,14 +1,20 @@
 use chat::ChatView;
+use controls::ControlsView;
 use players::PlayersView;
 
 mod chat;
+mod controls;
 mod players;
+mod view_event;
 
 mod add_message;
 mod full_render;
+mod handle_terminal;
 mod new;
 mod render;
 mod resize;
+
+pub use view_event::ViewEvent;
 
 pub struct View {
     /// The view of the chat messages
@@ -16,6 +22,9 @@ pub struct View {
 
     /// The view of the players
     players: PlayersView,
+
+    /// The view of the controls
+    controls: ControlsView,
 
     /// The width of the game half
     game_width: usize,
@@ -54,3 +63,6 @@ const MIN_HAND_LINE_LENGTH: usize =
 
 /// The width of the vertical bar between the game and the chat
 const VERTICAL_BAR_WIDTH: usize = 3; // [ ][|][ ]
+
+/// The height reserved at the bottom of the terminal for the controls
+const CONTROLS_HEIGHT: usize = 2;

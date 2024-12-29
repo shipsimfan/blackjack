@@ -8,6 +8,10 @@ impl PlayersView {
         let mut y = self.y;
         let mut i = 0;
         for (id, player) in players.iter().enumerate() {
+            if y >= terminal.height() - 2 {
+                break;
+            }
+
             let player = match player {
                 Some(player) => player,
                 None => continue,
