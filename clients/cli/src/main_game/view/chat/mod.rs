@@ -1,11 +1,20 @@
 use crate::TextInput;
+use std::collections::VecDeque;
 
+mod add_message;
 mod full_render;
 mod new;
+mod render;
 mod resize;
 
 /// Displays the chat in the terminal
 pub struct ChatView {
+    /// The list of previously seen messages
+    history: VecDeque<String>,
+
+    /// The currently rendered messages
+    rendered: VecDeque<String>,
+
     /// The width of the chat area
     width: usize,
 

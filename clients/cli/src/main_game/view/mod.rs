@@ -4,6 +4,7 @@ use players::PlayersView;
 mod chat;
 mod players;
 
+mod add_message;
 mod full_render;
 mod new;
 mod render;

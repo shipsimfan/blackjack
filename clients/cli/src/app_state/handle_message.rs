@@ -44,7 +44,7 @@ impl AppState {
                 }
             }
             AppState::MainGame(mut main_game) => {
-                if main_game.handle_message(message, terminal, connection) {
+                if main_game.handle_message(message, terminal) {
                     return None;
                 }
 

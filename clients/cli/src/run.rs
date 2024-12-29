@@ -47,6 +47,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
                     }
                 }
                 Some(None) => {
+                    terminal.use_main_buffer();
                     terminal.write("Disconnect by server!\n");
                     return Ok(());
                 }

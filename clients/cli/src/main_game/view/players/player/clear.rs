@@ -7,7 +7,7 @@ impl PlayerView {
         let mut bottom_y = self.y + self.height();
         let target_y = y.max(self.y);
 
-        while bottom_y > target_y {
+        while bottom_y >= target_y {
             terminal.move_cursor_to(0, bottom_y);
             terminal.write_blank(self.width);
             bottom_y -= 1;

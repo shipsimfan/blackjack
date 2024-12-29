@@ -1,4 +1,4 @@
-use crate::{Connection, MainGame, VirtualTerminal};
+use crate::{MainGame, VirtualTerminal};
 use blackjack::messages::ServerMessage;
 
 impl MainGame {
@@ -7,9 +7,23 @@ impl MainGame {
         &mut self,
         message: ServerMessage,
         terminal: &mut VirtualTerminal,
-        connection: &mut Connection,
     ) -> bool {
         match &message {
+            ServerMessage::ClientConnected(connecting) => {
+                self.view.add_message(
+                    format!("{} connected", connecting.player.username()),
+                    terminal,
+                );
+            }
+            ServerMessage::ClientDisconnected(disconnecting) => {
+                self.view.add_message(
+                    format!(
+                        "{} disconnected",
+                        self.table.player(disconnecting.id as _).username()
+                    ),
+                    terminal,
+                );
+            }
             ServerMessage::Error(_) | ServerMessage::GameState(_) | ServerMessage::Hello(_) => {
                 return true
             }
