@@ -9,6 +9,8 @@ impl TextInput {
         hide_character: Option<char>,
         at_bottom: bool,
         display_cursor: bool,
+        max_width: Option<usize>,
+        predicate: Option<fn(char) -> bool>,
         terminal: Option<&mut VirtualTerminal>,
     ) -> Self {
         let mut input = TextInput {
@@ -24,6 +26,8 @@ impl TextInput {
             prompt,
             margin,
             at_bottom,
+            max_width,
+            predicate,
         };
 
         if let Some(terminal) = terminal {

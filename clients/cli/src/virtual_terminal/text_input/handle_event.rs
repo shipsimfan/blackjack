@@ -78,6 +78,12 @@ impl TextInput {
             return None;
         }
 
+        if let Some(predicate) = self.predicate {
+            if !predicate(c) {
+                return None;
+            }
+        }
+
         self.value.insert(self.cursor, c as u8);
         self.cursor += 1;
         self.render(true, terminal);

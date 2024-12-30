@@ -17,6 +17,8 @@ impl PasswordEntryState {
                 Some('*'),
                 false,
                 true,
+                None,
+                None,
                 Some(terminal),
             ),
             server_name,

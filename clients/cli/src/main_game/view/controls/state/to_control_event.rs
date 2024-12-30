@@ -8,6 +8,7 @@ impl ControlState {
             ControlState::None => None,
             ControlState::PlayNextRound => Some(ControlEvent::PlayNextRound),
             ControlState::DontPlayNextRound => Some(ControlEvent::DontPlayNextRound),
+            ControlState::Betting => todo!(),
         }
     }
 }

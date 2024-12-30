@@ -1,6 +1,7 @@
 use crate::SpecialKey;
 
 /// The result of the virtual terminal processing an event
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TerminalEvent {
     /// The event does not require any further processing
     Ignored,

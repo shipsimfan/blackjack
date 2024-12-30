@@ -18,10 +18,11 @@ impl View {
                     ChatEvent::SetControlsActive => {
                         self.chat.set_active(false, terminal);
                         self.controls.set_controls_active();
+                        self.controls.render(true, table, local_id, terminal);
                         None
                     }
                     ChatEvent::None => None,
-                }
+                };
             }
             false => match self
                 .controls
@@ -35,6 +36,7 @@ impl View {
         match event {
             ControlEvent::SetChatActive => {
                 self.controls.set_chat_active();
+                self.controls.render(true, table, local_id, terminal);
                 self.chat.set_active(true, terminal);
                 None
             }

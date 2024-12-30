@@ -1,3 +1,4 @@
+use crate::TextInput;
 use blackjack::model::GameState;
 
 mod event;
@@ -5,6 +6,7 @@ mod event;
 mod change_active;
 mod get;
 mod handle_terminal;
+mod move_cursor;
 mod new;
 mod render;
 mod resize;
@@ -35,4 +37,7 @@ pub struct ControlsView {
 
     /// The last selected option
     last_selected_option: usize,
+
+    /// The input field for bets
+    bet_input: TextInput,
 }

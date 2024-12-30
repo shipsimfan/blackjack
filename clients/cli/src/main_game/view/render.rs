@@ -1,4 +1,4 @@
-use super::View;
+use super::{controls::ControlState, View};
 use crate::VirtualTerminal;
 use blackjack::model::BlackjackTable;
 
@@ -17,6 +17,9 @@ impl View {
 
         if self.controls.chat_active() {
             self.chat.move_cursor(terminal);
+            terminal.show_cursor();
+        } else if self.controls.state() == ControlState::Betting {
+            self.controls.move_cursor(terminal);
             terminal.show_cursor();
         }
     }

@@ -1,4 +1,5 @@
 use super::{ControlState, ControlsView};
+use crate::TextInput;
 use blackjack::model::GameState;
 
 impl ControlsView {
@@ -12,6 +13,17 @@ impl ControlsView {
             y: 0,
             selected_option: 0,
             last_selected_option: 0,
+            bet_input: TextInput::new(
+                5,
+                "$",
+                1,
+                None,
+                true,
+                false,
+                Some(width),
+                Some(|c| c.is_ascii_digit()),
+                None,
+            ),
         }
     }
 }

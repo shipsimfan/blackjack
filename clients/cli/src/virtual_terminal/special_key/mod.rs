@@ -1,6 +1,7 @@
 mod from_key_code;
 
 /// A key which cannot be representd by a character
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SpecialKey {
     /// The left arrow key
     LeftArrow = 37,

@@ -5,7 +5,17 @@ use std::collections::VecDeque;
 impl ChatView {
     /// Creates a new [`ChatView`] without rendering it
     pub fn new(margin: usize) -> Self {
-        let input = TextInput::new(u8::MAX as usize, "", margin, None, true, false, None);
+        let input = TextInput::new(
+            u8::MAX as usize,
+            "",
+            margin,
+            None,
+            true,
+            false,
+            None,
+            None,
+            None,
+        );
         ChatView {
             history: VecDeque::with_capacity(MAX_CHAT_MESSAGES),
             rendered: VecDeque::new(),

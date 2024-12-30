@@ -6,7 +6,7 @@ impl ControlState {
         match self {
             ControlState::PlayNextRound => &["Play next round"],
             ControlState::DontPlayNextRound => &["Don't play next round"],
-            ControlState::None => &[],
+            ControlState::None | ControlState::Betting => &[],
         }
     }
 }

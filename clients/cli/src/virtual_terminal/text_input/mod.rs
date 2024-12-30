@@ -40,4 +40,10 @@ pub struct TextInput {
 
     /// Should this input be displayed at the bottom of the terminal or on the current line?
     at_bottom: bool,
+
+    /// The maximum width this text input can be
+    max_width: Option<usize>,
+
+    /// A predicate to be able to reject characters from entering the input
+    predicate: Option<fn(char) -> bool>,
 }

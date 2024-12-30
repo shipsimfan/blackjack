@@ -52,6 +52,13 @@ impl ControlsView {
 
         if state == ControlState::None {
             terminal.write_blank(self.width);
+            self.state = state;
+            return;
+        }
+
+        if state == ControlState::Betting {
+            self.state = state;
+            self.bet_input.render(!self.chat_active, terminal);
             return;
         }
 
@@ -71,7 +78,7 @@ impl ControlsView {
                 terminal.write_blank(2);
             }
 
-            if i == self.selected_option {
+            if !self.chat_active && i == self.selected_option {
                 terminal.write("\x1B[7m");
             }
 
@@ -79,7 +86,7 @@ impl ControlsView {
             terminal.write(options[i]);
             terminal.write_blank(1);
 
-            if i == self.selected_option {
+            if !self.chat_active && i == self.selected_option {
                 terminal.write("\x1B[27m");
             }
         }

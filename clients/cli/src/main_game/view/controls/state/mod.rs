@@ -13,4 +13,7 @@ pub enum ControlState {
 
     /// Display the controls to not play the next round
     DontPlayNextRound,
+
+    /// Display the betting input
+    Betting,
 }
