@@ -2,9 +2,11 @@ use crate::messages::messages;
 
 mod chat;
 mod hello;
+mod play_next_round;
 
 pub use chat::ChatClientMessage;
 pub use hello::{HelloClientMessage, Username};
+pub use play_next_round::PlayNextRoundClientMessage;
 
 messages!(
     /// The set of messages that can be sent from the client to the server
@@ -16,5 +18,8 @@ messages!(
 
         /// A chat message sent from the client
         Chat(ChatClientMessage<'a>) = 2,
+
+        /// Notifies if a player will be playing the next round
+        PlayNextRound(PlayNextRoundClientMessage) = 3,
     }
 );

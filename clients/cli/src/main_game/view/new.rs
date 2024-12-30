@@ -22,7 +22,7 @@ impl View {
         let chat = ChatView::new(game_width + VERTICAL_BAR_WIDTH);
         let players =
             PlayersView::new(table.max_players(), dealer_hand_y + 2, game_width, local_id);
-        let controls = ControlsView::new();
+        let controls = ControlsView::new(game_width);
 
         let mut view = View {
             chat,
@@ -35,7 +35,7 @@ impl View {
             min_bet: table.min_bet(),
             max_bet: table.max_bet(),
         };
-        view.resize(table, terminal);
+        view.resize(table, local_id, terminal);
         view
     }
 }

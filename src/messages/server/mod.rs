@@ -6,6 +6,7 @@ mod client_disconnected;
 mod error;
 mod game_state;
 mod hello;
+mod play_next_round;
 
 pub use chat::ChatServerMessage;
 pub use client_connected::ClientConnectedServerMessage;
@@ -13,6 +14,7 @@ pub use client_disconnected::ClientDisconnectedServerMessage;
 pub use error::ErrorServerMessage;
 pub use game_state::GameStateServerMessage;
 pub use hello::HelloServerMessage;
+pub use play_next_round::PlayNextRoundServerMessage;
 
 messages!(
     /// The set of messages that can be sent from the server to the client
@@ -36,5 +38,8 @@ messages!(
 
         /// A chat message from a client, echoed by the server
         Chat(ChatServerMessage<'a>) = 5,
+
+        /// A player has changed if they are playing next round
+        PlayNextRound(PlayNextRoundServerMessage) = 6,
     }
 );

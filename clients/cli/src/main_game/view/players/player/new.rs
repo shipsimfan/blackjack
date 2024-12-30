@@ -7,6 +7,7 @@ impl PlayerView {
             username: String::new(),
             ai: false,
             is_local: false,
+            not_playing: false,
             y: 0,
             width,
         }

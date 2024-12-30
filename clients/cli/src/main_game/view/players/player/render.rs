@@ -3,7 +3,7 @@ use crate::{
     main_game::view::{CONTROLS_HEIGHT, HAND_LINE_MARGIN},
     VirtualTerminal,
 };
-use blackjack::model::Player;
+use blackjack::model::{Player, PlayerState};
 
 impl PlayerView {
     pub fn render(
@@ -47,8 +47,19 @@ impl PlayerView {
                     terminal.write("\x1B[22m");
                 }
                 terminal.write_blank(
-                    self.width - self.username.len() - if player.ai() { 5 } else { 0 },
+                    self.width - self.username.len() - if player.ai() { 5 } else { 0 } - 1,
                 );
+            }
+        }
+
+        // Render player state
+        let not_playing = player.state() == PlayerState::NotPlaying;
+        if y < terminal.height() - CONTROLS_HEIGHT && self.not_playing != not_playing {
+            terminal.move_cursor_to(self.width - 1, y);
+            if not_playing {
+                terminal.write('■');
+            } else {
+                terminal.write(' ');
             }
         }
 
@@ -66,6 +77,7 @@ impl PlayerView {
         self.ai = player.ai();
         self.y = y;
         self.is_local = is_local;
+        self.not_playing = not_playing;
 
         // Render blank line if needed
         if render_blank_line && y + self.height() - 1 < terminal.height() - CONTROLS_HEIGHT {

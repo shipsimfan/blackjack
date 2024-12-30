@@ -8,6 +8,7 @@ impl Parse for Player {
         Ok(Player {
             username: parser.parse()?,
             ai: parser.parse()?,
+            state: parser.parse()?,
         })
     }
 }
@@ -19,10 +20,7 @@ impl Parse for Option<Player> {
                 parser.next();
                 Ok(None)
             }
-            Some(_) => Ok(Some(Player {
-                username: parser.parse()?,
-                ai: parser.parse()?,
-            })),
+            Some(_) => Ok(Some(parser.parse()?)),
             None => Err(ParseMessageError),
         }
     }

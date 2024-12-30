@@ -12,6 +12,10 @@ impl MainGame {
     ) -> Self {
         let view = View::new(&table, server_name, client_id as _, terminal);
 
-        MainGame { table, view }
+        MainGame {
+            client_id: client_id as _,
+            table,
+            view,
+        }
     }
 }

@@ -14,6 +14,9 @@ pub struct PlayerView {
     /// Is this player the local player?
     is_local: bool,
 
+    /// Is the player not playing?
+    not_playing: bool,
+
     /// The y-level to render this player at
     y: usize,
 

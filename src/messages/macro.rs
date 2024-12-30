@@ -49,13 +49,6 @@ macro_rules! messages {
 
                 $crate::messages::header::generate(output, $client, self.tag());
             }
-
-            /// Converts this to a static lifetime
-            pub fn to_static(self) -> $ident<'static> {
-                match self {$(
-                    $ident::$name(message) => $ident::$name(message.to_static()),
-                )*}
-            }
         }
     };
 }

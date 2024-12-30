@@ -1,11 +1,14 @@
 use super::{chat::ChatEvent, controls::ControlEvent, View, ViewEvent};
 use crate::{TerminalEvent, VirtualTerminal};
+use blackjack::model::BlackjackTable;
 
 impl View {
     /// Handle an event from the terminal
     pub fn handle_terminal(
         &mut self,
         event: TerminalEvent,
+        table: &BlackjackTable,
+        local_id: usize,
         terminal: &mut VirtualTerminal,
     ) -> Option<ViewEvent> {
         let event = match self.controls.chat_active() {
@@ -20,7 +23,10 @@ impl View {
                     ChatEvent::None => None,
                 }
             }
-            false => match self.controls.handle_terminal(event) {
+            false => match self
+                .controls
+                .handle_terminal(event, table, local_id, terminal)
+            {
                 Some(event) => event,
                 None => return None,
             },
@@ -32,6 +38,8 @@ impl View {
                 self.chat.set_active(true, terminal);
                 None
             }
+            ControlEvent::PlayNextRound => Some(ViewEvent::PlayNextRound),
+            ControlEvent::DontPlayNextRound => Some(ViewEvent::DontPlayNextRound),
         }
     }
 }

@@ -30,4 +30,9 @@ impl BlackjackTable {
     pub fn min_bet(&self) -> u16 {
         self.min_bet.get()
     }
+
+    /// Gets the player with `id` as a mutable reference
+    pub(crate) fn player_mut(&mut self, id: usize) -> &mut Player {
+        self.players[id].as_mut().unwrap()
+    }
 }

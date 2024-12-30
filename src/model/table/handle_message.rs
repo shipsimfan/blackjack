@@ -1,4 +1,7 @@
-use crate::{messages::ServerMessage, model::BlackjackTable};
+use crate::{
+    messages::ServerMessage,
+    model::{BlackjackTable, PlayerState},
+};
 
 impl BlackjackTable {
     /// Handles `message`, returning true if something changed about the table
@@ -9,6 +12,12 @@ impl BlackjackTable {
             }
             ServerMessage::ClientDisconnected(disconnected) => {
                 self.remove_player(disconnected.id as _)
+            }
+            ServerMessage::PlayNextRound(play_next_round) => {
+                let player = self.player_mut(play_next_round.client as _);
+                if player.state() != PlayerState::PlayingThisRound {
+                    player.set_state(play_next_round.as_state());
+                }
             }
 
             ServerMessage::Error(_)

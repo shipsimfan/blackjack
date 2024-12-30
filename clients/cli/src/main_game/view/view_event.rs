@@ -3,4 +3,10 @@
 pub enum ViewEvent {
     /// A chat message that should be sent
     Chat(String),
+
+    /// The user wants to play next round
+    PlayNextRound,
+
+    /// The user does not want to play next round
+    DontPlayNextRound,
 }

@@ -14,6 +14,15 @@ impl Lobby {
             return self.on_connecting_client_message(client_id, message);
         }
 
+        let server_messages = self.table.translate_message(client_id, &message);
+        if server_messages.len() > 0 {
+            for message in server_messages {
+                self.send_all(&message);
+                self.table.handle_message(message);
+            }
+            return;
+        }
+
         match message {
             ClientMessage::Chat(chat) => {
                 eprintln!(

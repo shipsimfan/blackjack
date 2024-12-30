@@ -3,5 +3,5 @@
 mod player;
 mod table;
 
-pub use player::Player;
+pub use player::{Player, PlayerState};
 pub use table::BlackjackTable;

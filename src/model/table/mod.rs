@@ -8,6 +8,7 @@ mod handle_message;
 mod new;
 mod parse;
 mod remove_player;
+mod translate_message;
 
 /// A single table of blackjack
 #[derive(Debug, Clone)]

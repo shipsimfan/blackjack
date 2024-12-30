@@ -34,13 +34,16 @@ impl MainGame {
                     terminal,
                 );
             }
+
             ServerMessage::Error(_) | ServerMessage::GameState(_) | ServerMessage::Hello(_) => {
                 return true
             }
+
+            ServerMessage::PlayNextRound(_) => {}
         }
 
         if self.table.handle_message(message) {
-            self.view.render(&self.table, terminal);
+            self.view.render(&self.table, self.client_id, terminal);
         }
 
         false
