@@ -4,4 +4,4 @@ mod player;
 mod table;
 
 pub use player::{Player, PlayerState};
-pub use table::BlackjackTable;
+pub use table::{BlackjackTable, GameState};

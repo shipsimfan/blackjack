@@ -1,4 +1,4 @@
-use crate::model::{BlackjackTable, Player};
+use crate::model::{BlackjackTable, GameState, Player};
 
 impl BlackjackTable {
     /// Gets all player slots
@@ -29,6 +29,21 @@ impl BlackjackTable {
     /// Gets the minimum bet a player can place at this table
     pub fn min_bet(&self) -> u16 {
         self.min_bet.get()
+    }
+
+    /// Gets the minimum number of players to start a round
+    pub fn min_players(&self) -> u8 {
+        self.min_players.get()
+    }
+
+    /// Gets the minimum number of human players to start a round
+    pub fn min_humans(&self) -> u8 {
+        self.min_humans
+    }
+
+    /// Gets the current state of the table
+    pub fn state(&self) -> GameState {
+        self.state
     }
 
     /// Gets the player with `id` as a mutable reference

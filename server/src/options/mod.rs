@@ -64,6 +64,14 @@ pub struct Options {
         description = "The minimum amount a player must bet on one hand in one round. Defaults to $10."
     )]
     pub min_bet: NonZeroU16,
+
+    /// The minimum number of players to begin a round
+    #[flag(value = "PLAYERS", default = DEFUALT_MIN_PLAYERS, description = "The minimum number of players to begin a round. Defaults to 1.")]
+    pub min_players: NonZeroU8,
+
+    /// The minimum number of humans to begin a round
+    #[flag(value = "HUMANS", default = DEFUALT_MIN_HUMANS, description = "The minimum number of human players to begin a round. Defaults to 0.")]
+    pub min_humans: u8,
 }
 
 /// The default maximum number of players that can connect
@@ -77,3 +85,9 @@ const DEFAULT_MAX_BET: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(1000) };
 
 /// The default minimum amount a player must bet for a hand in a single round
 const DEFAULT_MIN_BET: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(10) };
+
+/// The default minimum number of players to begin a round
+const DEFUALT_MIN_PLAYERS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(1) };
+
+/// The default minimum number of human players to begin a round
+const DEFUALT_MIN_HUMANS: u8 = 0;

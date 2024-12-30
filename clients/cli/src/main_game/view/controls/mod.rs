@@ -1,3 +1,5 @@
+use blackjack::model::GameState;
+
 mod event;
 
 mod change_active;
@@ -18,6 +20,9 @@ pub struct ControlsView {
 
     /// The current state of the controls
     state: ControlState,
+
+    /// The currently displayed game state
+    game_state: GameState,
 
     /// The y-level to render at
     y: usize,

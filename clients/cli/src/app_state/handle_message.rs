@@ -34,15 +34,12 @@ impl AppState {
             }
             AppState::WaitForGameState(mut wait_for_game_state) => {
                 match wait_for_game_state.handle_message(message, terminal) {
-                    Some((client_id, model)) => {
-                        connection.send(ChatClientMessage::new("Hello world!"));
-                        AppState::MainGame(MainGame::new(
-                            client_id,
-                            model,
-                            wait_for_game_state.server_name,
-                            terminal,
-                        ))
-                    }
+                    Some((client_id, model)) => AppState::MainGame(MainGame::new(
+                        client_id,
+                        model,
+                        wait_for_game_state.server_name,
+                        terminal,
+                    )),
                     None => return None,
                 }
             }

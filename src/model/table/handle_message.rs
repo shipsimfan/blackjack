@@ -3,6 +3,8 @@ use crate::{
     model::{BlackjackTable, PlayerState},
 };
 
+use super::GameState;
+
 impl BlackjackTable {
     /// Handles `message`, returning true if something changed about the table
     pub fn handle_message(&mut self, message: ServerMessage) -> bool {
@@ -15,8 +17,31 @@ impl BlackjackTable {
             }
             ServerMessage::PlayNextRound(play_next_round) => {
                 let player = self.player_mut(play_next_round.client as _);
-                if player.state() != PlayerState::PlayingThisRound {
-                    player.set_state(play_next_round.as_state());
+                if player.state() == PlayerState::PlayingThisRound {
+                    return false;
+                }
+
+                player.set_state(play_next_round.as_state());
+
+                if !self.state.is_round_active() {
+                    let mut players = 0;
+                    let mut humans = 0;
+                    for player in self.sitting_players() {
+                        if player.state() == PlayerState::NotPlaying {
+                            continue;
+                        }
+
+                        players += 1;
+                        if !player.ai() {
+                            humans += 1;
+                        }
+                    }
+
+                    self.state = if players >= self.min_players.get() && humans >= self.min_humans {
+                        GameState::WaitingForBets
+                    } else {
+                        GameState::WaitingForPlayers
+                    };
                 }
             }
 

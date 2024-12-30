@@ -1,6 +1,7 @@
 use super::{ControlState, ControlsView};
 use crate::VirtualTerminal;
-use blackjack::model::BlackjackTable;
+use blackjack::model::{BlackjackTable, GameState};
+use std::borrow::Cow;
 
 impl ControlsView {
     /// Render the controls if they have changed
@@ -13,7 +14,11 @@ impl ControlsView {
     ) {
         let state = ControlState::get(table, local_id);
 
-        if !force && state == self.state && self.last_selected_option == self.selected_option {
+        if !force
+            && state == self.state
+            && self.last_selected_option == self.selected_option
+            && self.game_state == table.state()
+        {
             return;
         }
 
@@ -21,7 +26,29 @@ impl ControlsView {
             self.selected_option = 0;
         }
 
-        terminal.move_cursor_to(0, self.y);
+        // Render game state
+        if force || self.game_state != table.state() {
+            self.game_state = table.state();
+
+            let state_message = match self.game_state {
+                GameState::WaitingForPlayers => Cow::Borrowed("Waiting for players..."),
+                GameState::WaitingForBets => Cow::Borrowed("Waiting for bets..."),
+                GameState::WaitingForPlayer(player) => Cow::Owned(format!(
+                    "Waiting for {}...",
+                    table.player(player as _).username()
+                )),
+            };
+
+            let total_extra = self.width - state_message.len();
+            let margin = total_extra / 2;
+            terminal.move_cursor_to(0, self.y);
+            terminal.write_blank(margin);
+            terminal.write(state_message);
+            terminal.write_blank(total_extra - margin);
+        }
+
+        // Render options
+        terminal.move_cursor_to(0, self.y + 1);
 
         if state == ControlState::None {
             terminal.write_blank(self.width);
