@@ -49,6 +49,10 @@ pub struct Options {
     )]
     pub password: Option<String>,
 
+    /// The number of decks to play in the shoe
+    #[flag(value = "DECKS", default = DEFAULT_DECKS, description = "The number of decks to play in the shoe. Defaults to 6")]
+    pub decks: NonZeroU8,
+
     /// The maximum amount one player can bet on one hand in one round
     #[flag(
         value = "BET",
@@ -100,3 +104,6 @@ const DEFUALT_MIN_HUMANS: u8 = 0;
 
 /// The default maximum number of hands a player can start a round withs
 const DEFAULT_MAX_HANDS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(3) };
+
+/// The default number of decks to play the shoe with
+const DEFAULT_DECKS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(6) };

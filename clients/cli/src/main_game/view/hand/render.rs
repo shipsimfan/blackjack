@@ -16,6 +16,12 @@ impl HandView {
         terminal.write_blank(HAND_LINE_MARGIN);
         let mut written = HAND_LINE_MARGIN;
 
+        todo!("Render hand value");
+
+        for card in hand.cards() {
+            todo!("Render cards");
+        }
+
         terminal.write_blank(self.width - self.max_bet_length - written - 1);
         written = self.width - self.max_bet_length - 1;
         if let Some(bet) = self.bet {

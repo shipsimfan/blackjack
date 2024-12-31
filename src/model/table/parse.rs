@@ -6,6 +6,7 @@ use crate::{
 impl Parse for BlackjackTable {
     fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
         Ok(BlackjackTable {
+            shoe: None,
             players: parser.parse()?,
             state: parser.parse()?,
             dealer_hand: parser.parse()?,

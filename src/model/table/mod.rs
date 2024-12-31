@@ -1,4 +1,4 @@
-use crate::model::{Hand, Player};
+use crate::model::{Hand, Player, Shoe};
 use std::num::{NonZeroU16, NonZeroU8};
 
 mod game_state;
@@ -17,6 +17,9 @@ pub use game_state::GameState;
 /// A single table of blackjack
 #[derive(Debug, Clone)]
 pub struct BlackjackTable {
+    /// The shoe the table is using
+    shoe: Option<Shoe>,
+
     /// The available slots at the table and the players that fill them
     players: Box<[Option<Player>]>,
 
