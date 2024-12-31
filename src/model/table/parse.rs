@@ -8,10 +8,12 @@ impl Parse for BlackjackTable {
         Ok(BlackjackTable {
             players: parser.parse()?,
             state: parser.parse()?,
+            dealer_hand: parser.parse()?,
             max_bet: parser.parse()?,
             min_bet: parser.parse()?,
             min_players: parser.parse()?,
             min_humans: parser.parse()?,
+            max_hands: parser.parse()?,
         })
     }
 }

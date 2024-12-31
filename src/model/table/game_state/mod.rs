@@ -12,5 +12,5 @@ pub enum GameState {
     WaitingForBets,
 
     /// Waiting for a player to make a decision
-    WaitingForPlayer(u8),
+    WaitingForPlayer(u8, u16),
 }

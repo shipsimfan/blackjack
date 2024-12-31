@@ -1,6 +1,6 @@
 use crate::{
     messages::Username,
-    model::{Player, PlayerState},
+    model::{Hand, Player, PlayerState},
 };
 
 impl Player {
@@ -17,5 +17,10 @@ impl Player {
     /// Gets the current state of this player
     pub fn state(&self) -> PlayerState {
         self.state
+    }
+
+    /// Gets the hands this player currently has
+    pub fn hands(&self) -> &[Hand] {
+        &self.hands
     }
 }

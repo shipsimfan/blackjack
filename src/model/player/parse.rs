@@ -9,6 +9,7 @@ impl Parse for Player {
             username: parser.parse()?,
             ai: parser.parse()?,
             state: parser.parse()?,
+            hands: parser.parse()?,
         })
     }
 }

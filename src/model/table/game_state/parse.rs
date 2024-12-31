@@ -8,7 +8,10 @@ impl Parse for GameState {
         match u8::parse(parser)? {
             0u8 => Ok(GameState::WaitingForPlayers),
             1u8 => Ok(GameState::WaitingForBets),
-            2u8 => Ok(GameState::WaitingForPlayer(parser.parse()?)),
+            2u8 => Ok(GameState::WaitingForPlayer(
+                parser.parse()?,
+                parser.parse()?,
+            )),
             _ => Err(ParseMessageError),
         }
     }

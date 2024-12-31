@@ -6,6 +6,7 @@ mod client_disconnected;
 mod error;
 mod game_state;
 mod hello;
+mod place_bet;
 mod play_next_round;
 
 pub use chat::ChatServerMessage;
@@ -14,6 +15,7 @@ pub use client_disconnected::ClientDisconnectedServerMessage;
 pub use error::ErrorServerMessage;
 pub use game_state::GameStateServerMessage;
 pub use hello::HelloServerMessage;
+pub use place_bet::PlaceBetServerMessage;
 pub use play_next_round::PlayNextRoundServerMessage;
 
 messages!(
@@ -41,5 +43,8 @@ messages!(
 
         /// A player has changed if they are playing next round
         PlayNextRound(PlayNextRoundServerMessage) = 6,
+
+        /// A player has placed a bet
+        PlaceBet(PlaceBetServerMessage) = 7,
     }
 );

@@ -18,6 +18,12 @@ macro_rules! number_parse {
                 std::num::NonZero::new(Parse::parse(parser)?).ok_or(ParseMessageError)
             }
         }
+
+        impl Parse for Option<std::num::NonZero<$ty>> {
+            fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
+                Ok(std::num::NonZero::new(Parse::parse(parser)?))
+            }
+        }
     )*};
 }
 

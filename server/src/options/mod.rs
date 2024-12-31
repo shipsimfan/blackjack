@@ -72,6 +72,12 @@ pub struct Options {
     /// The minimum number of humans to begin a round
     #[flag(value = "HUMANS", default = DEFUALT_MIN_HUMANS, description = "The minimum number of human players to begin a round. Defaults to 0.")]
     pub min_humans: u8,
+
+    /// The maximum number of hands a single player can start a round with
+    ///
+    /// NOTE: The actual number of hands a player is playing may exceed this value due to splitting
+    #[flag(value = "HANDS", default = DEFAULT_MAX_HANDS, description = "The maximum number of hands a player can start a round with. Defaults to 3.")]
+    pub max_hands: NonZeroU8,
 }
 
 /// The default maximum number of players that can connect
@@ -91,3 +97,6 @@ const DEFUALT_MIN_PLAYERS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(1) };
 
 /// The default minimum number of human players to begin a round
 const DEFUALT_MIN_HUMANS: u8 = 0;
+
+/// The default maximum number of hands a player can start a round withs
+const DEFAULT_MAX_HANDS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(3) };

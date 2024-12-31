@@ -46,6 +46,14 @@ impl BlackjackTable {
         self.state
     }
 
+    /// Get the current player the game is waiting on
+    pub fn current_player(&self) -> Option<usize> {
+        match self.state {
+            GameState::WaitingForPlayer(player, _) => Some(player as _),
+            _ => return None,
+        }
+    }
+
     /// Gets the player with `id` as a mutable reference
     pub(crate) fn player_mut(&mut self, id: usize) -> &mut Player {
         self.players[id].as_mut().unwrap()

@@ -18,6 +18,7 @@ impl Lobby {
                 options.min_bet,
                 options.min_players,
                 options.min_humans,
+                options.max_hands,
             ),
             clients: clients.into_boxed_slice(),
             connecting_clients: VecDeque::with_capacity(options.max_players()),

@@ -5,7 +5,7 @@ impl GameState {
     pub fn is_round_active(&self) -> bool {
         match self {
             GameState::WaitingForBets | GameState::WaitingForPlayers => false,
-            GameState::WaitingForPlayer(_) => true,
+            GameState::WaitingForPlayer(_, _) => true,
         }
     }
 }

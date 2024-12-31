@@ -1,6 +1,6 @@
 use super::PlayerView;
 use crate::{
-    main_game::view::{CONTROLS_HEIGHT, HAND_LINE_MARGIN},
+    main_game::view::{HandView, CONTROLS_HEIGHT},
     VirtualTerminal,
 };
 use blackjack::model::{Player, PlayerState};
@@ -11,6 +11,7 @@ impl PlayerView {
         y: usize,
         player: &Player,
         is_local: bool,
+        max_bet: u16,
         terminal: &mut VirtualTerminal,
     ) {
         let mut render_blank_line = self.y != y;
@@ -47,7 +48,7 @@ impl PlayerView {
                     terminal.write("\x1B[22m");
                 }
                 terminal.write_blank(
-                    self.width - self.username.len() - if player.ai() { 5 } else { 0 } - 1,
+                    self.width - self.username.len() - if player.ai() { 5 } else { 0 },
                 );
             }
         }
@@ -64,14 +65,22 @@ impl PlayerView {
         }
 
         // Render hands
-        if y + 1 < terminal.height() - CONTROLS_HEIGHT {
-            terminal.move_cursor_to(HAND_LINE_MARGIN, y + 1);
-            terminal.write_blank(self.width - HAND_LINE_MARGIN);
+        render_blank_line |= self.hands.len() != player.hands().len();
+        while self.hands.len() > player.hands().len() {
+            self.hands.pop();
+        }
+        while self.hands.len() < player.hands().len() {
+            self.hands.push(HandView::new(self.width, max_bet));
         }
 
-        // Set `render_blank_line` if hand size changed
+        for i in 0..player.hands().len() {
+            let y = y + i + 1;
+            if y >= terminal.height() - CONTROLS_HEIGHT {
+                break;
+            }
 
-        // Adjust height
+            self.hands[i].render(&player.hands()[i], y, terminal);
+        }
 
         // Adjust passed variables
         self.ai = player.ai();

@@ -5,6 +5,7 @@ impl PlayerView {
     pub fn new(width: usize) -> PlayerView {
         PlayerView {
             username: String::new(),
+            hands: Vec::new(),
             ai: false,
             is_local: false,
             not_playing: false,

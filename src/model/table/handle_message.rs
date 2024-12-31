@@ -1,9 +1,7 @@
 use crate::{
     messages::ServerMessage,
-    model::{BlackjackTable, PlayerState},
+    model::{BlackjackTable, GameState, PlayerState},
 };
-
-use super::GameState;
 
 impl BlackjackTable {
     /// Handles `message`, returning true if something changed about the table
@@ -43,6 +41,27 @@ impl BlackjackTable {
                         GameState::WaitingForPlayers
                     };
                 }
+            }
+            ServerMessage::PlaceBet(place_bet) => {
+                if self.state.is_round_active()
+                    || place_bet.bet < self.min_bet
+                    || place_bet.bet > self.max_bet
+                {
+                    return false;
+                }
+
+                let max_hands = self.max_hands.get();
+
+                let player = self.player_mut(place_bet.client as _);
+                if player.state() == PlayerState::NotPlaying
+                    || (player.state() == PlayerState::PlayingThisRound
+                        && player.hands().len() >= max_hands as _)
+                {
+                    return false;
+                }
+
+                player.add_hand(place_bet.bet);
+                player.set_state(PlayerState::PlayingThisRound);
             }
 
             ServerMessage::Error(_)

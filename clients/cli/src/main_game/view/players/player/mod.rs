@@ -1,3 +1,5 @@
+use crate::main_game::view::hand::HandView;
+
 mod clear;
 mod get;
 mod new;
@@ -7,6 +9,9 @@ mod render;
 pub struct PlayerView {
     /// The username of the player
     username: String,
+
+    /// The currently displayed hands
+    hands: Vec<HandView>,
 
     /// Is this player an AI?
     ai: bool,

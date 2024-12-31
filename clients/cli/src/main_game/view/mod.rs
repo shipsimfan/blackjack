@@ -1,9 +1,11 @@
 use chat::ChatView;
 use controls::ControlsView;
+use hand::HandView;
 use players::PlayersView;
 
 mod chat;
 mod controls;
+mod hand;
 mod players;
 mod view_event;
 
@@ -46,7 +48,7 @@ pub struct View {
 }
 
 /// The size of the margin before a hand line
-const HAND_LINE_MARGIN: usize = 3; // [ ][ ][ ]
+const HAND_LINE_MARGIN: usize = 2; // [ ][ ]
 
 /// The space required to display the count of a given hand
 const HAND_LINE_COUNT_LENGTH: usize = 4; // [HS ][0-9][0-9 ][ ]

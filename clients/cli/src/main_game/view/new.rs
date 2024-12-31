@@ -12,7 +12,7 @@ impl View {
         local_id: usize,
         terminal: &mut VirtualTerminal,
     ) -> Self {
-        terminal.use_alt_buffer();
+        //terminal.use_alt_buffer();
         terminal.hide_cursor();
 
         let game_width = MIN_HAND_LINE_LENGTH + table.max_bet().ilog10() as usize + 1;

@@ -5,6 +5,7 @@ impl Generate for Player {
         self.username.generate(output);
         self.ai.generate(output);
         self.state.generate(output);
+        self.hands.generate(output);
     }
 }
 

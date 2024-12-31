@@ -2,10 +2,12 @@ use crate::messages::messages;
 
 mod chat;
 mod hello;
+mod place_bet;
 mod play_next_round;
 
 pub use chat::ChatClientMessage;
 pub use hello::{HelloClientMessage, Username};
+pub use place_bet::PlaceBetClientMessage;
 pub use play_next_round::PlayNextRoundClientMessage;
 
 messages!(
@@ -21,5 +23,8 @@ messages!(
 
         /// Notifies if a player will be playing the next round
         PlayNextRound(PlayNextRoundClientMessage) = 3,
+
+        /// A player has tried placing a bet
+        PlaceBet(PlaceBetClientMessage) = 4,
     }
 );

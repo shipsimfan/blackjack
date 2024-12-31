@@ -10,6 +10,7 @@ impl Player {
             username,
             ai,
             state: PlayerState::NotPlaying,
+            hands: Vec::new(),
         }
     }
 }

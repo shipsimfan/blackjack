@@ -1,6 +1,6 @@
 use super::view::ViewEvent;
 use crate::{Connection, MainGame, TerminalEvent, VirtualTerminal};
-use blackjack::messages::{ChatClientMessage, PlayNextRoundClientMessage};
+use blackjack::messages::{ChatClientMessage, PlaceBetClientMessage, PlayNextRoundClientMessage};
 
 impl MainGame {
     /// Handle a terminal event, returning true if the program should exit
@@ -28,6 +28,7 @@ impl MainGame {
             ViewEvent::Chat(message) => connection.send(ChatClientMessage::new(message)),
             ViewEvent::PlayNextRound => connection.send(PlayNextRoundClientMessage::new(true)),
             ViewEvent::DontPlayNextRound => connection.send(PlayNextRoundClientMessage::new(false)),
+            ViewEvent::PlaceBet(bet) => connection.send(PlaceBetClientMessage::new(bet)),
         }
 
         false

@@ -1,9 +1,10 @@
-use crate::messages::Username;
+use crate::{messages::Username, model::Hand};
 
 mod state;
 
 mod generate;
 mod get;
+mod hands;
 mod new;
 mod parse;
 mod set;
@@ -21,4 +22,7 @@ pub struct Player {
 
     /// The current state of this player
     state: PlayerState,
+
+    /// The set of hands this player currently has
+    hands: Vec<Hand>,
 }

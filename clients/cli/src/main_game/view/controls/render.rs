@@ -33,7 +33,7 @@ impl ControlsView {
             let state_message = match self.game_state {
                 GameState::WaitingForPlayers => Cow::Borrowed("Waiting for players..."),
                 GameState::WaitingForBets => Cow::Borrowed("Waiting for bets..."),
-                GameState::WaitingForPlayer(player) => Cow::Owned(format!(
+                GameState::WaitingForPlayer(player, _) => Cow::Owned(format!(
                     "Waiting for {}...",
                     table.player(player as _).username()
                 )),

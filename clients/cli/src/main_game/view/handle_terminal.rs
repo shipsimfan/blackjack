@@ -42,6 +42,7 @@ impl View {
             }
             ControlEvent::PlayNextRound => Some(ViewEvent::PlayNextRound),
             ControlEvent::DontPlayNextRound => Some(ViewEvent::DontPlayNextRound),
+            ControlEvent::PlaceBet(bet) => Some(ViewEvent::PlaceBet(bet)),
         }
     }
 }

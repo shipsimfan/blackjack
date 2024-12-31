@@ -13,6 +13,15 @@ macro_rules! number_generate {
                 self.get().generate(output);
             }
         }
+
+        impl Generate for Option<std::num::NonZero<$ty>> {
+            fn generate(&self, output: &mut Vec<u8>) {
+                match self {
+                    Some(value) => value.get(),
+                    None => 0,
+                }.generate(output)
+            }
+        }
     )*};
 }
 

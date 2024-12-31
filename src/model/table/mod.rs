@@ -1,4 +1,4 @@
-use crate::model::Player;
+use crate::model::{Hand, Player};
 use std::num::{NonZeroU16, NonZeroU8};
 
 mod game_state;
@@ -23,6 +23,9 @@ pub struct BlackjackTable {
     /// The current state of the game
     state: GameState,
 
+    /// The current hand of the dealer
+    dealer_hand: Hand,
+
     /// The maximum bet a player can make
     max_bet: NonZeroU16,
 
@@ -34,4 +37,9 @@ pub struct BlackjackTable {
 
     /// The minimum required human players to begin a round
     min_humans: u8,
+
+    /// The maximum number of hands a single player may start a round with
+    ///
+    /// NOTE: The actual number of hands a player is playing may exceed this value due to splitting
+    max_hands: NonZeroU8,
 }

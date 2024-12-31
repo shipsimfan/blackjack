@@ -12,7 +12,8 @@ impl View {
     ) {
         terminal.hide_cursor();
 
-        self.players.render(table.players(), terminal);
+        self.players
+            .render(table.players(), table.max_bet(), terminal);
         self.controls.render(false, table, local_id, terminal);
 
         if self.controls.chat_active() {

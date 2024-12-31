@@ -1,3 +1,5 @@
+use std::num::NonZeroU16;
+
 /// An event that can happen from the view handling a terminal event
 #[derive(Debug)]
 pub enum ViewEvent {
@@ -9,4 +11,7 @@ pub enum ViewEvent {
 
     /// The user does not want to play next round
     DontPlayNextRound,
+
+    /// The user wants to place a bet
+    PlaceBet(NonZeroU16),
 }

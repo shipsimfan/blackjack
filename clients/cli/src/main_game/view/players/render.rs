@@ -4,7 +4,12 @@ use blackjack::model::Player;
 
 impl PlayersView {
     /// Renders any players that have changed since the previous render
-    pub fn render(&mut self, players: &[Option<Player>], terminal: &mut VirtualTerminal) {
+    pub fn render(
+        &mut self,
+        players: &[Option<Player>],
+        max_bet: u16,
+        terminal: &mut VirtualTerminal,
+    ) {
         let mut y = self.y;
         let mut i = 0;
         for (id, player) in players.iter().enumerate() {
@@ -21,7 +26,7 @@ impl PlayersView {
                 self.players.push(PlayerView::new(self.width));
             }
 
-            self.players[i].render(y, player, id == self.local_id, terminal);
+            self.players[i].render(y, player, id == self.local_id, max_bet, terminal);
 
             y += self.players[i].height();
             i += 1;

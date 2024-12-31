@@ -5,9 +5,10 @@ impl Generate for GameState {
         match self {
             GameState::WaitingForPlayers => 0u8.generate(output),
             GameState::WaitingForBets => 1u8.generate(output),
-            GameState::WaitingForPlayer(player) => {
+            GameState::WaitingForPlayer(player, hand) => {
                 2u8.generate(output);
                 player.generate(output);
+                hand.generate(output);
             }
         }
     }
