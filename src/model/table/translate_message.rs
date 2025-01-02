@@ -6,7 +6,7 @@ use crate::{
 impl BlackjackTable {
     /// Translates a [`ClientMessage`] into zero or more corresponding [`ServerMessage`]s
     pub fn translate_message<'a>(
-        &self,
+        &mut self,
         client_id: usize,
         message: &'a ClientMessage,
     ) -> Vec<ServerMessage<'a>> {

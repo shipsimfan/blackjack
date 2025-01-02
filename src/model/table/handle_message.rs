@@ -63,6 +63,7 @@ impl BlackjackTable {
                 player.add_hand(place_bet.bet);
                 player.set_state(PlayerState::PlayingThisRound);
             }
+            ServerMessage::Deal(deal) => todo!("Deal"),
 
             ServerMessage::Error(_)
             | ServerMessage::GameState(_)

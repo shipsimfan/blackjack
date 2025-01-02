@@ -39,7 +39,9 @@ impl MainGame {
                 return true
             }
 
-            ServerMessage::PlayNextRound(_) | ServerMessage::PlaceBet(_) => {}
+            ServerMessage::PlayNextRound(_)
+            | ServerMessage::PlaceBet(_)
+            | ServerMessage::Deal(_) => {}
         }
 
         if self.table.handle_message(message) {

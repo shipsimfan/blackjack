@@ -3,6 +3,7 @@ use crate::messages::messages;
 mod chat;
 mod client_connected;
 mod client_disconnected;
+mod deal;
 mod error;
 mod game_state;
 mod hello;
@@ -12,6 +13,7 @@ mod play_next_round;
 pub use chat::ChatServerMessage;
 pub use client_connected::ClientConnectedServerMessage;
 pub use client_disconnected::ClientDisconnectedServerMessage;
+pub use deal::DealServerMessage;
 pub use error::ErrorServerMessage;
 pub use game_state::GameStateServerMessage;
 pub use hello::HelloServerMessage;
@@ -46,5 +48,8 @@ messages!(
 
         /// A player has placed a bet
         PlaceBet(PlaceBetServerMessage) = 7,
+
+        /// A new round has been dealt
+        Deal(DealServerMessage) = 8,
     }
 );

@@ -5,6 +5,7 @@ mod error;
 mod number;
 mod parser;
 mod string;
+mod tuple;
 
 pub(crate) use parser::Parser;
 

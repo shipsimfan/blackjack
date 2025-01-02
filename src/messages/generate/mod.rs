@@ -3,6 +3,7 @@ mod collections;
 mod cow;
 mod number;
 mod string;
+mod tuple;
 
 /// An element which can be generated for a message
 pub(crate) trait Generate {
