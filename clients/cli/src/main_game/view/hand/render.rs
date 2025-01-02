@@ -5,21 +5,36 @@ use blackjack::model::Hand;
 impl HandView {
     /// Renders `hand` to `terminal`
     pub fn render(&mut self, hand: &Hand, y: usize, terminal: &mut VirtualTerminal) {
-        if self.y == y && self.bet == hand.bet() {
+        let cards_eq = self.cards == hand.cards();
+        if self.y == y && self.bet == hand.bet() && cards_eq {
             return;
         }
 
         self.y = y;
         self.bet = hand.bet();
+        if !cards_eq {
+            self.cards = hand.cards().to_vec();
+        }
 
+        // Render margin
         terminal.move_cursor_to(0, y);
         terminal.write_blank(HAND_LINE_MARGIN);
         let mut written = HAND_LINE_MARGIN;
 
-        todo!("Render hand value");
+        // Render hand value
+        if hand.cards().len() > 0 {
+            let hand_value = hand.value().to_string();
+            written += hand_value.len();
+            terminal.write(hand_value);
+        }
 
+        terminal.write_blank(HAND_LINE_MARGIN + 4 - written);
+        written = HAND_LINE_MARGIN + 4;
+
+        // Render cards
         for card in hand.cards() {
-            todo!("Render cards");
+            terminal.write(card);
+            written += 1;
         }
 
         terminal.write_blank(self.width - self.max_bet_length - written - 1);
