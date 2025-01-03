@@ -3,6 +3,7 @@ use std::num::NonZeroU16;
 
 mod value;
 
+mod add_card;
 mod generate;
 mod get;
 mod new;

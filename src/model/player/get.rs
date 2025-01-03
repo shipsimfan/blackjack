@@ -23,4 +23,9 @@ impl Player {
     pub fn hands(&self) -> &[Hand] {
         &self.hands
     }
+
+    /// Gets the hands this player currently has mutably
+    pub(crate) fn hands_mut(&mut self) -> &mut [Hand] {
+        &mut self.hands
+    }
 }

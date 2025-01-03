@@ -1,6 +1,6 @@
 use crate::{
     messages::{ClientMessage, PlaceBetServerMessage, PlayNextRoundServerMessage, ServerMessage},
-    model::{BlackjackTable, PlayerState},
+    model::{BlackjackTable, GameState, PlayerState},
 };
 
 impl BlackjackTable {
@@ -19,10 +19,27 @@ impl BlackjackTable {
                     return Vec::new();
                 }
 
-                vec![PlayNextRoundServerMessage::new(
+                let play_next_round = PlayNextRoundServerMessage::new(
                     client_id as _,
                     play_next_round.play_next_round,
-                )]
+                );
+
+                if self.state == GameState::WaitingForBets {
+                    let mut deal = true;
+                    for player in self.sitting_players() {
+                        if player.state() == PlayerState::PlayingNextRound {
+                            deal = false;
+                            break;
+                        }
+                    }
+
+                    if deal {
+                        let (deal, shuffled) = self.deal();
+                        return vec![play_next_round, deal];
+                    }
+                }
+
+                vec![play_next_round]
             }
             ClientMessage::PlaceBet(place_bet) => {
                 let player = self.player(client_id);
@@ -34,10 +51,29 @@ impl BlackjackTable {
                     return Vec::new();
                 }
 
-                // TODO: Check if all players would have placed bets at this point. If so, deal a
-                // new hand
+                let bet = PlaceBetServerMessage::new(client_id as _, place_bet.bet);
+                if self.state != GameState::WaitingForBets {
+                    return vec![bet];
+                }
 
-                vec![PlaceBetServerMessage::new(client_id as _, place_bet.bet)]
+                for i in 0..self.players.len() {
+                    if i == client_id {
+                        continue;
+                    }
+
+                    let player = match &self.players[i] {
+                        Some(player) => player,
+                        None => continue,
+                    };
+
+                    if player.state() == PlayerState::PlayingNextRound {
+                        return vec![bet];
+                    }
+                }
+
+                let (deal, shuffled) = self.deal();
+
+                vec![bet, deal]
             }
 
             ClientMessage::Chat(_) | ClientMessage::Hello(_) => Vec::new(),

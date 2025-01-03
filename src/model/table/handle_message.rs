@@ -1,6 +1,6 @@
 use crate::{
     messages::ServerMessage,
-    model::{BlackjackTable, GameState, PlayerState},
+    model::{BlackjackTable, GameState, Hand, PlayerState},
 };
 
 impl BlackjackTable {
@@ -52,7 +52,7 @@ impl BlackjackTable {
 
                 let max_hands = self.max_hands.get();
 
-                let player = self.player_mut(place_bet.client as _);
+                let player = self.players[place_bet.client as usize].as_mut().unwrap();
                 if player.state() == PlayerState::NotPlaying
                     || (player.state() == PlayerState::PlayingThisRound
                         && player.hands().len() >= max_hands as _)
@@ -60,10 +60,35 @@ impl BlackjackTable {
                     return false;
                 }
 
-                player.add_hand(place_bet.bet);
+                player.add_hand(place_bet.bet, self.shoe.as_mut());
                 player.set_state(PlayerState::PlayingThisRound);
             }
-            ServerMessage::Deal(deal) => todo!("Deal"),
+            ServerMessage::Deal(deal) => {
+                self.dealer_hand = Hand::new(None);
+                self.dealer_hand.add_card(deal.dealer_up_card);
+                if let Some(dealer_down) = deal.dealer_down_card {
+                    self.dealer_hand.add_card(dealer_down);
+                }
+
+                let mut i = 0;
+                for player in &mut self.players {
+                    let player = match player {
+                        Some(player) => player,
+                        None => continue,
+                    };
+
+                    if player.state() != PlayerState::PlayingThisRound {
+                        player.clear_hands(self.shoe.as_mut());
+                        continue;
+                    }
+
+                    for hand in player.hands_mut() {
+                        hand.add_card(deal.hands[i].0);
+                        hand.add_card(deal.hands[i].1);
+                        i += 1;
+                    }
+                }
+            }
 
             ServerMessage::Error(_)
             | ServerMessage::GameState(_)
