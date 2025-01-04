@@ -25,6 +25,8 @@ impl BlackjackTable {
                 );
 
                 if self.state == GameState::WaitingForBets {
+                    todo!("Check if we are going to transition to WaitingForPlayers");
+
                     let mut deal = true;
                     for player in self.sitting_players() {
                         if player.state() == PlayerState::PlayingNextRound {
@@ -34,7 +36,7 @@ impl BlackjackTable {
                     }
 
                     if deal {
-                        let (deal, shuffled) = self.deal();
+                        let (deal, shuffled) = self.deal(None);
                         return vec![play_next_round, deal];
                     }
                 }
@@ -71,7 +73,7 @@ impl BlackjackTable {
                     }
                 }
 
-                let (deal, shuffled) = self.deal();
+                let (deal, shuffled) = self.deal(Some(client_id));
 
                 vec![bet, deal]
             }

@@ -5,14 +5,23 @@ use crate::{
 
 impl BlackjackTable {
     /// Deals a new round, returning the appropriate message and a boolean if the deck was shuffled
-    pub fn deal<'a>(&mut self) -> (ServerMessage<'a>, bool) {
+    pub fn deal<'a>(&mut self, additional_client: Option<usize>) -> (ServerMessage<'a>, bool) {
         let mut hand_count = 0;
-        for player in self.sitting_players() {
-            if player.state() != PlayerState::PlayingThisRound {
-                continue;
+        for i in 0..self.players.len() {
+            let player = match &self.players[i] {
+                Some(player) => player,
+                None => continue,
+            };
+
+            if player.state() == PlayerState::PlayingThisRound {
+                hand_count += player.hands().len();
             }
 
-            hand_count += player.hands().len();
+            if let Some(additional_client) = additional_client {
+                if additional_client == i {
+                    hand_count += 1;
+                }
+            }
         }
 
         let shoe = self.shoe.as_mut().unwrap();

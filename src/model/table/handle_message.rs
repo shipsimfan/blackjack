@@ -20,27 +20,7 @@ impl BlackjackTable {
                 }
 
                 player.set_state(play_next_round.as_state());
-
-                if !self.state.is_round_active() {
-                    let mut players = 0;
-                    let mut humans = 0;
-                    for player in self.sitting_players() {
-                        if player.state() == PlayerState::NotPlaying {
-                            continue;
-                        }
-
-                        players += 1;
-                        if !player.ai() {
-                            humans += 1;
-                        }
-                    }
-
-                    self.state = if players >= self.min_players.get() && humans >= self.min_humans {
-                        GameState::WaitingForBets
-                    } else {
-                        GameState::WaitingForPlayers
-                    };
-                }
+                self.change_state();
             }
             ServerMessage::PlaceBet(place_bet) => {
                 if self.state.is_round_active()

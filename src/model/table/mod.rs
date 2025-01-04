@@ -4,6 +4,7 @@ use std::num::{NonZeroU16, NonZeroU8};
 mod game_state;
 
 mod add_player;
+mod change_state;
 mod deal;
 mod generate;
 mod get;
