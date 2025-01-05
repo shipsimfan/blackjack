@@ -1,9 +1,11 @@
 use crate::{
     messages::ServerMessage,
-    model::{BlackjackTable, GameState, Hand, PlayerState},
+    model::{BlackjackTable, Hand, PlayerState},
 };
 
 impl BlackjackTable {
+    // TODO: Change return type to `HandleMessageResult` enum to allow returning a deal server message
+
     /// Handles `message`, returning true if something changed about the table
     pub fn handle_message(&mut self, message: ServerMessage) -> bool {
         match message {
@@ -11,7 +13,9 @@ impl BlackjackTable {
                 self.add_player(connected.id as _, connected.unwrap())
             }
             ServerMessage::ClientDisconnected(disconnected) => {
-                self.remove_player(disconnected.id as _)
+                if let Some((deal, shuffle)) = self.remove_player(disconnected.id as _) {
+                    todo!()
+                }
             }
             ServerMessage::PlayNextRound(play_next_round) => {
                 let player = self.player_mut(play_next_round.client as _);
@@ -20,7 +24,9 @@ impl BlackjackTable {
                 }
 
                 player.set_state(play_next_round.as_state());
-                self.change_state();
+                if self.change_state() {
+                    todo!();
+                }
             }
             ServerMessage::PlaceBet(place_bet) => {
                 if self.state.is_round_active()
@@ -42,6 +48,9 @@ impl BlackjackTable {
 
                 player.add_hand(place_bet.bet, self.shoe.as_mut());
                 player.set_state(PlayerState::PlayingThisRound);
+                if self.change_state() {
+                    todo!()
+                }
             }
             ServerMessage::Deal(deal) => {
                 self.dealer_hand = Hand::new(None);
