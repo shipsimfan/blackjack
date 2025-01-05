@@ -2,6 +2,7 @@ use crate::model::{Hand, Player, Shoe};
 use std::num::{NonZeroU16, NonZeroU8};
 
 mod game_state;
+mod handle_message_result;
 
 mod add_player;
 mod change_state;
@@ -15,6 +16,7 @@ mod remove_player;
 mod translate_message;
 
 pub use game_state::GameState;
+pub use handle_message_result::HandleMessageResult;
 
 /// A single table of blackjack
 #[derive(Debug, Clone)]

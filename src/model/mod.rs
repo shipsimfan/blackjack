@@ -10,4 +10,4 @@ pub use card::{Card, Rank, Suit};
 pub use hand::{Hand, HandValue};
 pub use player::{Player, PlayerState};
 pub use shoe::Shoe;
-pub use table::{BlackjackTable, GameState};
+pub use table::{BlackjackTable, GameState, HandleMessageResult};

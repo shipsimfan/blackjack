@@ -41,10 +41,11 @@ impl MainGame {
 
             ServerMessage::PlayNextRound(_)
             | ServerMessage::PlaceBet(_)
-            | ServerMessage::Deal(_) => {}
+            | ServerMessage::Deal(_)
+            | ServerMessage::Shuffle(_) => {}
         }
 
-        if self.table.handle_message(message) {
+        if self.table.handle_message(message).is_change() {
             self.view.render(&self.table, self.client_id, terminal);
         }
 

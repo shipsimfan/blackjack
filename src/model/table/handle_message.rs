@@ -1,39 +1,44 @@
 use crate::{
     messages::ServerMessage,
-    model::{BlackjackTable, Hand, PlayerState},
+    model::{BlackjackTable, Hand, HandleMessageResult, PlayerState},
 };
 
 impl BlackjackTable {
-    // TODO: Change return type to `HandleMessageResult` enum to allow returning a deal server message
-
     /// Handles `message`, returning true if something changed about the table
-    pub fn handle_message(&mut self, message: ServerMessage) -> bool {
+    pub fn handle_message<'a>(&mut self, message: ServerMessage) -> HandleMessageResult<'a> {
         match message {
             ServerMessage::ClientConnected(connected) => {
-                self.add_player(connected.id as _, connected.unwrap())
+                self.add_player(connected.id as _, connected.unwrap());
+                HandleMessageResult::Change
             }
             ServerMessage::ClientDisconnected(disconnected) => {
-                if let Some((deal, shuffle)) = self.remove_player(disconnected.id as _) {
-                    todo!()
-                }
+                return match self.remove_player(disconnected.id as _) {
+                    Some((deal, shuffle)) => HandleMessageResult::Deal(deal, shuffle),
+                    None => HandleMessageResult::Change,
+                };
             }
             ServerMessage::PlayNextRound(play_next_round) => {
                 let player = self.player_mut(play_next_round.client as _);
-                if player.state() == PlayerState::PlayingThisRound {
-                    return false;
+                if player.state() == PlayerState::PlayingThisRound
+                    || player.state() == play_next_round.as_state()
+                {
+                    return HandleMessageResult::NoChange;
                 }
 
                 player.set_state(play_next_round.as_state());
-                if self.change_state() {
-                    todo!();
+                if self.change_state() && self.shoe.is_some() {
+                    let (deal, shuffle) = self.deal(None);
+                    return HandleMessageResult::Deal(deal, shuffle);
                 }
+
+                HandleMessageResult::Change
             }
             ServerMessage::PlaceBet(place_bet) => {
                 if self.state.is_round_active()
                     || place_bet.bet < self.min_bet
                     || place_bet.bet > self.max_bet
                 {
-                    return false;
+                    return HandleMessageResult::NoChange;
                 }
 
                 let max_hands = self.max_hands.get();
@@ -43,14 +48,17 @@ impl BlackjackTable {
                     || (player.state() == PlayerState::PlayingThisRound
                         && player.hands().len() >= max_hands as _)
                 {
-                    return false;
+                    return HandleMessageResult::NoChange;
                 }
 
                 player.add_hand(place_bet.bet, self.shoe.as_mut());
                 player.set_state(PlayerState::PlayingThisRound);
-                if self.change_state() {
-                    todo!()
+                if self.change_state() && self.shoe.is_some() {
+                    let (deal, shuffle) = self.deal(None);
+                    return HandleMessageResult::Deal(deal, shuffle);
                 }
+
+                HandleMessageResult::Change
             }
             ServerMessage::Deal(deal) => {
                 self.dealer_hand = Hand::new(None);
@@ -77,14 +85,15 @@ impl BlackjackTable {
                         i += 1;
                     }
                 }
+
+                HandleMessageResult::Change
             }
 
             ServerMessage::Error(_)
             | ServerMessage::GameState(_)
             | ServerMessage::Hello(_)
-            | ServerMessage::Chat(_) => return false,
+            | ServerMessage::Chat(_)
+            | ServerMessage::Shuffle(_) => HandleMessageResult::NoChange,
         }
-
-        true
     }
 }

@@ -4,7 +4,9 @@ impl BlackjackTable {
     /// Figure out the current state of the blackjack game, returning `true` if a new hand must be dealt
     pub(super) fn change_state(&mut self) -> bool {
         if self.state.is_round_active() {
-            todo!("Handle round active");
+            // TODO: Handle round active
+
+            return false;
         }
 
         let mut players = 0;
@@ -27,7 +29,17 @@ impl BlackjackTable {
 
         if players >= self.min_players.get() && humans >= self.min_humans {
             if players == bets_placed {
-                todo!("Figure out first player");
+                for i in 0..self.players.len() {
+                    let player = match &self.players[i] {
+                        Some(player) => player,
+                        None => continue,
+                    };
+
+                    if player.state() == PlayerState::PlayingThisRound {
+                        self.state = GameState::WaitingForPlayer(i as _, 0);
+                        break;
+                    }
+                }
                 true
             } else {
                 self.state = GameState::WaitingForBets;

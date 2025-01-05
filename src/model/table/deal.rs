@@ -1,11 +1,14 @@
 use crate::{
-    messages::{DealServerMessage, ServerMessage},
+    messages::{DealServerMessage, ServerMessage, ShuffleServerMessage},
     model::{BlackjackTable, PlayerState},
 };
 
 impl BlackjackTable {
-    /// Deals a new round, returning the appropriate message and a boolean if the deck was shuffled
-    pub fn deal<'a>(&mut self, additional_client: Option<usize>) -> (ServerMessage<'a>, bool) {
+    /// Deals a new round, returning the appropriate messages for dealing and shuffling
+    pub fn deal<'a>(
+        &mut self,
+        additional_client: Option<usize>,
+    ) -> (ServerMessage<'a>, Option<ServerMessage<'a>>) {
         let mut hand_count = 0;
         for i in 0..self.players.len() {
             let player = match &self.players[i] {
@@ -49,7 +52,11 @@ impl BlackjackTable {
 
         (
             DealServerMessage::new((dealer_up, dealer_down), hands),
-            shuffle,
+            if shuffle {
+                Some(ShuffleServerMessage::new())
+            } else {
+                None
+            },
         )
     }
 }

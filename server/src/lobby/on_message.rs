@@ -4,7 +4,7 @@ use blackjack::{
         ChatServerMessage, ClientConnectedServerMessage, ClientMessage, ErrorServerMessage,
         GameStateServerMessage,
     },
-    model::Player,
+    model::{HandleMessageResult, Player},
 };
 
 impl Lobby {
@@ -14,13 +14,18 @@ impl Lobby {
             return self.on_connecting_client_message(client_id, message);
         }
 
-        let server_messages = self.table.translate_message(client_id, &message);
-        if server_messages.len() > 0 {
-            for message in server_messages {
-                self.send_all(&message);
-                self.table.handle_message(message);
+        let mut server_message = self.table.translate_message(client_id, &message);
+        while let Some(message) = server_message.take() {
+            self.send_all(&message);
+            match self.table.handle_message(message) {
+                HandleMessageResult::Deal(deal, shuffle) => {
+                    if let Some(shuffle) = shuffle {
+                        self.send_all(&shuffle);
+                    }
+                    server_message = Some(deal);
+                }
+                _ => return,
             }
-            return;
         }
 
         match message {

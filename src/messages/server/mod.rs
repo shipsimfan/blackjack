@@ -9,6 +9,7 @@ mod game_state;
 mod hello;
 mod place_bet;
 mod play_next_round;
+mod shuffle;
 
 pub use chat::ChatServerMessage;
 pub use client_connected::ClientConnectedServerMessage;
@@ -19,6 +20,7 @@ pub use game_state::GameStateServerMessage;
 pub use hello::HelloServerMessage;
 pub use place_bet::PlaceBetServerMessage;
 pub use play_next_round::PlayNextRoundServerMessage;
+pub use shuffle::ShuffleServerMessage;
 
 messages!(
     /// The set of messages that can be sent from the server to the client
@@ -51,5 +53,8 @@ messages!(
 
         /// A new round has been dealt
         Deal(DealServerMessage) = 8,
+
+        /// The shoe has been shuffled
+        Shuffle(ShuffleServerMessage) = 9,
     }
 );
