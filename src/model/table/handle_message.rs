@@ -1,6 +1,6 @@
 use crate::{
     messages::ServerMessage,
-    model::{BlackjackTable, Hand, HandleMessageResult, PlayerState},
+    model::{BlackjackTable, HandleMessageResult, PlayerState},
 };
 
 impl BlackjackTable {
@@ -61,6 +61,13 @@ impl BlackjackTable {
                 HandleMessageResult::Change
             }
             ServerMessage::Deal(deal) => {
+                self.dealer_hand.clear(&mut None);
+                for player in &mut self.players {
+                    if let Some(player) = player {
+                        player.clear_hands(None);
+                    }
+                }
+
                 self.dealer_hand.add_card(deal.dealer_up_card);
                 if let Some(dealer_down) = deal.dealer_down_card {
                     self.dealer_hand.add_card(dealer_down);
