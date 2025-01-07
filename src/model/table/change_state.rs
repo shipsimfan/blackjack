@@ -4,9 +4,30 @@ impl BlackjackTable {
     /// Figure out the current state of the blackjack game, returning `true` if a new hand must be dealt
     pub(super) fn change_state(&mut self) -> bool {
         if self.state.is_round_active() {
-            // TODO: Handle round active
+            let (current_player, current_hand) = self.current_hand().unwrap();
 
-            return false;
+            // Check if player is still in the game
+            if let Some(player) = &self.players[current_player] {
+                // If the player is, see if they've reached >= 21 to move on to next hand
+                if player.hands()[current_hand].value().as_u8() <= 21 {
+                    return false;
+                }
+            }
+
+            // If not, move on to the next player
+            match self.next_hand() {
+                Some((next_player, next_hand)) => {
+                    self.state = GameState::WaitingForPlayer(next_player as _, next_hand as _);
+                }
+                None => {
+                    // TODO: Handle ending round
+
+                    self.state = GameState::WaitingForPlayers;
+                    self.change_state();
+                }
+            }
+
+            return true;
         }
 
         let mut players = 0;
@@ -29,16 +50,8 @@ impl BlackjackTable {
 
         if players >= self.min_players.get() && humans >= self.min_humans {
             if players == bets_placed {
-                for i in 0..self.players.len() {
-                    let player = match &self.players[i] {
-                        Some(player) => player,
-                        None => continue,
-                    };
-
-                    if player.state() == PlayerState::PlayingThisRound {
-                        self.state = GameState::WaitingForPlayer(i as _, 0);
-                        break;
-                    }
+                if let Some((first_player, first_hand)) = self.next_hand() {
+                    self.state = GameState::WaitingForPlayer(first_player as _, first_hand as _);
                 }
                 true
             } else {

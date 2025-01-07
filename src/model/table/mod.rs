@@ -11,6 +11,7 @@ mod generate;
 mod get;
 mod handle_message;
 mod new;
+mod next_hand;
 mod parse;
 mod remove_player;
 mod translate_message;
