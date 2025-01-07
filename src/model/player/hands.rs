@@ -6,21 +6,16 @@ impl Player {
     pub(crate) fn add_hand(&mut self, bet: NonZeroU16, shoe: Option<&mut Shoe>) {
         if self.state != PlayerState::PlayingThisRound {
             self.clear_hands(shoe);
+            self.hands.truncate(0);
         }
 
         self.hands.push(Hand::new(Some(bet)));
     }
 
     /// Clears the hands and discards any cards to `shoe`
-    pub(crate) fn clear_hands(&mut self, shoe: Option<&mut Shoe>) {
-        if let Some(shoe) = shoe {
-            for hand in &self.hands {
-                for card in hand.cards() {
-                    shoe.discard(*card);
-                }
-            }
+    pub fn clear_hands(&mut self, mut shoe: Option<&mut Shoe>) {
+        for hand in &mut self.hands {
+            hand.clear(&mut shoe);
         }
-
-        self.hands.truncate(0);
     }
 }

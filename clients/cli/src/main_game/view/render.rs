@@ -12,6 +12,8 @@ impl View {
     ) {
         terminal.hide_cursor();
 
+        self.dealer
+            .render(table.dealer(), self.dealer_hand_y, terminal);
         self.players
             .render(table.players(), table.max_bet(), terminal);
         self.controls.render(false, table, local_id, terminal);

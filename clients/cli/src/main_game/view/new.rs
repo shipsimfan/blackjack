@@ -1,5 +1,5 @@
 use super::{
-    controls::ControlsView, ChatView, PlayersView, View, MIN_HAND_LINE_LENGTH, VERTICAL_BAR_WIDTH,
+    ChatView, ControlsView, HandView, PlayersView, View, MIN_HAND_LINE_LENGTH, VERTICAL_BAR_WIDTH,
 };
 use crate::VirtualTerminal;
 use blackjack::model::BlackjackTable;
@@ -20,12 +20,14 @@ impl View {
         let dealer_hand_y = server_name_height + 4;
 
         let chat = ChatView::new(game_width + VERTICAL_BAR_WIDTH);
+        let dealer = HandView::new(game_width, table.max_bet());
         let players =
             PlayersView::new(table.max_players(), dealer_hand_y + 2, game_width, local_id);
         let controls = ControlsView::new(game_width);
 
         let mut view = View {
             chat,
+            dealer,
             players,
             controls,
             game_width,

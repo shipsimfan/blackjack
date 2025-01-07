@@ -1,4 +1,4 @@
-use crate::model::{BlackjackTable, GameState, Player};
+use crate::model::{BlackjackTable, GameState, Hand, Player};
 
 impl BlackjackTable {
     /// Gets all player slots
@@ -60,6 +60,11 @@ impl BlackjackTable {
             GameState::WaitingForPlayer(player, hand) => Some((player as _, hand as _)),
             _ => return None,
         }
+    }
+
+    /// Gets the dealer's hand
+    pub fn dealer(&self) -> &Hand {
+        &self.dealer_hand
     }
 
     /// Gets the player with `id` as a mutable reference

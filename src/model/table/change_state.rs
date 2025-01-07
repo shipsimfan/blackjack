@@ -27,7 +27,7 @@ impl BlackjackTable {
                 }
             }
 
-            return true;
+            return false;
         }
 
         let mut players = 0;

@@ -28,7 +28,20 @@ impl BlackjackTable {
         }
 
         let shoe = self.shoe.as_mut().unwrap();
+        self.dealer_hand.clear(&mut Some(shoe));
+        for player in &mut self.players {
+            if let Some(player) = player {
+                player.clear_hands(Some(shoe));
+            }
+        }
+
         let mut shuffle = false;
+
+        assert_eq!(
+            shoe.current_cards(),
+            shoe.size(),
+            "Lost cards from the deck"
+        );
 
         if shoe.should_shuffle() {
             shoe.shuffle(true);

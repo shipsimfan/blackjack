@@ -3,6 +3,7 @@ use std::num::NonZeroUsize;
 
 mod discard;
 mod draw;
+mod get;
 mod new;
 mod should_shuffle;
 mod shuffle;

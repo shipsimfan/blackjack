@@ -61,7 +61,6 @@ impl BlackjackTable {
                 HandleMessageResult::Change
             }
             ServerMessage::Deal(deal) => {
-                self.dealer_hand = Hand::new(None);
                 self.dealer_hand.add_card(deal.dealer_up_card);
                 if let Some(dealer_down) = deal.dealer_down_card {
                     self.dealer_hand.add_card(dealer_down);
@@ -73,11 +72,6 @@ impl BlackjackTable {
                         Some(player) => player,
                         None => continue,
                     };
-
-                    if player.state() != PlayerState::PlayingThisRound {
-                        player.clear_hands(self.shoe.as_mut());
-                        continue;
-                    }
 
                     for hand in player.hands_mut() {
                         hand.add_card(deal.hands[i].0);

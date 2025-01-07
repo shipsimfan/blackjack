@@ -22,6 +22,9 @@ pub struct View {
     /// The view of the chat messages
     chat: ChatView,
 
+    /// The view of the dealer's hand
+    dealer: HandView,
+
     /// The view of the players
     players: PlayersView,
 
