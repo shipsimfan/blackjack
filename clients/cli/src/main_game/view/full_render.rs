@@ -42,7 +42,7 @@ impl View {
         terminal.write_blank(self.game_width - dealer_header.len());
 
         // Clear the rest of the game screen
-        for y in self.dealer_hand_y..terminal.height() - 1 {
+        for y in self.dealer_hand_y + 1..terminal.height() - 1 {
             terminal.move_cursor_to(0, y);
             terminal.write_blank(self.game_width);
         }
