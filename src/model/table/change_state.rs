@@ -21,12 +21,7 @@ impl BlackjackTable {
                 Some((next_player, next_hand)) => {
                     self.state = GameState::WaitingForPlayer(next_player as _, next_hand as _);
                 }
-                None => {
-                    // TODO: Handle ending round
-
-                    self.state = GameState::WaitingForPlayers;
-                    self.change_state(false);
-                }
+                None => self.end_round(),
             }
 
             return false;
