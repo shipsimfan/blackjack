@@ -8,7 +8,7 @@ impl BlackjackTable {
     ) -> Option<(ServerMessage<'a>, Option<ServerMessage<'a>>)> {
         let mut player = self.players[id].take()?;
         player.clear_hands(self.shoe.as_mut());
-        if self.change_state() && self.shoe.is_some() {
+        if self.change_state(false) && self.shoe.is_some() {
             return Some(self.deal(None));
         }
 

@@ -23,4 +23,9 @@ pub struct Shoe {
 
     /// The discard pile, filled with cards from old hands
     discard: Vec<Card>,
+
+    /// Cards to be put into the beginning of the next shoe, to rig the deck
+    ///
+    /// Useful for testing purposes
+    rigged_cards: Vec<Card>,
 }

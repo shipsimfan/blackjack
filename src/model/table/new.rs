@@ -1,4 +1,4 @@
-use crate::model::{BlackjackTable, GameState, Hand, Shoe};
+use crate::model::{BlackjackTable, Card, GameState, Hand, Shoe};
 use std::num::{NonZeroU16, NonZeroU8};
 
 impl BlackjackTable {
@@ -11,6 +11,7 @@ impl BlackjackTable {
         min_humans: u8,
         max_hands: NonZeroU8,
         decks: NonZeroU8,
+        rigged_cards: Vec<Card>,
     ) -> Self {
         let mut players = Vec::with_capacity(max_players);
         for _ in 0..max_players {
@@ -18,7 +19,7 @@ impl BlackjackTable {
         }
 
         BlackjackTable {
-            shoe: Some(Shoe::new(decks)),
+            shoe: Some(Shoe::new(decks, rigged_cards)),
             players: players.into_boxed_slice(),
             state: GameState::WaitingForPlayers,
             dealer_hand: Hand::new(None),

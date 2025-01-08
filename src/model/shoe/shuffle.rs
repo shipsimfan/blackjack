@@ -73,6 +73,9 @@ impl Shoe {
         // Set the cards
         self.cards.extend(cards.drain(..).map(|(card, _)| card));
 
+        // Add rigged cards
+        self.cards.extend(self.rigged_cards.drain(..));
+
         // Select cut card
         if !set_cut_card {
             assert!(self.cut_card.is_none());

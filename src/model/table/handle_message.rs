@@ -26,7 +26,7 @@ impl BlackjackTable {
                 }
 
                 player.set_state(play_next_round.as_state());
-                if self.change_state() && self.shoe.is_some() {
+                if self.change_state(false) && self.shoe.is_some() {
                     let (deal, shuffle) = self.deal(None);
                     return HandleMessageResult::Deal(deal, shuffle);
                 }
@@ -53,7 +53,7 @@ impl BlackjackTable {
 
                 player.add_hand(place_bet.bet, self.shoe.as_mut());
                 player.set_state(PlayerState::PlayingThisRound);
-                if self.change_state() && self.shoe.is_some() {
+                if self.change_state(false) && self.shoe.is_some() {
                     let (deal, shuffle) = self.deal(None);
                     return HandleMessageResult::Deal(deal, shuffle);
                 }
@@ -86,6 +86,8 @@ impl BlackjackTable {
                         i += 1;
                     }
                 }
+
+                self.change_state(true);
 
                 HandleMessageResult::Change
             }

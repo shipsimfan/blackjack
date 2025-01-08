@@ -2,15 +2,17 @@ use crate::model::{BlackjackTable, GameState, PlayerState};
 
 impl BlackjackTable {
     /// Figure out the current state of the blackjack game, returning `true` if a new hand must be dealt
-    pub(super) fn change_state(&mut self) -> bool {
-        if self.state.is_round_active() {
-            let (current_player, current_hand) = self.current_hand().unwrap();
+    pub(super) fn change_state(&mut self, round_start: bool) -> bool {
+        if round_start || self.state.is_round_active() {
+            if !round_start {
+                let (current_player, current_hand) = self.current_hand().unwrap();
 
-            // Check if player is still in the game
-            if let Some(player) = &self.players[current_player] {
-                // If the player is, see if they've reached >= 21 to move on to next hand
-                if player.hands()[current_hand].value().as_u8() <= 21 {
-                    return false;
+                // Check if player is still in the game
+                if let Some(player) = &self.players[current_player] {
+                    // If the player is, see if they've reached >= 21 to move on to next hand
+                    if player.hands()[current_hand].value().as_u8() < 21 {
+                        return false;
+                    }
                 }
             }
 
@@ -23,7 +25,7 @@ impl BlackjackTable {
                     // TODO: Handle ending round
 
                     self.state = GameState::WaitingForPlayers;
-                    self.change_state();
+                    self.change_state(false);
                 }
             }
 
@@ -50,9 +52,6 @@ impl BlackjackTable {
 
         if players >= self.min_players.get() && humans >= self.min_humans {
             if players == bets_placed {
-                if let Some((first_player, first_hand)) = self.next_hand() {
-                    self.state = GameState::WaitingForPlayer(first_player as _, first_hand as _);
-                }
                 true
             } else {
                 self.state = GameState::WaitingForBets;
