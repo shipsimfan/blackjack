@@ -47,9 +47,44 @@ impl PlayerView {
                 if is_local {
                     terminal.write("\x1B[22m");
                 }
-                terminal.write_blank(
-                    self.width - self.username.len() - if player.ai() { 5 } else { 0 },
-                );
+            }
+        }
+
+        // Render last round earnings
+        let earnings_start = self.width
+            - (player.total_earnings().abs().checked_ilog10().unwrap_or(0) as usize
+                + 4
+                + if player.total_earnings() < 0 { 1 } else { 0 });
+
+        if y < terminal.height() - CONTROLS_HEIGHT
+            && (self.last_round_earnings != player.last_round_earnings()
+                || username_neq
+                || self.ai != player.ai())
+        {
+            let mut written = self.username.len() + if player.ai() { 5 } else { 0 } + 1;
+            terminal.move_cursor_to(written, y);
+            if let Some(last_round_earnings) = player.last_round_earnings() {
+                let last_round_earnings = if last_round_earnings >= 0 {
+                    format!(" (${})", last_round_earnings)
+                } else {
+                    format!(" (-${})", -last_round_earnings)
+                };
+                written += last_round_earnings.len();
+                terminal.write(last_round_earnings);
+            }
+
+            terminal.write_blank(earnings_start - written);
+        }
+
+        // Render total earnings
+        if y < terminal.height() - CONTROLS_HEIGHT
+            && (self.total_earnings != player.total_earnings() || self.total_earnings == 0)
+        {
+            terminal.move_cursor_to(earnings_start, y);
+            if player.total_earnings() < 0 {
+                terminal.write(format_args!("-${}", -player.total_earnings()));
+            } else {
+                terminal.write(format_args!("${}", player.total_earnings()));
             }
         }
 

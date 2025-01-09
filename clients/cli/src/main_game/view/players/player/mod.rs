@@ -22,6 +22,12 @@ pub struct PlayerView {
     /// Is the player not playing?
     not_playing: bool,
 
+    /// The total earnings through the play session
+    total_earnings: i64,
+
+    /// The earnings from last round, if played
+    last_round_earnings: Option<i32>,
+
     /// The y-level to render this player at
     y: usize,
 
