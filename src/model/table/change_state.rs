@@ -17,14 +17,13 @@ impl BlackjackTable {
             }
 
             // If not, move on to the next player
-            match self.next_hand() {
+            return match self.next_hand() {
                 Some((next_player, next_hand)) => {
                     self.state = GameState::WaitingForPlayer(next_player as _, next_hand as _);
+                    false
                 }
-                None => self.end_round(),
-            }
-
-            return false;
+                None => self.end_round(true),
+            };
         }
 
         let mut players = 0;

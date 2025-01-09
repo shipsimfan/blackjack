@@ -3,7 +3,7 @@ use crate::model::{BlackjackTable, PlayerState};
 
 impl BlackjackTable {
     /// Ends the current round, preparing for the next
-    pub(super) fn end_round(&mut self) {
+    pub(super) fn end_round(&mut self, dealer_player: bool) -> bool {
         // TODO: Perform dealer play and end-round payouts
 
         // Reset player states
@@ -20,6 +20,6 @@ impl BlackjackTable {
 
         // Reset game state
         self.state = GameState::WaitingForPlayers;
-        self.change_state(false);
+        self.change_state(false)
     }
 }

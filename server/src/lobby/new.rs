@@ -26,7 +26,7 @@ impl Lobby {
                 vec![
                     Card::new(Rank::Ace, Suit::Spades),
                     Card::new(Rank::Jack, Suit::Spades),
-                    Card::new(Rank::Ace, Suit::Spades),
+                    Card::new(Rank::Jack, Suit::Spades),
                     Card::new(Rank::Ace, Suit::Spades),
                 ],
             ),

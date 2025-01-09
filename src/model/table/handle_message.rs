@@ -89,7 +89,28 @@ impl BlackjackTable {
                     }
                 }
 
-                // TODO: Check for dealer blackjack
+                // Check for dealer blackjack
+                if self.dealer_hand.cards().len() == 2 && self.dealer_hand.value().as_u8() == 21 {
+                    for player in self.sitting_players_mut() {
+                        if player.state() != PlayerState::PlayingThisRound {
+                            continue;
+                        }
+
+                        let mut amount = 0;
+                        for hand in player.hands() {
+                            if hand.value().as_u8() < 21 {
+                                amount -= hand.bet().unwrap().get() as i32;
+                            }
+                        }
+                        player.payout(amount);
+                    }
+
+                    if self.end_round(false) && self.shoe.is_some() {
+                        let (deal, shuffle) = self.deal(None);
+                        return HandleMessageResult::Deal(deal, shuffle);
+                    }
+                    return HandleMessageResult::Change;
+                }
 
                 // Check for player blackjack
                 for player in self.sitting_players_mut() {
