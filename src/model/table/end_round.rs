@@ -14,7 +14,7 @@ impl BlackjackTable {
             };
 
             if player.state() == PlayerState::PlayingThisRound {
-                player.set_state(PlayerState::PlayingNextRound);
+                player.set_state(PlayerState::PlayingNextRound, self.shoe.as_mut());
             }
         }
 

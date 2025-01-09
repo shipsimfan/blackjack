@@ -18,14 +18,16 @@ impl BlackjackTable {
                 };
             }
             ServerMessage::PlayNextRound(play_next_round) => {
-                let player = self.player_mut(play_next_round.client as _);
+                let player = self.players[play_next_round.client as usize]
+                    .as_mut()
+                    .unwrap();
                 if player.state() == PlayerState::PlayingThisRound
                     || player.state() == play_next_round.as_state()
                 {
                     return HandleMessageResult::NoChange;
                 }
 
-                player.set_state(play_next_round.as_state());
+                player.set_state(play_next_round.as_state(), self.shoe.as_mut());
                 if self.change_state(false) && self.shoe.is_some() {
                     let (deal, shuffle) = self.deal(None);
                     return HandleMessageResult::Deal(deal, shuffle);
@@ -52,7 +54,7 @@ impl BlackjackTable {
                 }
 
                 player.add_hand(place_bet.bet, self.shoe.as_mut());
-                player.set_state(PlayerState::PlayingThisRound);
+                player.set_state(PlayerState::PlayingThisRound, self.shoe.as_mut());
                 if self.change_state(false) && self.shoe.is_some() {
                     let (deal, shuffle) = self.deal(None);
                     return HandleMessageResult::Deal(deal, shuffle);

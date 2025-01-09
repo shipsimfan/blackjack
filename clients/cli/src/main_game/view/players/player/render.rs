@@ -24,7 +24,7 @@ impl PlayerView {
                 }
 
                 terminal.move_cursor_to(0, y);
-                terminal.write(self.width);
+                terminal.write_blank(self.width);
             }
         }
 
