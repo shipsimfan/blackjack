@@ -10,6 +10,8 @@ impl Parse for Player {
             ai: parser.parse()?,
             state: parser.parse()?,
             hands: parser.parse()?,
+            total_earnings: parser.parse()?,
+            last_round_earnings: None,
         })
     }
 }

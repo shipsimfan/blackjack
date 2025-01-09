@@ -71,4 +71,9 @@ impl BlackjackTable {
     pub(crate) fn player_mut(&mut self, id: usize) -> &mut Player {
         self.players[id].as_mut().unwrap()
     }
+
+    /// Gets the currently sitting players mutably
+    pub(crate) fn sitting_players_mut(&mut self) -> impl Iterator<Item = &mut Player> {
+        self.players.iter_mut().filter_map(Option::as_mut)
+    }
 }

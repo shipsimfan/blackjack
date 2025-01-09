@@ -24,6 +24,16 @@ impl Player {
         &self.hands
     }
 
+    /// Gets this players total earnings over their play session
+    pub fn total_earnings(&self) -> i64 {
+        self.total_earnings
+    }
+
+    /// Gets the players earnings from the previous round, if they played in it
+    pub fn last_round_earnings(&self) -> Option<i32> {
+        self.last_round_earnings
+    }
+
     /// Gets the hands this player currently has mutably
     pub(crate) fn hands_mut(&mut self) -> &mut [Hand] {
         &mut self.hands

@@ -11,6 +11,8 @@ impl Player {
             ai,
             state: PlayerState::NotPlaying,
             hands: Vec::new(),
+            total_earnings: 0,
+            last_round_earnings: None,
         }
     }
 }

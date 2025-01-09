@@ -14,6 +14,7 @@ impl Player {
 
     /// Clears the hands and discards any cards to `shoe`
     pub fn clear_hands(&mut self, mut shoe: Option<&mut Shoe>) {
+        self.last_round_earnings = None;
         for hand in &mut self.hands {
             hand.clear(&mut shoe);
         }

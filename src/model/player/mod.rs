@@ -7,6 +7,7 @@ mod get;
 mod hands;
 mod new;
 mod parse;
+mod payout;
 mod set;
 
 pub use state::PlayerState;
@@ -25,4 +26,10 @@ pub struct Player {
 
     /// The set of hands this player currently has
     hands: Vec<Hand>,
+
+    /// The total amount of money this player has made
+    total_earnings: i64,
+
+    /// The amount of money this player won or lost last round, if they played
+    last_round_earnings: Option<i32>,
 }

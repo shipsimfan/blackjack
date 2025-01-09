@@ -9,6 +9,7 @@ impl BlackjackTable {
         &mut self,
         additional_client: Option<usize>,
     ) -> (ServerMessage<'a>, Option<ServerMessage<'a>>) {
+        // Count number of cards we need to deal
         let mut hand_count = 0;
         for i in 0..self.players.len() {
             let player = match &self.players[i] {
@@ -28,6 +29,8 @@ impl BlackjackTable {
         }
 
         let shoe = self.shoe.as_mut().unwrap();
+
+        // Clear previous hands
         self.dealer_hand.clear(&mut Some(shoe));
         for player in &mut self.players {
             if let Some(player) = player {
@@ -35,24 +38,27 @@ impl BlackjackTable {
             }
         }
 
-        let mut shuffle = false;
-
+        // Make sure no cards have been lost
         assert_eq!(
             shoe.current_cards(),
             shoe.size(),
             "Lost cards from the deck"
         );
 
+        // Shuffle if needed
+        let mut shuffle = false;
         if shoe.should_shuffle() {
             shoe.shuffle(true);
             shuffle = true;
         }
 
+        // Deal dealer cards
         let (dealer_up, shuffled) = shoe.draw();
         shuffle |= shuffled;
         let (dealer_down, shuffled) = shoe.draw();
         shuffle |= shuffled;
 
+        // Deal player cards
         let mut hands = Vec::with_capacity(hand_count);
         for _ in 0..hand_count {
             let (card1, shuffled) = shoe.draw();

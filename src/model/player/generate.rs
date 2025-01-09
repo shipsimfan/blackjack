@@ -6,6 +6,7 @@ impl Generate for Player {
         self.ai.generate(output);
         self.state.generate(output);
         self.hands.generate(output);
+        self.total_earnings.generate(output);
     }
 }
 
