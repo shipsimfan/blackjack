@@ -59,7 +59,8 @@ impl PlayerView {
         if y < terminal.height() - CONTROLS_HEIGHT
             && (self.last_round_earnings != player.last_round_earnings()
                 || username_neq
-                || self.ai != player.ai())
+                || self.ai != player.ai()
+                || self.y != y)
         {
             let mut written = self.username.len() + if player.ai() { 5 } else { 0 } + 1;
             terminal.move_cursor_to(written, y);
@@ -78,19 +79,23 @@ impl PlayerView {
 
         // Render total earnings
         if y < terminal.height() - CONTROLS_HEIGHT
-            && (self.total_earnings != player.total_earnings() || self.total_earnings == 0)
+            && (self.total_earnings != player.total_earnings()
+                || self.total_earnings == 0
+                || self.y != y)
         {
             terminal.move_cursor_to(earnings_start, y);
             if player.total_earnings() < 0 {
-                terminal.write(format_args!("-${}", -player.total_earnings()));
+                terminal.write(format_args!("-${} ", -player.total_earnings()));
             } else {
-                terminal.write(format_args!("${}", player.total_earnings()));
+                terminal.write(format_args!("${} ", player.total_earnings()));
             }
         }
 
         // Render player state
         let not_playing = player.state() == PlayerState::NotPlaying;
-        if y < terminal.height() - CONTROLS_HEIGHT && self.not_playing != not_playing {
+        if y < terminal.height() - CONTROLS_HEIGHT
+            && (self.not_playing != not_playing || self.y != y)
+        {
             terminal.move_cursor_to(self.width - 1, y);
             if not_playing {
                 terminal.write('■');
@@ -122,6 +127,8 @@ impl PlayerView {
         self.y = y;
         self.is_local = is_local;
         self.not_playing = not_playing;
+        self.last_round_earnings = player.last_round_earnings();
+        self.total_earnings = player.total_earnings();
 
         // Render blank line if needed
         if render_blank_line && y + self.height() - 1 < terminal.height() - CONTROLS_HEIGHT {

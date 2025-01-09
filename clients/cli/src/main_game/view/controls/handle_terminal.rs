@@ -30,6 +30,7 @@ impl ControlsView {
                     return None;
                 }
 
+                self.bet_input.clear(terminal);
                 return self.state.to_control_event(bet);
             }
 

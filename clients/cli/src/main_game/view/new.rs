@@ -13,7 +13,7 @@ impl View {
         local_id: usize,
         terminal: &mut VirtualTerminal,
     ) -> Self {
-        //terminal.use_alt_buffer();
+        terminal.use_alt_buffer();
         terminal.hide_cursor();
 
         let game_width =
