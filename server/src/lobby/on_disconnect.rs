@@ -22,8 +22,7 @@ impl Lobby {
             );
 
             let message = ClientDisconnectedServerMessage::new(client_id);
-            self.send_all(&message);
-            self.table.handle_message(message);
+            self.handle_server_message(message);
         }
     }
 }

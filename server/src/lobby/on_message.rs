@@ -2,7 +2,7 @@ use super::Lobby;
 use blackjack::{
     messages::{
         ChatServerMessage, ClientConnectedServerMessage, ClientMessage, ErrorServerMessage,
-        GameStateServerMessage,
+        GameStateServerMessage, ServerMessage,
     },
     model::{HandleMessageResult, Player},
 };
@@ -14,21 +14,9 @@ impl Lobby {
             return self.on_connecting_client_message(client_id, message);
         }
 
-        let mut server_message = self.table.translate_message(client_id, &message);
-        while let Some(message) = server_message.take() {
-            self.send_all(&message);
-            match self.table.handle_message(message) {
-                HandleMessageResult::Deal(deal, shuffle) => {
-                    if let Some(shuffle) = shuffle {
-                        self.send_all(&shuffle);
-                    }
-                    server_message = Some(deal);
-                }
-                HandleMessageResult::EndRound(end_round) => {
-                    server_message = Some(end_round);
-                }
-                _ => return,
-            }
+        if let Some(server_message) = self.table.translate_message(client_id, &message) {
+            self.handle_server_message(server_message);
+            return;
         }
 
         match message {
@@ -49,6 +37,26 @@ impl Lobby {
                     message.tag()
                 );
                 self.clients[client_id].as_mut().unwrap().disconnect();
+            }
+        }
+    }
+
+    /// Handles a server message, returning `true` if the model was changed
+    pub(super) fn handle_server_message(&mut self, message: ServerMessage) {
+        let mut server_message = Some(message);
+        while let Some(message) = server_message.take() {
+            self.send_all(&message);
+            match self.table.handle_message(message) {
+                HandleMessageResult::Deal(deal, shuffle) => {
+                    if let Some(shuffle) = shuffle {
+                        self.send_all(&shuffle);
+                    }
+                    server_message = Some(deal);
+                }
+                HandleMessageResult::EndRound(end_round) => {
+                    server_message = Some(end_round);
+                }
+                _ => return,
             }
         }
     }
