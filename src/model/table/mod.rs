@@ -7,7 +7,6 @@ mod handle_message_result;
 mod add_player;
 mod change_state;
 mod deal;
-mod end_round;
 mod generate;
 mod get;
 mod handle_message;

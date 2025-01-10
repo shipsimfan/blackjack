@@ -42,7 +42,8 @@ impl MainGame {
             ServerMessage::PlayNextRound(_)
             | ServerMessage::PlaceBet(_)
             | ServerMessage::Deal(_)
-            | ServerMessage::Shuffle(_) => {}
+            | ServerMessage::Shuffle(_)
+            | ServerMessage::EndRound(_) => {}
         }
 
         if self.table.handle_message(message).is_change() {

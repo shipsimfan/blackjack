@@ -11,13 +11,18 @@ pub enum HandleMessageResult<'a> {
 
     /// A new hand should be dealt
     Deal(ServerMessage<'a>, Option<ServerMessage<'a>>),
+
+    /// The round should be ended
+    EndRound(ServerMessage<'a>),
 }
 
 impl<'a> HandleMessageResult<'a> {
     /// Does this result indicate a change to the model?
     pub fn is_change(&self) -> bool {
         match self {
-            HandleMessageResult::Change | HandleMessageResult::Deal(_, _) => true,
+            HandleMessageResult::Change
+            | HandleMessageResult::Deal(_, _)
+            | HandleMessageResult::EndRound(_) => true,
             HandleMessageResult::NoChange => false,
         }
     }

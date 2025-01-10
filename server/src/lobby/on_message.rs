@@ -24,6 +24,9 @@ impl Lobby {
                     }
                     server_message = Some(deal);
                 }
+                HandleMessageResult::EndRound(end_round) => {
+                    server_message = Some(end_round);
+                }
                 _ => return,
             }
         }

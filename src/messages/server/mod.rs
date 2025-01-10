@@ -4,6 +4,7 @@ mod chat;
 mod client_connected;
 mod client_disconnected;
 mod deal;
+mod end_round;
 mod error;
 mod game_state;
 mod hello;
@@ -15,6 +16,7 @@ pub use chat::ChatServerMessage;
 pub use client_connected::ClientConnectedServerMessage;
 pub use client_disconnected::ClientDisconnectedServerMessage;
 pub use deal::DealServerMessage;
+pub use end_round::EndRoundServerMessage;
 pub use error::ErrorServerMessage;
 pub use game_state::GameStateServerMessage;
 pub use hello::HelloServerMessage;
@@ -56,5 +58,8 @@ messages!(
 
         /// The shoe has been shuffled
         Shuffle(ShuffleServerMessage) = 9,
+
+        /// The round has ended
+        EndRound(EndRoundServerMessage) = 10,
     }
 );

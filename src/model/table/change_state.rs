@@ -1,8 +1,11 @@
-use crate::model::{BlackjackTable, GameState, PlayerState};
+use crate::{
+    messages::EndRoundServerMessage,
+    model::{BlackjackTable, GameState, HandleMessageResult, PlayerState},
+};
 
 impl BlackjackTable {
-    /// Figure out the current state of the blackjack game, returning `true` if a new hand must be dealt
-    pub(super) fn change_state(&mut self, round_start: bool) -> bool {
+    /// Figure out the current state of the blackjack game
+    pub(super) fn change_state<'a>(&mut self, round_start: bool) -> HandleMessageResult<'a> {
         if round_start || self.state.is_round_active() {
             if !round_start {
                 let (current_player, current_hand) = self.current_hand().unwrap();
@@ -11,7 +14,7 @@ impl BlackjackTable {
                 if let Some(player) = &self.players[current_player] {
                     // If the player is, see if they've reached >= 21 to move on to next hand
                     if player.hands()[current_hand].value().as_u8() < 21 {
-                        return false;
+                        return HandleMessageResult::Change;
                     }
                 }
             }
@@ -20,9 +23,9 @@ impl BlackjackTable {
             return match self.next_hand() {
                 Some((next_player, next_hand)) => {
                     self.state = GameState::WaitingForPlayer(next_player as _, next_hand as _);
-                    false
+                    HandleMessageResult::Change
                 }
-                None => self.end_round(true),
+                None => HandleMessageResult::EndRound(EndRoundServerMessage::new(true)),
             };
         }
 
@@ -46,14 +49,19 @@ impl BlackjackTable {
 
         if players >= self.min_players.get() && humans >= self.min_humans {
             if players == bets_placed {
-                true
+                if self.shoe.is_some() {
+                    let (deal, shuffle) = self.deal(None);
+                    HandleMessageResult::Deal(deal, shuffle)
+                } else {
+                    HandleMessageResult::Change
+                }
             } else {
                 self.state = GameState::WaitingForBets;
-                false
+                HandleMessageResult::Change
             }
         } else {
             self.state = GameState::WaitingForPlayers;
-            false
+            HandleMessageResult::Change
         }
     }
 }
