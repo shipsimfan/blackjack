@@ -22,7 +22,12 @@ impl ControlState {
             }
         };
 
-        // TODO: Handle input during play
+        if let Some(player) = table.current_player() {
+            if player == local_id {
+                return ControlState::HitStand;
+            }
+        }
+
         ControlState::None
     }
 }

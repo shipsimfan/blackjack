@@ -25,7 +25,7 @@ impl BlackjackTable {
                 }
 
                 player.set_state(play_next_round.as_state(), self.shoe.as_mut());
-                self.change_state(false)
+                self.change_state(false, false)
             }
             ServerMessage::PlaceBet(place_bet) => {
                 if self.state.is_round_active()
@@ -47,7 +47,7 @@ impl BlackjackTable {
 
                 player.add_hand(place_bet.bet, self.shoe.as_mut());
                 player.set_state(PlayerState::PlayingThisRound, self.shoe.as_mut());
-                self.change_state(false)
+                self.change_state(false, false)
             }
             ServerMessage::Deal(deal) => {
                 self.dealer_hand.clear(&mut None);
@@ -112,7 +112,7 @@ impl BlackjackTable {
                     }
                 }
 
-                self.change_state(true)
+                self.change_state(true, false)
             }
             ServerMessage::EndRound(end_round) => {
                 if let Some(dealer_card) = end_round.dealer_card {
@@ -138,8 +138,23 @@ impl BlackjackTable {
 
                 // Reset game state
                 self.state = GameState::WaitingForPlayers;
-                self.change_state(false)
+                self.change_state(false, false)
             }
+            ServerMessage::Hit(hit) => {
+                let (player, hand) = match self.current_hand() {
+                    Some(player) => player,
+                    None => return HandleMessageResult::NoChange,
+                };
+
+                let player = self.player_mut(player);
+                player.hands_mut()[hand].add_card(hit.card);
+                if player.hands()[hand].value().as_u8() >= 21 {
+                    self.change_state(false, false)
+                } else {
+                    HandleMessageResult::Change
+                }
+            }
+            ServerMessage::Stand(_) => self.change_state(false, true),
 
             ServerMessage::Error(_)
             | ServerMessage::GameState(_)

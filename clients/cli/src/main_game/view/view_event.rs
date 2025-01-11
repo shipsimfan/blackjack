@@ -14,4 +14,10 @@ pub enum ViewEvent {
 
     /// The user wants to place a bet
     PlaceBet(NonZeroU16),
+
+    /// The user wants to hit on their hand
+    Hit,
+
+    /// The user wants to stand on their hand
+    Stand,
 }

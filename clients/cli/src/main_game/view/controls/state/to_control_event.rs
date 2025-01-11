@@ -12,6 +12,10 @@ impl ControlState {
             ControlState::Betting => Some(ControlEvent::PlaceBet(
                 NonZeroU16::new(option as _).unwrap(),
             )),
+            ControlState::HitStand => Some(match option {
+                0 => ControlEvent::Hit,
+                _ => ControlEvent::Stand,
+            }),
         }
     }
 }

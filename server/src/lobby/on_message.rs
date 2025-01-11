@@ -1,5 +1,3 @@
-use crate::server::Server;
-
 use super::Lobby;
 use blackjack::{
     messages::{
@@ -16,7 +14,11 @@ impl Lobby {
             return self.on_connecting_client_message(client_id, message);
         }
 
-        if let Some(server_message) = self.table.translate_message(client_id, &message) {
+        if let Some((server_message, shuffle)) = self.table.translate_message(client_id, &message) {
+            if let Some(shuffle) = shuffle {
+                self.send_all(&shuffle);
+            }
+
             self.handle_server_message(server_message);
             return;
         }

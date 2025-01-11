@@ -16,4 +16,7 @@ pub enum ControlState {
 
     /// Display the betting input
     Betting,
+
+    /// Display the option to hit or stand
+    HitStand,
 }

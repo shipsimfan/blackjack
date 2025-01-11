@@ -5,9 +5,13 @@ use crate::{
 
 impl BlackjackTable {
     /// Figure out the current state of the blackjack game
-    pub(super) fn change_state<'a>(&mut self, round_start: bool) -> HandleMessageResult<'a> {
+    pub(super) fn change_state<'a>(
+        &mut self,
+        round_start: bool,
+        stand: bool,
+    ) -> HandleMessageResult<'a> {
         if round_start || self.state.is_round_active() {
-            if !round_start {
+            if !stand && !round_start {
                 let (current_player, current_hand) = self.current_hand().unwrap();
 
                 // Check if player is still in the game

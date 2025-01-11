@@ -8,6 +8,6 @@ impl BlackjackTable {
             None => return HandleMessageResult::Change,
         };
         player.clear_hands(self.shoe.as_mut());
-        self.change_state(false)
+        self.change_state(false, false)
     }
 }

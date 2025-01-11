@@ -8,9 +8,11 @@ mod end_round;
 mod error;
 mod game_state;
 mod hello;
+mod hit;
 mod place_bet;
 mod play_next_round;
 mod shuffle;
+mod stand;
 
 pub use chat::ChatServerMessage;
 pub use client_connected::ClientConnectedServerMessage;
@@ -20,9 +22,11 @@ pub use end_round::EndRoundServerMessage;
 pub use error::ErrorServerMessage;
 pub use game_state::GameStateServerMessage;
 pub use hello::HelloServerMessage;
+pub use hit::HitServerMessage;
 pub use place_bet::PlaceBetServerMessage;
 pub use play_next_round::PlayNextRoundServerMessage;
 pub use shuffle::ShuffleServerMessage;
+pub use stand::StandServerMessage;
 
 messages!(
     /// The set of messages that can be sent from the server to the client
@@ -61,5 +65,11 @@ messages!(
 
         /// The round has ended
         EndRound(EndRoundServerMessage) = 10,
+
+        /// The current player has chosen to hit on their hand
+        Hit(HitServerMessage) = 11,
+
+        /// The current player has chosen to stand on their hand
+        Stand(StandServerMessage) = 12,
     }
 );

@@ -43,7 +43,9 @@ impl MainGame {
             | ServerMessage::PlaceBet(_)
             | ServerMessage::Deal(_)
             | ServerMessage::Shuffle(_)
-            | ServerMessage::EndRound(_) => {}
+            | ServerMessage::EndRound(_)
+            | ServerMessage::Hit(_)
+            | ServerMessage::Stand(_) => {}
         }
 
         if self.table.handle_message(message).is_change() {
