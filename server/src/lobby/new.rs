@@ -1,9 +1,6 @@
 use super::Lobby;
 use crate::Options;
-use blackjack::{
-    model::{BlackjackTable, Card, Rank, Suit},
-    pkg_version,
-};
+use blackjack::{model::BlackjackTable, pkg_version};
 use std::collections::VecDeque;
 
 impl Lobby {
@@ -23,12 +20,7 @@ impl Lobby {
                 options.min_humans,
                 options.max_hands,
                 options.decks,
-                vec![
-                    Card::new(Rank::Ace, Suit::Spades),
-                    Card::new(Rank::Jack, Suit::Spades),
-                    Card::new(Rank::Two, Suit::Spades),
-                    Card::new(Rank::Ace, Suit::Spades),
-                ],
+                Vec::new(),
             ),
             clients: clients.into_boxed_slice(),
             connecting_clients: VecDeque::with_capacity(options.max_players()),

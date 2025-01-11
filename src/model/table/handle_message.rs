@@ -128,7 +128,31 @@ impl BlackjackTable {
                         self.dealer_hand.add_card(card);
                     }
 
-                    // TODO: Perform dealer play and end-round payouts
+                    let dealer_value = self.dealer_hand.value().as_u8();
+                    for player in self.sitting_players_mut() {
+                        if player.state() != PlayerState::PlayingThisRound {
+                            continue;
+                        }
+
+                        let mut amount = 0;
+                        for hand in player.hands() {
+                            if hand.value().is_bust() {
+                                continue;
+                            }
+
+                            if hand.value().as_u8() == 21 && hand.cards().len() == 2 {
+                                continue;
+                            }
+
+                            if dealer_value > 21 || hand.value().as_u8() > dealer_value {
+                                amount += hand.bet().unwrap().get() as i32;
+                            } else if hand.value().as_u8() < dealer_value {
+                                amount -= hand.bet().unwrap().get() as i32;
+                            }
+                        }
+
+                        player.payout(amount);
+                    }
                 }
 
                 // Reset player states

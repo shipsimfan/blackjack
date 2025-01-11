@@ -15,10 +15,17 @@ impl BlackjackTable {
                 let (current_player, current_hand) = self.current_hand().unwrap();
 
                 // Check if player is still in the game
-                if let Some(player) = &self.players[current_player] {
+                if let Some(player) = &mut self.players[current_player] {
+                    let hand = &player.hands()[current_hand];
+
                     // If the player is, see if they've reached >= 21 to move on to next hand
-                    if player.hands()[current_hand].value().as_u8() < 21 {
+                    if hand.value().as_u8() < 21 {
                         return HandleMessageResult::Change;
+                    }
+
+                    // Handle busting
+                    if hand.value().is_bust() {
+                        player.payout(-(hand.bet().unwrap().get() as i32));
                     }
                 }
             }
