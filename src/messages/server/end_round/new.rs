@@ -1,8 +1,11 @@
-use crate::messages::{EndRoundServerMessage, ServerMessage};
+use crate::{
+    messages::{EndRoundServerMessage, ServerMessage},
+    model::Card,
+};
 
 impl EndRoundServerMessage {
     /// Creates a new [`EndRoundServerMessage`]
-    pub fn new<'a>(dealer_play: bool) -> ServerMessage<'a> {
-        ServerMessage::EndRound(EndRoundServerMessage { dealer_play })
+    pub fn new<'a>(dealer_card: Option<Card>) -> ServerMessage<'a> {
+        ServerMessage::EndRound(EndRoundServerMessage { dealer_card })
     }
 }

@@ -6,7 +6,7 @@ macro_rules! list_generate {
             fn generate(&self, output: &mut Vec<u8>) {
                 assert!(self.len() <= u8::MAX as usize);
                 (self.len() as u8).generate(output);
-                for item in self {
+                for item in self.iter() {
                     item.generate(output);
                 }
             }
@@ -14,4 +14,4 @@ macro_rules! list_generate {
     )*};
 }
 
-list_generate!(Vec<T>, Box<[T]>);
+list_generate!(Vec<T>, Box<[T]>, [T]);

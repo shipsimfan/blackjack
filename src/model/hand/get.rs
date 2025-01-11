@@ -16,4 +16,9 @@ impl Hand {
     pub fn value(&self) -> HandValue {
         HandValue::compute(&self.cards)
     }
+
+    /// Does this hand contain a hidden card?
+    pub fn hidden_card(&self) -> bool {
+        self.hidden_card
+    }
 }

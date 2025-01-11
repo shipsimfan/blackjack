@@ -60,6 +60,9 @@ impl BlackjackTable {
                 self.dealer_hand.add_card(deal.dealer_up_card);
                 if let Some(dealer_down) = deal.dealer_down_card {
                     self.dealer_hand.add_card(dealer_down);
+                    self.dealer_hand.set_hidden_card(false);
+                } else {
+                    self.dealer_hand.set_hidden_card(true);
                 }
 
                 let mut i = 0;
@@ -92,7 +95,7 @@ impl BlackjackTable {
                         player.payout(amount);
                     }
 
-                    return HandleMessageResult::EndRound(EndRoundServerMessage::new(false));
+                    return HandleMessageResult::EndRound(EndRoundServerMessage::new(None));
                 }
 
                 // Check for player blackjack
@@ -109,12 +112,15 @@ impl BlackjackTable {
                     }
                 }
 
-                self.change_state(true);
-
-                HandleMessageResult::Change
+                self.change_state(true)
             }
-            ServerMessage::EndRound(_) => {
-                // TODO: Perform dealer play and end-round payouts
+            ServerMessage::EndRound(end_round) => {
+                if let Some(dealer_card) = end_round.dealer_card {
+                    self.dealer_hand.set_hidden_card(false);
+                    self.dealer_hand.push_card_front(dealer_card);
+
+                    // TODO: Perform dealer play and end-round payouts
+                }
 
                 // Reset player states
                 for i in 0..self.players.len() {

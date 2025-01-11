@@ -6,6 +6,7 @@ impl HandView {
         HandView {
             bet: None,
             cards: Vec::new(),
+            hidden_card: false,
             y: 0,
             width,
             max_bet_length: 2 + max_bet.ilog10() as usize,

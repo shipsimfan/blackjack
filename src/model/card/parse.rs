@@ -11,3 +11,14 @@ impl Parse for Card {
         Ok(Card { rank, suit })
     }
 }
+
+impl Parse for Option<Card> {
+    fn parse(parser: &mut Parser) -> Result<Self, ParseMessageError> {
+        Ok(if let Some(0) = parser.peek() {
+            u8::parse(parser).unwrap();
+            None
+        } else {
+            Some(parser.parse()?)
+        })
+    }
+}

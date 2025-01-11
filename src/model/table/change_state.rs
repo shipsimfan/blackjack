@@ -25,7 +25,15 @@ impl BlackjackTable {
                     self.state = GameState::WaitingForPlayer(next_player as _, next_hand as _);
                     HandleMessageResult::Change
                 }
-                None => HandleMessageResult::EndRound(EndRoundServerMessage::new(true)),
+                None => {
+                    if self.dealer_hand.cards().len() == 2 {
+                        HandleMessageResult::EndRound(EndRoundServerMessage::new(Some(
+                            self.dealer_hand.cards()[0],
+                        )))
+                    } else {
+                        HandleMessageResult::Change
+                    }
+                }
             };
         }
 

@@ -8,6 +8,7 @@ impl Parse for Hand {
         Ok(Hand {
             bet: parser.parse()?,
             cards: parser.parse()?,
+            hidden_card: parser.parse()?,
         })
     }
 }

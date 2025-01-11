@@ -9,6 +9,7 @@ mod generate;
 mod get;
 mod new;
 mod parse;
+mod set;
 
 pub use value::HandValue;
 
@@ -20,4 +21,7 @@ pub struct Hand {
 
     /// The cards that make up the hand
     cards: Vec<Card>,
+
+    /// Does this hand contain a hidden card?
+    hidden_card: bool,
 }

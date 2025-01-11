@@ -6,12 +6,17 @@ impl HandView {
     /// Renders `hand` to `terminal`
     pub fn render(&mut self, hand: &Hand, y: usize, terminal: &mut VirtualTerminal) {
         let cards_eq = self.cards == hand.cards();
-        if self.y == y && self.bet == hand.bet() && cards_eq {
+        if self.y == y
+            && self.bet == hand.bet()
+            && cards_eq
+            && self.hidden_card == hand.hidden_card()
+        {
             return;
         }
 
         self.y = y;
         self.bet = hand.bet();
+        self.hidden_card = hand.hidden_card();
         if !cards_eq {
             self.cards = hand.cards().to_vec();
         }
@@ -32,6 +37,11 @@ impl HandView {
         written = HAND_LINE_MARGIN + 4;
 
         // Render cards
+        if self.hidden_card {
+            terminal.write('🂠');
+            written += 1;
+        }
+
         for card in hand.cards() {
             terminal.write(card);
             written += 1;

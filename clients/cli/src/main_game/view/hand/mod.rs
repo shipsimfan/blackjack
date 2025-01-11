@@ -12,6 +12,9 @@ pub struct HandView {
     /// The cards currently rendered in the hand
     cards: Vec<Card>,
 
+    /// Does this hand have a hidden card?
+    hidden_card: bool,
+
     /// The y-level to render this hand at
     y: usize,
 

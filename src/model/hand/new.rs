@@ -7,6 +7,7 @@ impl Hand {
         Hand {
             bet,
             cards: Vec::new(),
+            hidden_card: false,
         }
     }
 }
