@@ -1,6 +1,6 @@
 use crate::{
-    messages::EndRoundServerMessage,
-    model::{BlackjackTable, GameState, HandleMessageResult, PlayerState},
+    messages::{EndRoundServerMessage, ShuffleServerMessage},
+    model::{BlackjackTable, GameState, Hand, HandValue, HandleMessageResult, PlayerState},
 };
 
 impl BlackjackTable {
@@ -31,9 +31,61 @@ impl BlackjackTable {
                 }
                 None => {
                     if self.dealer_hand.cards().len() == 2 {
-                        HandleMessageResult::EndRound(EndRoundServerMessage::new(Some(
-                            self.dealer_hand.cards()[0],
-                        )))
+                        let mut dealer_play = Vec::new();
+                        let mut shuffled = false;
+
+                        let mut should_dealer_play = false;
+                        for player in self.sitting_players() {
+                            if player.state() != PlayerState::PlayingThisRound {
+                                continue;
+                            }
+
+                            for hand in player.hands() {
+                                if hand.value().as_u8() < 21
+                                    || (hand.value().as_u8() == 21 && hand.cards().len() > 2)
+                                {
+                                    should_dealer_play = true;
+                                    break;
+                                }
+                            }
+
+                            if should_dealer_play {
+                                break;
+                            }
+                        }
+
+                        if should_dealer_play {
+                            if let Some(shoe) = self.shoe.as_mut() {
+                                let mut temp_hand = Hand::new(None);
+                                for card in self.dealer_hand.cards() {
+                                    temp_hand.add_card(*card);
+                                }
+
+                                while temp_hand.value().as_u8() <= 17 {
+                                    match temp_hand.value() {
+                                        HandValue::Hard(17) | HandValue::NoAce(17) => break,
+                                        _ => {}
+                                    }
+
+                                    let (new_card, shuffle) = shoe.draw();
+                                    shuffled |= shuffle;
+                                    temp_hand.add_card(new_card);
+                                    dealer_play.push(new_card);
+                                }
+                            }
+                        }
+
+                        HandleMessageResult::EndRound(
+                            EndRoundServerMessage::new(
+                                Some(self.dealer_hand.cards()[0]),
+                                dealer_play,
+                            ),
+                            if shuffled {
+                                Some(ShuffleServerMessage::new())
+                            } else {
+                                None
+                            },
+                        )
                     } else {
                         HandleMessageResult::Change
                     }

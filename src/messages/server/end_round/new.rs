@@ -5,7 +5,10 @@ use crate::{
 
 impl EndRoundServerMessage {
     /// Creates a new [`EndRoundServerMessage`]
-    pub fn new<'a>(dealer_card: Option<Card>) -> ServerMessage<'a> {
-        ServerMessage::EndRound(EndRoundServerMessage { dealer_card })
+    pub fn new<'a>(dealer_card: Option<Card>, dealer_play: Vec<Card>) -> ServerMessage<'a> {
+        ServerMessage::EndRound(EndRoundServerMessage {
+            dealer_card,
+            dealer_play,
+        })
     }
 }

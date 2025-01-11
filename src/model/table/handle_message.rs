@@ -95,7 +95,10 @@ impl BlackjackTable {
                         player.payout(amount);
                     }
 
-                    return HandleMessageResult::EndRound(EndRoundServerMessage::new(None));
+                    return HandleMessageResult::EndRound(
+                        EndRoundServerMessage::new(None, Vec::new()),
+                        None,
+                    );
                 }
 
                 // Check for player blackjack
@@ -119,6 +122,10 @@ impl BlackjackTable {
                     self.dealer_hand.set_hidden_card(false);
                     if self.dealer_hand.cards().len() != 2 {
                         self.dealer_hand.push_card_front(dealer_card);
+                    }
+
+                    for card in end_round.dealer_play {
+                        self.dealer_hand.add_card(card);
                     }
 
                     // TODO: Perform dealer play and end-round payouts

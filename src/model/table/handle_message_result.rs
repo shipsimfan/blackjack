@@ -13,7 +13,7 @@ pub enum HandleMessageResult<'a> {
     Deal(ServerMessage<'a>, Option<ServerMessage<'a>>),
 
     /// The round should be ended
-    EndRound(ServerMessage<'a>),
+    EndRound(ServerMessage<'a>, Option<ServerMessage<'a>>),
 }
 
 impl<'a> HandleMessageResult<'a> {
@@ -22,7 +22,7 @@ impl<'a> HandleMessageResult<'a> {
         match self {
             HandleMessageResult::Change
             | HandleMessageResult::Deal(_, _)
-            | HandleMessageResult::EndRound(_) => true,
+            | HandleMessageResult::EndRound(_, _) => true,
             HandleMessageResult::NoChange => false,
         }
     }
