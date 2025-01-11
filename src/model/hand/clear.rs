@@ -8,7 +8,6 @@ impl Hand {
                 shoe.discard(*card);
             }
         }
-
         self.cards.truncate(0);
     }
 }

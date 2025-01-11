@@ -1,3 +1,5 @@
+use crate::server::Server;
+
 use super::Lobby;
 use blackjack::{
     messages::{
@@ -54,7 +56,6 @@ impl Lobby {
                     server_message = Some(deal);
                 }
                 HandleMessageResult::EndRound(end_round) => {
-                    println!("Round End");
                     server_message = Some(end_round);
                 }
                 _ => return,

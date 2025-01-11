@@ -4,6 +4,13 @@ impl Shoe {
     /// Add a card to the discard pile
     pub fn discard(&mut self, card: Card) {
         self.discard.push(card);
-        assert!(self.discard.len() + self.cards.len() <= self.size);
+        assert!(
+            self.discard.len() + self.cards.len() <= self.size,
+            "Extra card being inserted: {} + {} > {} ({:?})",
+            self.discard.len(),
+            self.cards.len(),
+            self.size,
+            card,
+        );
     }
 }

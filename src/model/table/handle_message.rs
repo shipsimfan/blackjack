@@ -57,13 +57,13 @@ impl BlackjackTable {
                     }
                 }
 
-                self.dealer_hand.add_card(deal.dealer_up_card);
                 if let Some(dealer_down) = deal.dealer_down_card {
                     self.dealer_hand.add_card(dealer_down);
                     self.dealer_hand.set_hidden_card(false);
                 } else {
                     self.dealer_hand.set_hidden_card(true);
                 }
+                self.dealer_hand.add_card(deal.dealer_up_card);
 
                 let mut i = 0;
                 for player in &mut self.players {
@@ -117,7 +117,9 @@ impl BlackjackTable {
             ServerMessage::EndRound(end_round) => {
                 if let Some(dealer_card) = end_round.dealer_card {
                     self.dealer_hand.set_hidden_card(false);
-                    self.dealer_hand.push_card_front(dealer_card);
+                    if self.dealer_hand.cards().len() != 2 {
+                        self.dealer_hand.push_card_front(dealer_card);
+                    }
 
                     // TODO: Perform dealer play and end-round payouts
                 }
