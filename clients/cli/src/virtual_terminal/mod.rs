@@ -34,4 +34,7 @@ pub struct VirtualTerminal {
 
     /// A set of spaces for a single line
     blank_line: Vec<u16>,
+
+    /// Is the alternate display buffer currently in use?
+    using_alt_buffer: bool,
 }

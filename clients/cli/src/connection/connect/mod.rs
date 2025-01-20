@@ -8,7 +8,9 @@ use std::{
 };
 use win32::{
     try_get_last_error, try_wsa_get_last_error,
-    winsock2::{closesocket, connect, socket, INVALID_SOCKET, SOCK_STREAM},
+    winsock2::{
+        closesocket, connect, socket, WSACleanup, WSAStartup, INVALID_SOCKET, SOCK_STREAM, WSADATA,
+    },
     CloseHandle, CreateEvent, FALSE, OVERLAPPED,
 };
 
@@ -20,16 +22,25 @@ pub use error::ConnectionError;
 impl Connection {
     /// Connect to `address:port`
     pub fn connect(address: &str, port: u16) -> Result<Self, ConnectionError> {
+        let mut wsa_data = WSADATA::default();
+        if unsafe { WSAStartup(514, &mut wsa_data) } != 0 {
+            return Err(ConnectionError::new(address, port, "WSAStartup failed"));
+        }
+
         let socket_addr = SocketAddress::from(
             (address, port)
                 .to_socket_addrs()
                 .map_err(|error| ConnectionError::new(address, port, error))?
                 .next()
-                .ok_or_else(|| ConnectionError::new(address, port, "no address found"))?,
+                .ok_or_else(|| {
+                    unsafe { WSACleanup() };
+                    ConnectionError::new(address, port, "no address found")
+                })?,
         );
 
         let handle = unsafe { socket(socket_addr.family(), SOCK_STREAM, 0) };
         if handle == INVALID_SOCKET {
+            unsafe { WSACleanup() };
             return Err(ConnectionError::new(
                 address,
                 port,
@@ -40,6 +51,7 @@ impl Connection {
         let read_event = try_get_last_error!(CreateEvent(null_mut(), FALSE, FALSE, null()))
             .map_err(|error| {
                 unsafe { closesocket(handle) };
+                unsafe { WSACleanup() };
                 ConnectionError::new(address, port, error)
             })?;
 
@@ -49,10 +61,9 @@ impl Connection {
             socket_addr.len() as _
         ))
         .map_err(|error| {
-            unsafe {
-                closesocket(handle);
-                CloseHandle(read_event);
-            }
+            unsafe { closesocket(handle) };
+            unsafe { CloseHandle(read_event) };
+            unsafe { WSACleanup() };
             ConnectionError::new(address, port, error)
         })?;
 
