@@ -19,6 +19,8 @@ mod translate_message;
 pub use game_state::GameState;
 pub use handle_message_result::HandleMessageResult;
 
+use super::Ratio;
+
 /// A single table of blackjack
 #[derive(Debug, Clone)]
 pub struct BlackjackTable {
@@ -50,4 +52,7 @@ pub struct BlackjackTable {
     ///
     /// NOTE: The actual number of hands a player is playing may exceed this value due to splitting
     max_hands: NonZeroU8,
+
+    /// The payout for blackjacks
+    blackjack_payout: Ratio,
 }

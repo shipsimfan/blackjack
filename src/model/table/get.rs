@@ -1,4 +1,4 @@
-use crate::model::{BlackjackTable, GameState, Hand, Player};
+use crate::model::{BlackjackTable, GameState, Hand, Player, Ratio};
 
 impl BlackjackTable {
     /// Gets all player slots
@@ -65,6 +65,11 @@ impl BlackjackTable {
     /// Gets the dealer's hand
     pub fn dealer(&self) -> &Hand {
         &self.dealer_hand
+    }
+
+    /// Gets the payout for blackjacks
+    pub fn blackjack_payout(&self) -> Ratio {
+        self.blackjack_payout
     }
 
     /// Gets the player with `id` mutably

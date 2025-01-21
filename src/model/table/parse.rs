@@ -15,6 +15,7 @@ impl Parse for BlackjackTable {
             min_players: parser.parse()?,
             min_humans: parser.parse()?,
             max_hands: parser.parse()?,
+            blackjack_payout: parser.parse()?,
         })
     }
 }

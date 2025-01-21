@@ -1,5 +1,5 @@
 use argparse::Command;
-use blackjack::messages::DEFAULT_PORT;
+use blackjack::{messages::DEFAULT_PORT, model::Ratio};
 use std::{
     net::IpAddr,
     num::{NonZeroU16, NonZeroU8},
@@ -82,6 +82,10 @@ pub struct Options {
     /// NOTE: The actual number of hands a player is playing may exceed this value due to splitting
     #[flag(value = "HANDS", default = DEFAULT_MAX_HANDS, description = "The maximum number of hands a player can start a round with. Defaults to 3.")]
     pub max_hands: NonZeroU8,
+
+    /// The ratio to payout for blackjack
+    #[flag(value = "PAYOUT", default = DEFAULT_BLACKJACK_PAYOUT, description = "The ratio to payout for blackjack. Defaults to 3:2")]
+    pub blackjack_payout: Ratio,
 }
 
 /// The default maximum number of players that can connect
@@ -101,6 +105,9 @@ const DEFUALT_MIN_PLAYERS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(1) };
 
 /// The default minimum number of human players to begin a round
 const DEFUALT_MIN_HUMANS: u8 = 0;
+
+/// The default payout for blackjacks
+const DEFAULT_BLACKJACK_PAYOUT: Ratio = unsafe { Ratio::new_unchecked(3, 2) };
 
 /// The default maximum number of hands a player can start a round withs
 const DEFAULT_MAX_HANDS: NonZeroU8 = unsafe { NonZeroU8::new_unchecked(3) };

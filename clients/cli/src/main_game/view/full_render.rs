@@ -27,7 +27,12 @@ impl View {
 
         // Write the bet amounts
         terminal.move_cursor_to(0, self.server_name_height + 1);
-        let bet_amount = format!("  Bets: ${} - ${}", self.min_bet, self.max_bet);
+        let bet_amount = format!(
+            "  Bets: ${} - ${}    Pays {}",
+            self.min_bet,
+            self.max_bet,
+            table.blackjack_payout()
+        );
         terminal.write(&bet_amount);
         terminal.write_blank(self.game_width - bet_amount.len());
 

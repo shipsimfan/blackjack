@@ -10,5 +10,6 @@ impl Generate for BlackjackTable {
         self.min_players.generate(output);
         self.min_humans.generate(output);
         self.max_hands.generate(output);
+        self.blackjack_payout.generate(output);
     }
 }

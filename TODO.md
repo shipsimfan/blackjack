@@ -1,5 +1,5 @@
-# TODO
- 1. Add support for changing blackjack payout on server
+# TODO`
+ 1. Add support for setting dealer hard or soft 17
  2. Add doubling down
  3. Add splitting hands
  4. Implement client framework for AI

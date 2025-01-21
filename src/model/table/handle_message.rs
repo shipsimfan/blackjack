@@ -102,11 +102,12 @@ impl BlackjackTable {
                 }
 
                 // Check for player blackjack
+                let payout = self.blackjack_payout;
                 for player in self.sitting_players_mut() {
                     let mut amount = 0;
                     for hand in player.hands() {
                         if hand.cards().len() == 2 && hand.value().as_u8() == 21 {
-                            amount += (3 * hand.bet().unwrap().get() as u32) / 2;
+                            amount += payout.apply(hand.bet().unwrap().get());
                         }
                     }
 
