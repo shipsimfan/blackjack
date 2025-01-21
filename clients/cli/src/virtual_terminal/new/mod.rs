@@ -37,6 +37,7 @@ impl VirtualTerminal {
             width,
             height,
             blank_line: vec![b' ' as WCHAR; width],
+            using_alt_buffer: false,
         };
         terminal.hide_cursor();
         Ok(terminal)

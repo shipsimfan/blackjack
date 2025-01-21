@@ -20,7 +20,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         options.port()
     ));
 
-    let mut connection = Connection::connect(options.address(), options.port())?;
+    let mut connection = Connection::connect(options.address(), options.port()).unwrap();
 
     let mut game_state = AppState::new(options)?;
 
