@@ -7,5 +7,6 @@
 #![warn(rustdoc::broken_intra_doc_links)]
 #![feature(random)]
 
+pub mod client;
 pub mod messages;
 pub mod model;
