@@ -12,6 +12,7 @@ impl PlayerView {
         player: &Player,
         is_local: bool,
         max_bet: u16,
+        force: bool,
         terminal: &mut VirtualTerminal,
     ) {
         let mut render_blank_line = self.y != y;
@@ -119,7 +120,7 @@ impl PlayerView {
                 break;
             }
 
-            self.hands[i].render(&player.hands()[i], y, terminal);
+            self.hands[i].render(&player.hands()[i], y, force, terminal);
         }
 
         // Adjust passed variables

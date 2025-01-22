@@ -8,15 +8,16 @@ impl View {
         &mut self,
         table: &BlackjackTable,
         local_id: usize,
+        force: bool,
         terminal: &mut VirtualTerminal,
     ) {
         terminal.hide_cursor();
 
         self.dealer
-            .render(table.dealer(), self.dealer_hand_y, terminal);
+            .render(table.dealer(), self.dealer_hand_y, force, terminal);
         self.players
-            .render(table.players(), table.max_bet(), terminal);
-        self.controls.render(false, table, local_id, terminal);
+            .render(table.players(), table.max_bet(), force, terminal);
+        self.controls.render(force, table, local_id, terminal);
 
         if self.controls.chat_active() {
             self.chat.move_cursor(terminal);

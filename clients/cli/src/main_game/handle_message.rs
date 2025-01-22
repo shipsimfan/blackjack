@@ -49,7 +49,8 @@ impl MainGame {
         }
 
         if self.table.handle_message(message).is_change() {
-            self.view.render(&self.table, self.client_id, terminal);
+            self.view
+                .render(&self.table, self.client_id, false, terminal);
         }
 
         false

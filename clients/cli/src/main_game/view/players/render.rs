@@ -8,6 +8,7 @@ impl PlayersView {
         &mut self,
         players: &[Option<Player>],
         max_bet: u16,
+        force: bool,
         terminal: &mut VirtualTerminal,
     ) {
         let mut y = self.y;
@@ -26,7 +27,7 @@ impl PlayersView {
                 self.players.push(PlayerView::new(self.width));
             }
 
-            self.players[i].render(y, player, id == self.local_id, max_bet, terminal);
+            self.players[i].render(y, player, id == self.local_id, max_bet, force, terminal);
 
             y += self.players[i].height();
             i += 1;

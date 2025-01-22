@@ -55,4 +55,7 @@ pub struct BlackjackTable {
 
     /// The payout for blackjacks
     blackjack_payout: Ratio,
+
+    /// Will the dealer hit on a soft 17?
+    hit_soft_17: bool,
 }

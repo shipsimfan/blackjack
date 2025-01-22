@@ -22,6 +22,7 @@ impl Lobby {
                 options.decks,
                 Vec::new(),
                 options.blackjack_payout,
+                options.hit_soft_17,
             ),
             clients: clients.into_boxed_slice(),
             connecting_clients: VecDeque::with_capacity(options.max_players()),

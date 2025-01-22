@@ -13,6 +13,7 @@ impl BlackjackTable {
         decks: NonZeroU8,
         rigged_cards: Vec<Card>,
         blackjack_payout: Ratio,
+        hit_soft_17: bool,
     ) -> Self {
         let mut players = Vec::with_capacity(max_players);
         for _ in 0..max_players {
@@ -30,6 +31,7 @@ impl BlackjackTable {
             min_humans,
             max_hands,
             blackjack_payout,
+            hit_soft_17,
         }
     }
 }

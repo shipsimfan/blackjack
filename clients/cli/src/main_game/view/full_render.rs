@@ -62,6 +62,6 @@ impl View {
         self.players.truncate();
         self.controls.render(true, table, local_id, terminal);
 
-        self.render(table, local_id, terminal);
+        self.render(table, local_id, true, terminal);
     }
 }

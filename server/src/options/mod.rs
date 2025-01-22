@@ -13,6 +13,7 @@ mod get;
 pub struct Options {
     /// The address to listen for clients on
     #[flag(
+        short_name,
         value = "ADDRESS",
         description = "The address to listen for clients on"
     )]
@@ -37,6 +38,7 @@ pub struct Options {
 
     /// The name of the server to report to clients
     #[flag(
+        short_name,
         value = "NAME",
         description = "The name of the server to report to clients"
     )]
@@ -44,13 +46,14 @@ pub struct Options {
 
     /// A password to require clients to enter to connect
     #[flag(
+        short_name = 'P',
         value = "PASSWORD",
         description = "Password required by clients to connect"
     )]
     pub password: Option<String>,
 
     /// The number of decks to play in the shoe
-    #[flag(value = "DECKS", default = DEFAULT_DECKS, description = "The number of decks to play in the shoe. Defaults to 6")]
+    #[flag(short_name, value = "DECKS", default = DEFAULT_DECKS, description = "The number of decks to play in the shoe. Defaults to 6")]
     pub decks: NonZeroU8,
 
     /// The maximum amount one player can bet on one hand in one round
@@ -84,8 +87,14 @@ pub struct Options {
     pub max_hands: NonZeroU8,
 
     /// The ratio to payout for blackjack
-    #[flag(value = "PAYOUT", default = DEFAULT_BLACKJACK_PAYOUT, description = "The ratio to payout for blackjack. Defaults to 3:2")]
+    #[flag(short_name, value = "PAYOUT", default = DEFAULT_BLACKJACK_PAYOUT, description = "The ratio to payout for blackjack. Defaults to 3:2")]
     pub blackjack_payout: Ratio,
+
+    /// Will the dealer hit on a soft 17?
+    #[flag(
+        description = "Will the dealer hit on a soft 17? The dealer will stand without this flag specified."
+    )]
+    pub hit_soft_17: bool,
 }
 
 /// The default maximum number of players that can connect

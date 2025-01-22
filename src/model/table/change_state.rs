@@ -71,6 +71,11 @@ impl BlackjackTable {
                                 while temp_hand.value().as_u8() <= 17 {
                                     match temp_hand.value() {
                                         HandValue::Hard(17) | HandValue::NoAce(17) => break,
+                                        HandValue::Soft(17) => {
+                                            if !self.hit_soft_17 {
+                                                break;
+                                            }
+                                        }
                                         _ => {}
                                     }
 

@@ -4,12 +4,13 @@ use blackjack::model::Hand;
 
 impl HandView {
     /// Renders `hand` to `terminal`
-    pub fn render(&mut self, hand: &Hand, y: usize, terminal: &mut VirtualTerminal) {
+    pub fn render(&mut self, hand: &Hand, y: usize, force: bool, terminal: &mut VirtualTerminal) {
         let cards_eq = self.cards == hand.cards();
         if self.y == y
             && self.bet == hand.bet()
             && cards_eq
             && self.hidden_card == hand.hidden_card()
+            && !force
         {
             return;
         }
