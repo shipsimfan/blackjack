@@ -1,0 +1,14 @@
+[package]
+name = "blackjack-random-ai"
+description = "A blackjack AI that makes decisions randomly"
+version = "0.1.0"
+
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+blackjack.workspace = true
+argparse.workspace = true

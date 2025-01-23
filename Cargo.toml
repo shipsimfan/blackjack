@@ -1,5 +1,5 @@
 [workspace]
-members = ["clients/cli", "server"]
+members = ["ai/random", "clients/cli", "server"]
 
 [workspace.package]
 edition = "2021"

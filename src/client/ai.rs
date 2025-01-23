@@ -1,4 +1,5 @@
 use crate::{client::Move, messages::ServerMessage, model::BlackjackTable};
+use std::num::NonZeroU16;
 
 /// An AI that can play blackjack
 pub trait AI {
@@ -10,5 +11,5 @@ pub trait AI {
     fn make_move(&mut self, table: &BlackjackTable) -> Move;
 
     /// Request for the client to place a bet
-    fn place_bet(&mut self, table: &BlackjackTable) -> usize;
+    fn place_bet(&mut self, table: &BlackjackTable) -> NonZeroU16;
 }

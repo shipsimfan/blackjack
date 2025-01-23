@@ -1,8 +1,7 @@
 # TODO`
- 1. Add doubling down
- 2. Add splitting hands
- 3. Implement client framework for AI
- 4. Implement AI
-   1. Random
-   2. Basic strategy
-   3. Card counting
+ 1. Implement client framework for AI
+ 2. Implement Random AI
+ 3. Add doubling down
+ 4. Add splitting hands
+ 5. Add basic strategy AI
+ 6. Add card counting AI

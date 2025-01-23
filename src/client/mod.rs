@@ -3,6 +3,7 @@
 mod ai;
 mod r#move;
 mod new;
+mod run;
 
 pub use ai::AI;
 pub use r#move::Move;
