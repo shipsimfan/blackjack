@@ -1,4 +1,4 @@
-use crate::client::{Client, ClientError, Options, AI};
+use crate::client::{Client, ClientError, Options, Socket, AI};
 use argparse::Command;
 use std::net::TcpStream;
 
@@ -10,10 +10,7 @@ impl<T: AI> Client<T> {
             None => return Ok(()),
         };
 
-        let socket =
-            TcpStream::connect((options.address(), options.port().get())).map_err(|error| {
-                ClientError::ConnectError(error, options.address().to_owned(), options.port().get())
-            })?;
+        let socket = Socket::connect(options.address(), options.port())?;
 
         let ai = T::new(options).map_err(ClientError::CreationError)?;
 

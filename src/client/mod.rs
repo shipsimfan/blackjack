@@ -1,6 +1,6 @@
 //! A framework for implementing AI clients
 
-use std::net::TcpStream;
+use socket::Socket;
 
 mod ai;
 mod error;
@@ -8,6 +8,7 @@ mod r#move;
 mod new;
 mod options;
 mod run;
+mod socket;
 
 pub use ai::AI;
 pub use error::ClientError;
@@ -20,5 +21,5 @@ pub struct Client<T: AI> {
     ai: T,
 
     /// The socket connected to the server
-    socket: TcpStream,
+    socket: Socket,
 }
