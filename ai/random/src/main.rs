@@ -1,10 +1,8 @@
 #![feature(random)]
 
-use std::num::NonZeroU16;
-
-use argparse::Command;
 use blackjack::client::Client;
 use options::Options;
+use std::num::NonZeroU16;
 
 mod ai;
 mod options;
@@ -18,25 +16,8 @@ struct RandomAI {
 }
 
 fn main() {
-    if let Err(error) = run() {
+    if let Err(error) = Client::<RandomAI>::new() {
         eprintln!("Error: {}", error);
         std::process::exit(1);
     }
-}
-
-fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let options = match Options::parse_env()? {
-        Some(options) => options,
-        None => return Ok(()),
-    };
-
-    Client::new(RandomAI {
-        hit_chance: options
-            .hit_chance
-            .map(|chance| (chance * (u32::MAX + 1) as f32) as u64),
-        bet: options.bet,
-    })
-    .run()?;
-
-    Ok(())
 }

@@ -1,8 +1,8 @@
-use crate::client::{Client, AI};
+use crate::client::{Client, ClientError, AI};
 
 impl<T: AI> Client<T> {
     /// Run the client
-    pub fn run(self) -> Result<(), std::io::Error> {
+    pub(super) fn run(self) -> Result<(), ClientError<T::CreationError>> {
         loop {}
     }
 }

@@ -6,6 +6,7 @@
 #![deny(rustdoc::redundant_explicit_links)]
 #![warn(rustdoc::broken_intra_doc_links)]
 #![feature(random)]
+#![feature(associated_type_defaults)]
 
 pub mod client;
 pub mod messages;

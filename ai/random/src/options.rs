@@ -1,10 +1,19 @@
 use argparse::Command;
+use blackjack::messages::DEFAULT_PORT;
 use std::num::NonZeroU16;
 
 /// The options the user selected for the AI
 #[derive(Command)]
 #[command(version, help)]
 pub struct Options {
+    /// The address to connect to
+    #[arg(description = "The address to connect to")]
+    address: String,
+
+    /// The port to connect to
+    #[flag(short_name, default = DEFAULT_PORT, description = "The port to connect to. Defaults to 9261")]
+    port: NonZeroU16,
+
     /// The percentage chance to hit on a hand, from 0 - 1
     #[flag(
         short_name,
@@ -23,3 +32,13 @@ pub struct Options {
 
 /// The default amount of money to bet each round
 const DEFAULT_BET: NonZeroU16 = unsafe { NonZeroU16::new_unchecked(10) };
+
+impl blackjack::client::Options for Options {
+    fn address(&self) -> &str {
+        &self.address
+    }
+
+    fn port(&self) -> NonZeroU16 {
+        self.port
+    }
+}
