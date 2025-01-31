@@ -1,6 +1,8 @@
-use crate::client::{Client, ClientError, Options, Socket, AI};
+use crate::{
+    client::{Client, ClientError, Options, Socket, AI},
+    messages::ServerMessage,
+};
 use argparse::Command;
-use std::net::TcpStream;
 
 impl<T: AI> Client<T> {
     /// Creates and runs a new [`Client`]
@@ -10,7 +12,16 @@ impl<T: AI> Client<T> {
             None => return Ok(()),
         };
 
-        let socket = Socket::connect(options.address(), options.port())?;
+        let mut socket = Socket::connect(options.address(), options.port())?;
+
+        let hello = match socket.read_message()? {
+            Some(ServerMessage::Hello(hello)) => hello,
+            Some(_) => return Err(ClientError::UnexpectedMessage),
+            None => {
+                println!("Disconnected from server");
+                return Ok(());
+            }
+        };
 
         let ai = T::new(options).map_err(ClientError::CreationError)?;
 

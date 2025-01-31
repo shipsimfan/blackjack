@@ -12,7 +12,7 @@ impl AI for RandomAI {
         Ok(RandomAI {
             hit_chance: options
                 .hit_chance
-                .map(|chance| (chance * (u32::MAX + 1) as f32) as u64),
+                .map(|chance| (chance * (u32::MAX as f32 + 1.0)) as u64),
             bet: options.bet,
         })
     }

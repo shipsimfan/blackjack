@@ -1,7 +1,4 @@
-use crate::{
-    client::{socket::ReadState, ClientError, Socket},
-    messages::header::HEADER_SIZE,
-};
+use crate::client::{ClientError, Socket};
 use std::{net::TcpStream, num::NonZeroU16};
 
 impl Socket {
@@ -15,11 +12,7 @@ impl Socket {
 
         Ok(Socket {
             socket,
-            read_state: ReadState::Header,
-            header_buffer: vec![0; HEADER_SIZE].into_boxed_slice(),
             body_buffer: Vec::with_capacity(u16::MAX as usize),
-            last_tag: 0,
-            read_length: 0,
             write_buffer: Vec::with_capacity(u16::MAX as usize),
         })
     }
