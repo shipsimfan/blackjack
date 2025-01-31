@@ -22,6 +22,15 @@ pub enum ClientError<E: std::error::Error> {
 
     /// Received an unexpected message from the server
     UnexpectedMessage,
+
+    /// No password was provided but the server required one
+    NoPassword,
+
+    /// The username provided is not valid
+    InvalidUsername,
+
+    /// An error occured while sending a message
+    WriteIOError(std::io::Error),
 }
 
 impl<E: std::error::Error> std::error::Error for ClientError<E> {}

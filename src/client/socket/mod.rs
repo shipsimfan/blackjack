@@ -2,6 +2,7 @@ use std::net::TcpStream;
 
 mod connect;
 mod read_message;
+mod send_message;
 
 /// A connection to a server
 pub(super) struct Socket {

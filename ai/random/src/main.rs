@@ -1,6 +1,6 @@
 #![feature(random)]
 
-use blackjack::client::Client;
+use blackjack::{client::Client, pkg_version};
 use options::Options;
 use std::num::NonZeroU16;
 
@@ -16,7 +16,7 @@ struct RandomAI {
 }
 
 fn main() {
-    if let Err(error) = Client::<RandomAI>::new() {
+    if let Err(error) = Client::<RandomAI>::new("Random AI", pkg_version!()) {
         eprintln!("Error: {}", error);
         std::process::exit(1);
     }

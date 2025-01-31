@@ -15,6 +15,11 @@ impl<E: std::error::Error> std::fmt::Display for ClientError<E> {
             ClientError::UnexpectedMessage => {
                 "received an unexpected message from the server".fmt(f)
             }
+            ClientError::NoPassword => {
+                "the server requires a password but none was provided".fmt(f)
+            }
+            ClientError::InvalidUsername => "the provided username is not valid".fmt(f),
+            ClientError::WriteIOError(error) => write!(f, "unable to send a message - {error}"),
         }
     }
 }
