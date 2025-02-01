@@ -14,7 +14,7 @@ pub trait AI: Sized {
     type CreationError: std::error::Error = std::convert::Infallible;
 
     /// Create a new version of this [`AI`]
-    fn new(options: Self::Options) -> Result<Self, Self::CreationError>;
+    fn new(options: Self::Options, client_id: usize) -> Result<Self, Self::CreationError>;
 
     /// Called when the clients receives any message
     #[allow(unused_variables)]

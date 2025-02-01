@@ -1,4 +1,4 @@
-use crate::messages::ParseMessageError;
+use crate::messages::{ErrorServerMessage, ParseMessageError};
 
 mod display;
 
@@ -31,6 +31,9 @@ pub enum ClientError<E: std::error::Error> {
 
     /// An error occured while sending a message
     WriteIOError(std::io::Error),
+
+    /// An error reported by the server
+    ServerError(ErrorServerMessage),
 }
 
 impl<E: std::error::Error> std::error::Error for ClientError<E> {}

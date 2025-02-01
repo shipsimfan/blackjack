@@ -50,6 +50,14 @@ macro_rules! messages {
                 $crate::messages::header::generate(output, $client, self.tag());
             }
         }
+
+        $(
+            impl<$lifetime> From<$struct$(<$variant_lifetime>)*> for $ident<$lifetime> {
+                fn from(message: $struct$(<$variant_lifetime>)*) -> Self {
+                    Self::$name(message)
+                }
+            }
+        )*
     };
 }
 

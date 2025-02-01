@@ -15,6 +15,8 @@ pub use error::ClientError;
 pub use options::Options;
 pub use r#move::Move;
 
+use crate::model::BlackjackTable;
+
 /// A framework for implementing AI clients
 pub struct Client<T: AI> {
     /// The ai running this client
@@ -22,4 +24,10 @@ pub struct Client<T: AI> {
 
     /// The socket connected to the server
     socket: Socket,
+
+    /// The model of the game
+    table: BlackjackTable,
+
+    /// The id assigned to the player
+    client_id: u8,
 }

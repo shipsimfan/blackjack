@@ -46,10 +46,28 @@ impl<T: AI> Client<T> {
             true,
         ))?;
 
+        let (client_id, table) = match socket.read_message()? {
+            Some(ServerMessage::GameState(game_state)) => {
+                (game_state.client_id, game_state.table.unwrap())
+            }
+            Some(ServerMessage::Error(error)) => return Err(ClientError::ServerError(error)),
+            Some(_) => return Err(ClientError::UnexpectedMessage),
+            None => {
+                println!("Disconnected by server");
+                return Ok(());
+            }
+        };
+
         socket.send_message(PlayNextRoundClientMessage::new(true))?;
 
-        let ai = T::new(options).map_err(ClientError::CreationError)?;
+        let ai = T::new(options, client_id as usize).map_err(ClientError::CreationError)?;
 
-        Client { ai, socket }.run()
+        Client {
+            ai,
+            socket,
+            table,
+            client_id,
+        }
+        .run()
     }
 }

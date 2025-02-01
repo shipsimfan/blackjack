@@ -8,7 +8,7 @@ use std::{num::NonZeroU16, random::random};
 impl AI for RandomAI {
     type Options = Options;
 
-    fn new(options: Self::Options) -> Result<Self, Self::CreationError> {
+    fn new(options: Self::Options, _: usize) -> Result<Self, Self::CreationError> {
         Ok(RandomAI {
             hit_chance: options
                 .hit_chance

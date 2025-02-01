@@ -20,6 +20,7 @@ impl<E: std::error::Error> std::fmt::Display for ClientError<E> {
             }
             ClientError::InvalidUsername => "the provided username is not valid".fmt(f),
             ClientError::WriteIOError(error) => write!(f, "unable to send a message - {error}"),
+            ClientError::ServerError(error) => error.fmt(f),
         }
     }
 }
